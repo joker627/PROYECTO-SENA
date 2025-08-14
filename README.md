@@ -1,2 +1,2 @@
 # PROYECTO-SENA-
-Este software tiene como objetivo principal facilitar la comunicación entre personas oyentes y no oyentes mediante la traducción entre texto, glosa y Lengua de Señas Colombiana (LSC).
+"Desarrollar un software que intérprete lenguaje de señas colombiana, para facilitar la comunicación con la comunidad con discapacidad auditiva en Colombia, promoviendo su inclusión social en el campo laboral y/o académico."
