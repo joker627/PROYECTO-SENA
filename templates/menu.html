@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Technology</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="nav">
+        <div class="nav-logo"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo"></div>
+        <div class="nav-links">
+            <a href="#" class="nav-link">Pagina principal</a>
+            <a href="#" class="nav-link">Servicios</a>
+            <a href="#" class="nav-link">Desarrolladores</a>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="foot">
+        <div class="foot-contact">
+            <h3 class="foot-title">Contacto:</h3>
+            <span class="foot-email">mail@signtechnology.com</span>
+            <span class="foot-phone">+57 00000000</span>
+        </div>
+
+        <div class="foot-links">
+            <a href="#" class="foot-link">Términos y condiciones</a>
+            <a href="#" class="foot-link">Política de privacidad</a>
+        </div>
+
+        <div class="foot-copy">
+            © 2025 SignTechnology. Todos los derechos reservados.
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+@import url('global.css');
+
+/* NAVBAR - Fiel a tu imagen */
+.nav {
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: var(--color-001);
+    width: 100%;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    width: 50px; /* Ajusta el ancho según sea necesario */
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.nav-logo img {
+    max-width: 100%;
+    height: auto;
+
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-link {
+    color: var(--color-005);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* FOOTER */
+.foot {
+    background: var(--color-001);
+    color: var(--color-005);
+    padding: 30px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.foot-contact {
+    margin-bottom: 15px;
+}
+
+.foot-title {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.foot-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.foot-link {
+    color: var(--texto-footer);
+    text-decoration: none;
+}
+
+.foot-copy {
+    color: var(--texto-copyright);
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+/* Elementos específicos */
+.foot-email,
+.foot-phone {
+    display: block;
+    margin-bottom: 5px;
+}
