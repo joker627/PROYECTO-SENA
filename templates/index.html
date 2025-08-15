@@ -1,0 +1,84 @@
+{% extends 'menu.html' %}
+
+{% block content %}
+<body>
+    <header>
+        <h1>Signnology</h1>
+        <p>Traductor de Texto a Lengua de Señas Estándar</p>
+    </header>
+
+    <main class="signnology-main">
+        <!-- Presentación -->
+        <section id="intro" class="signnology-section">
+            <h2>Bienvenido</h2>
+            <p>
+                Signnology es una herramienta creada para mejorar la comunicación entre 
+                personas oyentes y personas sordas, traduciendo texto escrito a lengua de señas.
+                Nuestro objetivo es derribar barreras comunicativas y promover la inclusión.
+            </p>
+        </section>
+
+        <!-- Cómo funciona -->
+        <section id="howItWorks" class="signnology-section">
+            <h2>Cómo Funciona</h2>
+            <ol>
+                <li>Escribe el texto que deseas traducir.</li>
+                <li>El sistema procesa cada palabra y la convierte en señas.</li>
+                <li>Visualiza la traducción en imágenes o animaciones interactivas.</li>
+            </ol>
+            <p>
+                El prototipo actual utiliza un conjunto de imágenes del abecedario y señas básicas, 
+                pero en el futuro incorporará reconocimiento por cámara y traducción en tiempo real.
+            </p>
+        </section>
+
+        <!-- Traductor -->
+        <section id="translator" class="signnology-section">
+            <h2>Traductor</h2>
+            <form id="translateForm" class="signnology-form">
+                <label for="inputText">Escribe el texto:</label>
+                <textarea id="inputText" class="signnology-textarea" rows="4" placeholder="Ejemplo: Hola, ¿cómo estás?"></textarea>
+                <button type="submit" class="signnology-btn">Traducir</button>
+            </form>
+
+            <div id="result" class="signnology-result">
+                <h3>Resultado:</h3>
+                <div id="signOutput" class="signnology-output">
+                    <!-- Aquí aparecerán las señas -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Impacto -->
+        <section id="impact" class="signnology-section">
+            <h2>Impacto del Proyecto</h2>
+            <p>
+                Este traductor busca apoyar a comunidades educativas, instituciones públicas 
+                y entornos laborales, facilitando el acceso a información y comunicación efectiva 
+                para personas sordas.
+            </p>
+            <p>
+                Con esta herramienta, un profesor podría mostrar instrucciones en lengua de señas, 
+                o un trabajador de atención al cliente podría comunicarse con un usuario sordo 
+                sin necesidad de un intérprete presencial.
+            </p>
+        </section>
+
+        <!-- Sobre el proyecto -->
+        <section id="about" class="signnology-section">
+            <h2>Sobre Signnology</h2>
+            <p>
+                Signnology es un prototipo desarrollado como parte del programa 
+                de Análisis y Desarrollo de Software del SENA. Actualmente se encuentra 
+                en fase de pruebas y continúa en evolución para incluir nuevas funciones 
+                como inteligencia artificial y reconocimiento de señas en tiempo real.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Signnology - Proyecto SENA</p>
+    </footer>
+</body>
+
+{% endblock %}
