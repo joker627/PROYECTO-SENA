@@ -1,81 +1,186 @@
 @import url('global.css');
 
-/* NAVBAR - Fiel a tu imagen */
+/* ============ NAVBAR ============ */
 .nav {
-    display: flex;
     position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
-    background: var(--color-001);
     width: 100%;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-001);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 .nav-logo {
     display: flex;
     align-items: center;
-    width: 50px; /* Ajusta el ancho según sea necesario */
-    top: 0;
-    left: 0;
-    bottom: 0;
+    gap: 0.75rem;
 }
 
 .nav-logo img {
-    max-width: 100%;
-    height: auto;
+    height: 2.5rem;
+    border-radius: 20%;
+    object-fit: contain;
+}
 
+.nav-logo h1 {
+    color: var(--color-005);
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin: 0;
 }
 
 .nav-links {
     display: flex;
-    gap: 25px;
+    gap: 1.5rem;
 }
 
 .nav-link {
     color: var(--color-005);
     text-decoration: none;
-    font-size: 14px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    padding: 0.5rem 0;
+    position: relative;
 }
 
-/* FOOTER */
+.nav-link:hover {
+    color: var(--color-003);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-003);
+    transition: width 0.25s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.nav-hamburger span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: var(--color-005);
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .nav-links {
+        position: fixed;
+        top: 4.5rem;
+        left: -100%;
+        width: 80%;
+        height: calc(100vh - 4.5rem);
+        background-color: var(--color-001);
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 0;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+        left: 0;
+    }
+
+    .nav-hamburger {
+        display: block;
+    }
+
+    .nav-hamburger.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-hamburger.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+}
+/* ============ FOOTER ============ */
 .foot {
-    background: var(--color-001);
+    background-color: var(--color-001);
     color: var(--color-005);
-    padding: 30px;
+    padding: 2rem 1.5rem;
     text-align: center;
-    font-size: 14px;
 }
 
-.foot-contact {
-    margin-bottom: 15px;
+.foot-container {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .foot-title {
-    font-size: 16px;
-    margin-bottom: 5px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-005);
 }
 
 .foot-links {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin: 20px 0;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 1.25rem 0;
 }
 
 .foot-link {
-    color: var(--texto-footer);
+    color: var(--color-005);
     text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.25s ease;
 }
 
-.foot-copy {
-    color: var(--texto-copyright);
-    font-size: 12px;
-    margin-top: 20px;
+.foot-link:hover {
+    color: var(--color-003);
 }
 
-/* Elementos específicos */
+.foot-contact {
+    margin-bottom: 1rem;
+}
+
 .foot-email,
 .foot-phone {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.foot-copy {
+    color: var(--color-005);
+    font-size: 0.75rem;
+    margin-top: 1.5rem;
+    opacity: 0.8;
+}
+
+/* ============ MAIN CONTENT SPACING ============ */
+.main-content {
+    padding-top: 4.5rem; /* Ajuste para navbar fija */
+    min-height: calc(100vh - 200px); /* Ajuste para footer */
 }

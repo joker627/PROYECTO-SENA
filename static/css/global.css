@@ -15,14 +15,24 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Bold', sans-serif;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+    background-color: transparent;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #000000;
+}
 body {
-    font-family: var(--fuente-principal);
-    background-color: var(--color-fondo);
-    color: var(--color-primario);
+    background-color: var(--color-005);
+    color: var(--color-008);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
+
