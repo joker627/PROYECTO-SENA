@@ -5,21 +5,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Technology</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block head %}{% endblock %}
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="nav">
-        <div class="nav-logo"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo"></div>
-        <div class="nav-links">
-            <a href="#" class="nav-link">Pagina principal</a>
-            <a href="#" class="nav-link">Servicios</a>
-            <a href="#" class="nav-link">Desarrolladores</a>
-        </div>
-    </nav>
+    <!-- Header with Navigation -->
+    <header>
+        <nav class="nav">
+            <div class="nav-logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+                <h1>sign technology</h1>
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('inicio') }}" class="nav-link">Inicio</a>
+                <a href="#" class="nav-link">Iniciar Sesión</a>
+                <a href="#" class="nav-link">Registrarse</a>
+                <a href="#" class="nav-link">Sobre Nosotros</a>
+                <a href="#" class="nav-link">Desarrolladores</a>
+            </div>
+        </nav>
+    </header>
 
+    <nav class="nav">
+    <div class="nav-logo">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+        <h1>sign technology</h1>
+    </div>
+    
+    <button class="nav-hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <div class="nav-links">
+        <a href="{{ url_for('inicio') }}" class="nav-link">Inicio</a>
+        <a href="#" class="nav-link">Iniciar Sesión</a>
+        <a href="#" class="nav-link">Registrarse</a>
+        <a href="#" class="nav-link">Sobre Nosotros</a>
+        <a href="#" class="nav-link">Desarrolladores</a>
+    </div>
+</nav>
+
+    <!-- Main Content Block -->
     <main>
         {% block content %}{% endblock %}
     </main>
@@ -41,6 +72,10 @@
             © 2025 SignTechnology. Todos los derechos reservados.
         </div>
     </footer>
+
+    <!-- JavaScript at the end of body -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block scripts %}{% endblock %}
 </body>
 
 </html>
