@@ -6,79 +6,125 @@
 
 {% block content %}
 
-<!-- Sección Hero Principal -->
-<section class="hero-section">
-    <div class="hero-content">
-        <h1 class="hero-title">Conectando al mundo a través del lenguaje de señas</h1>
-        <p class="hero-description">Tecnología avanzada que hace accesible la comunicación para todos. Traduce, aprende
-            y conecta sin barreras.</p>
+<!-- Sección principal -->
 
-        <div class="hero-video-container">
-            <iframe src="{{ url_for('static', filename='img/hola.gif') }}" frameborder="0"
-                title="Demostración de traducción de señas" class="hero-video">
-            </iframe>
+<section class="inicio">
+    <div class="inicio__grid">
+        <!-- Lado izquierdo: contenido principal -->
+        <div class="inicio__izquierda">
+            <div class="inicio__titulo-1">
+                <h1 class="inicio__titulo">Conectando al mundo a través del lenguaje de señas</h1>
+                <p class="inicio__texto">Tecnología avanzada que hace accesible la comunicación para todos. Traduce,
+                    aprende y conecta sin barreras.</p>
+            </div>
+
+            <div class="inicio__media">
+                <iframe src="https://www.youtube.com/embed/ffZYKitjw3g?si=lZvci7pwkT9LVsV3" frameborder="0"
+                    title="Demostración de traducción de señas" class="inicio__video">
+                </iframe>
+            </div>
+            <div class="inicio__acciones">
+                <a href="#" class="btn btn--primario">Iniciar Sesión</a>
+                <a href="#" class="btn btn--secundario">Registrarse</a>
+            </div>
         </div>
-
-        <div class="hero-buttons">
-            <a href="" class="button button-primary">Iniciar Sesión</a>
-            <a href="" class="button button-secondary">Registrarse</a>
+        <!-- Lado derecho: escalera zigzag explicativa -->
+        <div class="inicio__derecha">
+            <div class="escalera">
+                <h2 class="inicio__subtitulo">¿Cómo funciona?</h2>
+                <div class="escalon escalon--zigzag">
+                    <div class="escalon__icono">1</div>
+                    <div class="escalon__texto">Sube tu video o activa la cámara</div>
+                </div>
+                <div class="escalon escalon--zagzig">
+                    <div class="escalon__icono">2</div>
+                    <div class="escalon__texto">El sistema detecta las señas</div>
+                </div>
+                <div class="escalon escalon--zigzag">
+                    <div class="escalon__icono">3</div>
+                    <div class="escalon__texto">Traducción automática a texto</div>
+                </div>
+                <div class="escalon escalon--zagzig">
+                    <div class="escalon__icono">4</div>
+                    <div class="escalon__texto">Comparte o guarda la traducción</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Sección de Características -->
-<section class="features-section">
-    <h2 class="features-title">Características principales</h2>
+<!-- Sección de características -->
+<section class="caracteristicas">
+    <h2 class="seccion__titulo">Características principales</h2>
 
-    <div class="features-grid">
-        <!-- Tarjeta 1 -->
-        <article class="feature-card">
-            <div class="feature-image-container">
-                <img src="{{ url_for('static', filename='img/svg/1.svg') }}"
-                    alt="Traducción en tiempo real" class="feature-image">
+    <div class="caracteristicas__grid">
+        <!-- Característica 1 -->
+        <article class="caracteristica">
+            <div class="caracteristica__icono">
+                <img src="{{ url_for('static', filename='img/svg/1.svg') }}" alt="Traducción en tiempo real"
+                    class="caracteristica__img">
             </div>
-            <div class="feature-content">
-                <h3 class="feature-title">Traducción en tiempo real</h3>
-                <p class="feature-text">Convierte el lenguaje de señas en texto instantáneamente.</p>
+            <div class="caracteristica__contenido">
+                <h3 class="caracteristica__titulo">Traducción en tiempo real</h3>
+                <p class="caracteristica__texto">Convierte el lenguaje de señas en texto instantáneamente.</p>
             </div>
         </article>
 
-        <!-- Tarjeta 2 -->
-        <article class="feature-card">
-            <div class="feature-image-container">
-                <img src="{{ url_for('static', filename='img/svg/2.svg') }}"
-                    alt="Adaptación de contenido" class="feature-image">
+        <!-- Característica 2 -->
+        <article class="caracteristica">
+            <div class="caracteristica__icono">
+                <img src="{{ url_for('static', filename='img/svg/2.svg') }}" alt="Adaptación de contenido"
+                    class="caracteristica__img">
             </div>
-            <div class="feature-content">
-                <h3 class="feature-title">Adaptación de contenido</h3>
-                <p class="feature-text">Integración de señas no estandarizadas para diversas regiones colombianas.</p>
-            </div>
-        </article>
-
-        <!-- Tarjeta 3 -->
-        <article class="feature-card">
-            <div class="feature-image-container">
-                <img src="{{ url_for('static', filename='img/soporte_multilingue.jpg') }}" alt="Soporte multilingüe"
-                    class="feature-image">
-            </div>
-            <div class="feature-content">
-                <h3 class="feature-title">Soporte multilingüe</h3>
-                <p class="feature-text">Traducción simultánea a múltiples idiomas.</p>
+            <div class="caracteristica__contenido">
+                <h3 class="caracteristica__titulo">Adaptación regional</h3>
+                <p class="caracteristica__texto">Señas no estandarizadas para diversas regiones colombianas.</p>
             </div>
         </article>
 
-        <!-- Tarjeta 4 -->
-        <article class="feature-card">
-            <div class="feature-image-container">
-                <img src="{{ url_for('static', filename='img/accesibilidad_mejorada.jpg') }}"
-                    alt="Accesibilidad mejorada" class="feature-image">
+        <!-- Característica 3 -->
+        <article class="caracteristica">
+            <div class="caracteristica__icono">
+                <img src="{{ url_for('static', filename='img/svg/3.svg') }}" alt="Accesibilidad mejorada"
+                    class="caracteristica__img">
             </div>
-            <div class="feature-content">
-                <h3 class="feature-title">Accesibilidad mejorada</h3>
-                <p class="feature-text">Diseño inclusivo para todas las capacidades.</p>
+            <div class="caracteristica__contenido">
+                <h3 class="caracteristica__titulo">Fácil de usar</h3>
+                <p class="caracteristica__texto">Interfaz intuitiva y accesible para todos.</p>
             </div>
         </article>
     </div>
 </section>
+
+<!-- Sección de estadísticas -->
+<section class="estadisticas">
+    <h2 class="seccion__titulo">Nuestro impacto</h2>
+
+    <div class="estadisticas__grid">
+        <div class="dato">
+            <span class="dato__valor">
+                1000<span class="dato__simbolo">+</span>
+            </span>
+            <span class="dato__texto">Usuarios registrados</span>
+        </div>
+        <div class="dato">
+            <span class="dato__valor">
+                500<span class="dato__simbolo">+</span>
+            </span>
+            <span class="dato__texto">Traducciones diarias</span>
+        </div>
+        <div class="dato">
+            <span class="dato__valor">
+                100<span class="dato__simbolo">+</span>
+            </span>
+            <span class="dato__texto">Señas estandarizadas</span>
+        </div>
+    </div>
+</section>
+
+<section> 
+    <h2>.</h2>
+</section>
+
 
 {% endblock %}
