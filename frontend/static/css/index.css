@@ -1,0 +1,442 @@
+/* importamos los estilos globales */
+@import url('global.css');
+/* importamos los estilos de componentes */
+@import url('components.css');
+
+/* ================= SECCIÓN INICIO ================= */
+.inicio {
+    padding-top: 70px;
+    background-color: var(--color-002);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.inicio__grid {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    gap: 40px;
+}
+
+.inicio__izquierda {
+    flex: 1 1 350px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-left: 20px;
+}
+
+.inicio__contenido {
+    margin-bottom: 20px;
+}
+
+/* Tamaño de fuente explícito para h1 */
+.inicio__titulo {
+    font-size: 2.5rem;
+    /* Tamaño explícito en rem */
+    font-weight: bold;
+    color: var(--color-005);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.inicio__texto {
+    font-size: 1.2rem;
+    /* Tamaño explícito en rem */
+    color: var(--color-008);
+    max-width: 700px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.inicio__acciones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.inicio__media {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.inicio__media::before {
+    content: "";
+    display: block;
+    padding-top: 56.25%;
+    /* Relación de aspecto 16:9 */
+}
+
+.inicio__video {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.05);
+    object-fit: cover;
+}
+
+/* Contenedor derecho */
+.contenedor-derecho {
+    flex: 1 1 350px;
+    min-width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Contenedor principal de opciones */
+.opciones-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Tarjeta de opción */
+.opcion-card {
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.opcion-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Encabezado de la tarjeta */
+.opcion-encabezado {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Tamaño de fuente explícito para h2 */
+.opcion-titulo {
+    color: var(--color-005);
+    font-size: 1.5rem;
+    /* Tamaño explícito en rem */
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+/* Lista de items */
+.opcion-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.opcion-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.opcion-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.item-numero {
+    width: 32px;
+    height: 32px;
+    background: var(--color-001);
+    color: var(--color-005);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+    /* Tamaño explícito en rem */
+    flex-shrink: 0;
+}
+
+.opcion-item p {
+    margin: 0;
+    color: var(--color-005);
+    font-size: 0.95rem;
+    /* Tamaño explícito en rem */
+    line-height: 1.4;
+}
+
+/* ================= SECCIÓN CARACTERÍSTICAS ================= */
+.caracteristicas {
+    padding: 40px 20px;
+    background-color: var(--color-005);
+    text-align: center;
+}
+
+/* Tamaño de fuente explícito para h2 */
+.seccion__titulo {
+    font-size: 2rem;
+    /* Tamaño explícito en rem */
+    margin-bottom: 30px;
+    color: var(--color-001);
+}
+
+.caracteristicas__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.caracteristica {
+    background-color: var(--color-003);
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.caracteristica:hover {
+    transform: translateY(-5px);
+}
+
+.caracteristica__icono {
+    margin-bottom: 15px;
+    max-width: 30px;
+    min-height: 30px;
+    margin: 0 auto 15px;
+}
+
+.caracteristica__img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.caracteristica__contenido {
+    text-align: center;
+}
+
+/* Tamaño de fuente explícito para h3 */
+.caracteristica__titulo {
+    font-size: 1.3rem;
+    /* Tamaño explícito en rem */
+    color: var(--color-001);
+    margin-bottom: 10px;
+}
+
+.caracteristica__texto {
+    color: var(--color-008);
+    line-height: 1.5;
+    font-size: 1rem;
+    /* Tamaño explícito en rem */
+}
+
+/* ================= SECCIÓN ESTADÍSTICAS ================= */
+
+.estadisticas__titulo {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--color-005);
+}
+
+.estadisticas {
+    padding: 40px 20px;
+    background-color: var(--color-001);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.estadisticas__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dato {
+    text-align: center;
+}
+
+.dato__valor {
+    font-size: 2rem;
+    /* Tamaño explícito en rem */
+    font-weight: bold;
+    color: var(--color-005);
+    display: block;
+}
+
+.dato__simbolo {
+    color: var(--color-006);
+    font-size: 1rem;
+    /* Tamaño explícito en rem */
+    margin-left: 0.1em;
+}
+
+.dato__texto {
+    display: block;
+    font-size: 1rem;
+    /* Tamaño explícito en rem */
+    color: var(--color-005);
+    font-weight: bold;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+    .inicio__grid {
+        flex-direction: column;
+        gap: 32px;
+        align-items: center;
+    }
+
+    .inicio__izquierda,
+    .contenedor-derecho {
+        min-width: 0;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10px;
+    }
+
+    .inicio__izquierda {
+        margin-bottom: 18px;
+    }
+
+    .inicio__titulo,
+    .inicio__texto {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .inicio__acciones {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 24px;
+        margin-top: 0;
+    }
+
+    .opciones-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .opcion-card {
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .inicio__titulo {
+        font-size: 2rem;
+        /* Tamaño ajustado para móviles */
+    }
+
+    .inicio__media {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 10px 0 0 0;
+    }
+
+    .caracteristicas__grid,
+    .estadisticas__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .opcion-titulo {
+        font-size: 1.3rem;
+    }
+
+    .estadisticas__titulo {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .inicio {
+        padding-top: 80px;
+    }
+
+    .inicio__titulo {
+        font-size: 1.8rem;
+    }
+
+    .inicio__texto {
+        font-size: 1rem;
+    }
+
+    .inicio__acciones {
+        gap: 12px;
+    }
+
+    .caracteristica {
+        padding: 15px;
+    }
+
+    .caracteristica__titulo {
+        font-size: 1.2rem;
+    }
+
+    .dato__valor {
+        font-size: 1.8rem;
+    }
+
+    .estadisticas__titulo {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .inicio__titulo {
+        font-size: 1.6rem;
+
+    }
+
+    .opcion-titulo {
+        font-size: 1.1rem;
+
+    }
+
+    .item-numero {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+
+    .opcion-item p {
+        font-size: 0.9rem;
+    }
+
+    .estadisticas__titulo {
+        font-size: 1.4rem;
+    }
+
+    .caracteristica__titulo {
+        font-size: 1.1rem;
+    }
+}

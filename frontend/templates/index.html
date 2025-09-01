@@ -1,0 +1,170 @@
+﻿{% extends 'menu.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Sección principal -->
+
+<section class="inicio">
+    <div class="inicio__grid">
+        <!-- Lado izquierdo: contenido principal -->
+        <div class="inicio__izquierda">
+            <div class="inicio__contenido">
+                <h1 class="inicio__titulo">Conectando al mundo a través del lenguaje de señas</h1>
+                <p class="inicio__texto">Tecnología avanzada que hace accesible la comunicación para todos. Traduce,
+                    aprende y conecta sin barreras.</p>
+            </div>
+
+            <div class="inicio__media">
+                <video 
+                    autoplay 
+                    muted
+                    loop 
+                    playsinline
+                    class="inicio__video" 
+                    title="Demostración de traducción de señas">
+                    <source src="{{ url_for('static', filename='video/demo.mp4') }}" type="video/mp4" loading="lazy">
+                    Tu navegador no soporta el elemento de video.
+                </video>
+            </div>
+            <h1 class="inicio__titulo">Seleccione el modo</h1>
+            <div class="inicio__acciones">
+                <a href="#" class="btn btn--primario">Señas a texto</a>
+                <a href="#" class="btn btn--secundario">Texto a señas</a>
+            </div>
+        </div>
+        <!-- Contenedor de opciones de traducción -->
+        <div class="contenedor-derecho">
+            <div class="opciones-container">
+                <!-- Tarjeta de Señas a Texto -->
+                <div class="opcion-card">
+                    <div class="opcion-encabezado">
+                        <h2 class="opcion-titulo">SEÑAS A TEXTO</h2>
+                    </div>
+                    <div class="opcion-lista">
+                        <div class="opcion-item">
+                            <div class="item-numero">1</div>
+                            <p>Sube tu video o activa la cámara</p>
+                        </div>
+                        <div class="opcion-item">
+                            <div class="item-numero">2</div>
+                            <p>El sistema detecta las señas</p>
+                        </div>
+                        <div class="opcion-item">
+                            <div class="item-numero">3</div>
+                            <p>Traducción automática a texto</p>
+                        </div>
+                        <div class="opcion-item">
+                            <div class="item-numero">4</div>
+                            <p>Comparte o guarda la traducción</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Texto a Señas -->
+                <div class="opcion-card">
+                    <div class="opcion-encabezado">
+                        <h2 class="opcion-titulo">TEXTO A SEÑAS</h2>
+                    </div>
+                    <div class="opcion-lista">
+                        <div class="opcion-item">
+                            <div class="item-numero">1</div>
+                            <p>Escribe o pega tu texto</p>
+                        </div>
+                        <div class="opcion-item">
+                            <div class="item-numero">2</div>
+                            <p>El sistema procesa el texto</p>
+                        </div>
+                        <div class="opcion-item">
+                            <div class="item-numero">3</div>
+                            <p>Visualiza la animación en señas</p>
+                        </div>
+                        <div class="opcion-item">
+                            <div class="item-numero">4</div>
+                            <p>Aprende o comparte las señas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de características -->
+<section class="caracteristicas">
+    <h2 class="seccion__titulo">Características principales</h2>
+
+    <div class="caracteristicas__grid">
+        <!-- Característica 1 -->
+        <article class="caracteristica">
+            <div class="caracteristica__icono">
+                <img src="{{ url_for('static', filename='img/svg/1.svg') }}" alt="Traducción en tiempo real"
+                    class="caracteristica__img" width="64" height="64">
+            </div>
+            <div class="caracteristica__contenido">
+                <h3 class="caracteristica__titulo">Traducción en tiempo real</h3>
+                <p class="caracteristica__texto">Convierte el lenguaje de señas en texto instantáneamente.</p>
+            </div>
+        </article>
+
+        <!-- Característica 2 -->
+        <article class="caracteristica">
+            <div class="caracteristica__icono">
+                <img src="{{ url_for('static', filename='img/svg/2.svg') }}" alt="Adaptación de contenido"
+                    class="caracteristica__img" width="64" height="64">
+            </div>
+            <div class="caracteristica__contenido">
+                <h3 class="caracteristica__titulo">Adaptación regional</h3>
+                <p class="caracteristica__texto">Señas no estandarizadas para diversas regiones colombianas.</p>
+            </div>
+        </article>
+
+        <!-- Característica 3 -->
+        <article class="caracteristica">
+            <div class="caracteristica__icono">
+                <img src="{{ url_for('static', filename='img/svg/3.svg') }}" alt="Accesibilidad mejorada"
+                    class="caracteristica__img" width="64" height="64">
+            </div>
+            <div class="caracteristica__contenido">
+                <h3 class="caracteristica__titulo">Fácil de usar</h3>
+                <p class="caracteristica__texto">Interfaz intuitiva y accesible para todos.</p>
+            </div>
+        </article>
+    </div>
+</section>
+
+<!-- Sección de estadísticas -->
+<section class="estadisticas">
+    <h2 class="estadisticas__titulo">Nuestro impacto</h2>
+
+    <div class="estadisticas__grid">
+        <div class="dato">
+            <span class="dato__valor">
+                1000<span class="dato__simbolo">+</span>
+            </span>
+            <span class="dato__texto">Usuarios registrados</span>
+        </div>
+        <div class="dato">
+            <span class="dato__valor">
+                500<span class="dato__simbolo">+</span>
+            </span>
+            <span class="dato__texto">Traducciones diarias</span>
+        </div>
+        <div class="dato">
+            <span class="dato__valor">
+                100<span class="dato__simbolo">+</span>
+            </span>
+            <span class="dato__texto">Señas estandarizadas</span>
+        </div>
+    </div>
+</section>
+
+<section> 
+    <h2>.</h2>
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,36 @@
+/* Componentes reutilizables para la interfaz de usuario */
+/* ================= BOTONES ================= */
+.btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.25s ease;
+}
+
+.btn--primario {
+    color: var(--color-005);
+    background-color: var(--color-009);
+    border: solid 2px var(--color-005);
+}
+
+.btn--primario:hover {
+    background-color: var(--color-005);
+    color: var(--color-009);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn--secundario {
+    color: var(--color-005);
+    background-color: var(--color-009);
+    border: solid 2px var(--color-005);
+}
+
+.btn--secundario:hover {
+    background-color: var(--color-005);
+    color: var(--color-009);
+    transform: translateY(-2px);
+}
