@@ -162,9 +162,50 @@
     </div>
 </section>
 
-<section> 
-    <h2>.</h2>
+<!--Historias de usuario -->
+<section class="historias">
+    <h2 class="historias__titulo">Historias de nuestros usuarios</h2>
+    <div class="historias__grid">
+        <article class="historia">
+            <div class="video-container">
+                <video 
+                autoplay
+                muted
+                loop
+                playsinline
+                loading="lazy"
+                src="{{ url_for('static', filename='video/demo.mp4') }}" controls></video>
+            </div>
+            <h3 class="historia__nombre">Ashley Rodriguez</h3>
+            <p class="historia__texto">"Gracias a esta herramienta, puedo comunicarme mejor con mi hija. La traducción en tiempo real es increíble."</p>
+        </article>
+        <article class="historia">
+            <div class="video-container">
+                <video 
+                autoplay
+                muted
+                loop
+                playsinline
+                loading="lazy"
+                src="{{ url_for('static', filename='video/demo2.mp4') }}" controls></video>
+            </div>
+            <h3 class="historia__nombre">María Gómez</h3>
+            <p class="historia__texto">"La adaptación regional me ha ayudado a entender mejor las señas de mi comunidad."</p>
+        </article>
+        <article class="historia">
+            <div class="video-container">
+                <video 
+                autoplay
+                muted
+                loop
+                playsinline
+                loading="lazy"
+                src="{{ url_for('static', filename='video/demo3.mp4') }}"  controls></video>
+            </div>
+            <h3 class="historia__nombre">Carlos López</h3>
+            <p class="historia__texto">"Es fácil de usar y me ha permitido aprender nuevas señas rápidamente."</p>
+        </article>
+    </div>
 </section>
-
 
 {% endblock %}

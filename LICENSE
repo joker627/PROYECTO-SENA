@@ -1,21 +1,98 @@
-MIT License
+Licencia MIT o (MIT-BAR)  
 
-Copyright (c) 2025 manuelx6
+Copyright (c) 2025 manuelx6  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+of this software and associated documentation files (the "Software"), to use,
+copy, study, and modify the Software for educational and non-commercial
+purposes only, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Se concede permiso, libre de cargos, a cualquier persona que obtenga una copia
+de este software y los archivos de documentación asociados (el "Software"),
+para usar, estudiar y modificar el Software únicamente con fines educativos y
+no comerciales, sujeto a las siguientes condiciones:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+---
+
+### 1. Prohibition of Misappropriation / Prohibición de Apropiación
+- The Software, in whole or in part, may not be claimed, presented, or distributed
+  as original work by anyone other than the copyright holder.  
+- El Software, en todo o en parte, no podrá ser reclamado, presentado o distribuido
+  como obra original por nadie distinto al titular de los derechos.  
+
+---
+
+### 2. Attribution Integrity / Integridad de Atribución
+- Any redistribution, modification, or derivative work must clearly and prominently state:  
+  “Based on original work by manuelx6 (2025)”  
+- Cualquier redistribución, modificación o trabajo derivado deberá declarar clara y
+  visiblemente:  
+  “Basado en el trabajo original de manuelx6 (2025)”.  
+- Endorsement may not be implied without written consent.  
+- No se podrá dar a entender aval o respaldo sin consentimiento escrito.  
+
+---
+
+### 3. Commercial and Political Restrictions / Restricciones Comerciales y Políticas
+- The Software shall not be sold, licensed for profit, integrated into commercial products,
+  or used in advertising or services for financial gain.  
+- El Software no podrá ser vendido, licenciado con fines de lucro, integrado en productos
+  comerciales, ni usado en publicidad o servicios con fines de beneficio económico.  
+- The Software may not be used for political, governmental, military, or corporate agendas.  
+- El Software no podrá ser utilizado en agendas políticas, gubernamentales, militares o
+  corporativas.  
+
+---
+
+### 4. Derivative Works and Copyleft / Trabajos Derivados y Copyleft
+- Any derivative works must remain under this same license (MIT-BAR).  
+- Todo trabajo derivado deberá mantenerse bajo esta misma licencia (MIT-BAR).  
+- Proprietary or closed-source forks are strictly forbidden.  
+- Quedan estrictamente prohibidos los forks privativos o de código cerrado.  
+
+---
+
+### 5. Patent and Exploitation Ban / Prohibición de Patentes y Explotación
+- Users may not patent, claim exclusive rights, or create restrictive licenses
+  based on this Software or its derivatives.  
+- Los usuarios no podrán patentar, reclamar derechos exclusivos ni crear licencias
+  restrictivas basadas en este Software o en sus derivados.  
+- Any attempt results in automatic termination of this license.  
+- Cualquier intento producirá la terminación automática de esta licencia.  
+
+---
+
+### 6. Future-Proof Clause / Cláusula de Futuro
+- These terms apply to present and future technologies (AI, blockchain, quantum,
+  VR/AR, or technologies yet to be invented).  
+- Estos términos aplican a tecnologías presentes y futuras (IA, blockchain,
+  computación cuántica, VR/AR, o tecnologías aún no inventadas).  
+
+---
+
+### 7. Global Jurisdiction / Jurisdicción Global
+- This license is enforceable in all countries under applicable copyright laws
+  and international treaties, including the Berne Convention and TRIPS Agreement.  
+- Esta licencia es exigible en todos los países bajo las leyes de derecho de autor
+  y tratados internacionales aplicables, incluyendo el Convenio de Berna y el
+  Acuerdo sobre los ADPIC (TRIPS).  
+
+---
+
+### 8. Liability Disclaimer / Exención de Responsabilidad
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,  
+INCLUDING BUT NOT LIMITED TO MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,  
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM,  
+DAMAGES, OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT, OR OTHERWISE, ARISING  
+FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR ITS USE.  
+
+EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA,  
+INCLUYENDO PERO NO LIMITADO A GARANTÍAS DE COMERCIALIZACIÓN, IDONEIDAD PARA UN  
+PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES SERÁN RESPONSABLES  
+POR CUALQUIER RECLAMO, DAÑO U OTRA RESPONSABILIDAD, YA SEA EN CONTRATO, AGRAVIO O  
+CUALQUIER OTRA FIGURA, DERIVADA DE, O EN CONEXIÓN CON EL SOFTWARE O SU USO.  
+
+---
+
+ALL RIGHTS NOT EXPRESSLY GRANTED REMAIN RESERVED BY THE COPYRIGHT HOLDER.  
+TODOS LOS DERECHOS NO EXPRESAMENTE OTORGADOS PERMANECEN RESERVADOS POR EL TITULAR.  
