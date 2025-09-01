@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Technology</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/icon/logo.jpg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/icon/logo.webp') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
     {% block head %}{% endblock %}
 </head>
 
 <body>
-    <!-- Header with Navigation -->
+    <!-- navegación pantalla grande -->
     <header>
         <nav class="nav">
             <div class="nav-logo">
-                <img src="{{ url_for('static', filename='img/icon/logo.jpg') }}" alt="Logo">
+                <img src="{{ url_for('static', filename='img/icon/logo.webp') }}" alt="Logo" width="30" height="30">
                 <h1>sign technology</h1>
             </div>
             <div class="nav-links">
@@ -27,14 +27,14 @@
             </div>
         </nav>
     </header>
-    
-    <!-- Navigation Bar -->
+
     <nav class="nav">
     <div class="nav-logo">
-        <img src="{{ url_for('static', filename='img/icon/logo.jpg') }}" alt="Logo">
+        <img src="{{ url_for('static', filename='img/icon/logo.webp') }}" alt="Logo" width="30" height="30">
         <h1>sign technology</h1>
     </div>
     
+    <!-- Navigation Bararra movil -->
     <button class="nav-hamburger">
         <span></span>
         <span></span>

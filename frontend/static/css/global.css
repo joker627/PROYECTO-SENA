@@ -1,13 +1,14 @@
-/* Sistema de colores numerados */
+/* Variables, reset, estilos base */
 :root {
     --color-001: #2C6975;
-    --color-002: #5A9B8A;
+    --color-002: #4A8E7C;
     --color-003: #CDE0C9;
     --color-004: #E0ECDE;
     --color-005: #FFFFFF;
-    --color-006: #333333;
-    --color-007: #AAAAAA;
-    --color-008: #000000;
+    --color-006: #2D3748;
+    --color-007: #718096;
+    --color-008: #1A202C;
+    --color-009: #255b67;
 }
 
 /* Reset mínimo */
@@ -21,18 +22,22 @@
 a {
     text-decoration: none;
     color: inherit;
-    background-color: transparent;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: bold;
-    color: #000000;
+    color: var(--color-008);
 }
+
 body {
     background-color: var(--color-005);
-    color: var(--color-008);
+    color: var(--color-006);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
-

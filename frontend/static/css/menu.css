@@ -1,6 +1,6 @@
 @import url('global.css');
 
-/* ============ NAVBAR ============ */
+/* ============ COMPONENTE NAVBAR ============ */
 .nav {
     position: fixed;
     top: 0;
@@ -22,7 +22,7 @@
 }
 
 .nav-logo img {
-    height: 2.5rem;
+    
     border-radius: 20%;
     object-fit: contain;
 }
@@ -86,43 +86,7 @@
     transition: all 0.3s ease;
 }
 
-/* Mobile styles */
-@media (max-width: 768px) {
-    .nav-links {
-        position: fixed;
-        top: 4.5rem;
-        left: -100%;
-        width: 80%;
-        height: calc(100vh - 4.5rem);
-        background-color: var(--color-001);
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem 0;
-        transition: left 0.3s ease;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-links.active {
-        left: 0;
-    }
-
-    .nav-hamburger {
-        display: block;
-    }
-
-    .nav-hamburger.active span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-    }
-
-    .nav-hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-
-    .nav-hamburger.active span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
-    }
-}
-/* ============ FOOTER ============ */
+/* ============ COMPONENTE FOOTER ============ */
 .foot {
     background-color: var(--color-001);
     color: var(--color-005);
@@ -179,8 +143,52 @@
     opacity: 0.8;
 }
 
-/* ============ MAIN CONTENT SPACING ============ */
+/* ============ UTILIDADES DE MAQUETACIÓN ============ */
 .main-content {
     padding-top: 4.5rem; /* Ajuste para navbar fija */
     min-height: calc(100vh - 200px); /* Ajuste para footer */
+}
+
+/* ============ MEDIA QUERIES ============ */
+@media (max-width: 768px) {
+    /* Estilos móviles para navbar */
+    .nav-links {
+        position: fixed;
+        top: 4.5rem;
+        left: -100%;
+        width: 80%;
+        height: calc(100vh - 4.5rem);
+        background-color: var(--color-001);
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 0;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+        left: 0;
+    }
+
+    .nav-hamburger {
+        display: block;
+    }
+
+    .nav-hamburger.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-hamburger.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+    
+    /* Estilos móviles para footer */
+    .foot-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
 }
