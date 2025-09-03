@@ -85,7 +85,7 @@
     object-fit: cover;
 }
 
-/* Contenedor derecho */
+/*============ Contenedor derecho ============*/
 .contenedor-derecho {
     flex: 1 1 350px;
     min-width: 50%;
@@ -130,11 +130,9 @@
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Tamaño de fuente explícito para h2 */
 .opcion-titulo {
     color: var(--color-005);
     font-size: 1.5rem;
-    /* Tamaño explícito en rem */
     font-weight: 700;
     margin: 0;
     letter-spacing: 1px;
@@ -173,7 +171,6 @@
     justify-content: center;
     font-weight: bold;
     font-size: 1rem;
-    /* Tamaño explícito en rem */
     flex-shrink: 0;
 }
 
@@ -181,7 +178,6 @@
     margin: 0;
     color: var(--color-005);
     font-size: 0.95rem;
-    /* Tamaño explícito en rem */
     line-height: 1.4;
 }
 
@@ -192,10 +188,8 @@
     text-align: center;
 }
 
-/* Tamaño de fuente explícito para h2 */
 .seccion__titulo {
     font-size: 2rem;
-    /* Tamaño explícito en rem */
     margin-bottom: 30px;
     color: var(--color-001);
 }
@@ -238,10 +232,8 @@
     text-align: center;
 }
 
-/* Tamaño de fuente explícito para h3 */
 .caracteristica__titulo {
     font-size: 1.3rem;
-    /* Tamaño explícito en rem */
     color: var(--color-001);
     margin-bottom: 10px;
 }
@@ -250,7 +242,6 @@
     color: var(--color-008);
     line-height: 1.5;
     font-size: 1rem;
-    /* Tamaño explícito en rem */
 }
 
 /* ================= SECCIÓN ESTADÍSTICAS ================= */
@@ -282,7 +273,6 @@
 
 .dato__valor {
     font-size: 2rem;
-    /* Tamaño explícito en rem */
     font-weight: bold;
     color: var(--color-005);
     display: block;
@@ -291,16 +281,75 @@
 .dato__simbolo {
     color: var(--color-006);
     font-size: 1rem;
-    /* Tamaño explícito en rem */
     margin-left: 0.1em;
 }
 
 .dato__texto {
     display: block;
     font-size: 1rem;
-    /* Tamaño explícito en rem */
     color: var(--color-005);
     font-weight: bold;
+}
+
+/*historias de usuarios */
+.historias {
+    padding: 40px 20px;
+    background-color: var(--color-005);
+    text-align: center;
+}
+
+.video-container {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.historias__titulo {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--color-001);
+}
+
+.historias__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.historia {
+    background-color: var(--color-003);
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.historia:hover {
+    transform: translateY(-5px);
+}
+
+.historia__nombre {
+    font-size: 1.2rem;
+    color: var(--color-001);
+    margin-bottom: 10px;
+}
+
+.historia__texto {
+    color: var(--color-008);
+    line-height: 1.5;
+    font-size: 1rem;
 }
 
 /* ================= RESPONSIVE ================= */
