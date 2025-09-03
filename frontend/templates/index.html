@@ -25,12 +25,11 @@
                     loop 
                     playsinline
                     class="inicio__video" 
-                    title="Demostración de traducción de señas">
-                    <source src="{{ url_for('static', filename='video/demo.mp4') }}" type="video/mp4" loading="lazy">
-                    Tu navegador no soporta el elemento de video.
+                    title="Demostración de traducción de señas"
+                    src="{{ url_for('static', filename='video/demo.mp4') }}" controls type="video/mp4">
                 </video>
             </div>
-            <h1 class="inicio__titulo">Seleccione el modo</h1>
+            <h2 class="inicio__titulo">Seleccione el modo</h2>
             <div class="inicio__acciones">
                 <a href="#" class="btn btn--primario">Señas a texto</a>
                 <a href="#" class="btn btn--secundario">Texto a señas</a>
@@ -102,7 +101,7 @@
         <article class="caracteristica">
             <div class="caracteristica__icono">
                 <img src="{{ url_for('static', filename='img/svg/1.svg') }}" alt="Traducción en tiempo real"
-                    class="caracteristica__img" width="64" height="64">
+                    class="caracteristica__img" width="64" height="64" loading="lazy">
             </div>
             <div class="caracteristica__contenido">
                 <h3 class="caracteristica__titulo">Traducción en tiempo real</h3>
@@ -114,7 +113,7 @@
         <article class="caracteristica">
             <div class="caracteristica__icono">
                 <img src="{{ url_for('static', filename='img/svg/2.svg') }}" alt="Adaptación de contenido"
-                    class="caracteristica__img" width="64" height="64">
+                    class="caracteristica__img" width="64" height="64" loading="lazy">
             </div>
             <div class="caracteristica__contenido">
                 <h3 class="caracteristica__titulo">Adaptación regional</h3>
@@ -126,7 +125,7 @@
         <article class="caracteristica">
             <div class="caracteristica__icono">
                 <img src="{{ url_for('static', filename='img/svg/3.svg') }}" alt="Accesibilidad mejorada"
-                    class="caracteristica__img" width="64" height="64">
+                    class="caracteristica__img" width="64" height="64" loading="lazy">
             </div>
             <div class="caracteristica__contenido">
                 <h3 class="caracteristica__titulo">Fácil de usar</h3>
@@ -173,8 +172,9 @@
                 muted
                 loop
                 playsinline
+                class="historia__video"
                 loading="lazy"
-                src="{{ url_for('static', filename='video/demo.mp4') }}" controls></video>
+                src="{{ url_for('static', filename='video/demo2.mp4') }}" controls type="video/mp4"></video>
             </div>
             <h3 class="historia__nombre">Ashley Rodriguez</h3>
             <p class="historia__texto">"Gracias a esta herramienta, puedo comunicarme mejor con mi hija. La traducción en tiempo real es increíble."</p>
@@ -186,8 +186,9 @@
                 muted
                 loop
                 playsinline
+                class="historia__video"
                 loading="lazy"
-                src="{{ url_for('static', filename='video/demo2.mp4') }}" controls></video>
+                src="{{ url_for('static', filename='video/demo5.mp4') }}" controls type="video/mp4"></video>
             </div>
             <h3 class="historia__nombre">María Gómez</h3>
             <p class="historia__texto">"La adaptación regional me ha ayudado a entender mejor las señas de mi comunidad."</p>
@@ -199,8 +200,9 @@
                 muted
                 loop
                 playsinline
+                class="historia__video"
                 loading="lazy"
-                src="{{ url_for('static', filename='video/demo3.mp4') }}"  controls></video>
+                src="{{ url_for('static', filename='video/demo3.mp4') }}"  controls type="video/mp4"></video>
             </div>
             <h3 class="historia__nombre">Carlos López</h3>
             <p class="historia__texto">"Es fácil de usar y me ha permitido aprender nuevas señas rápidamente."</p>

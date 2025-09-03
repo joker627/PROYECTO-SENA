@@ -81,7 +81,7 @@
     border: none;
     border-radius: 12px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.25);
     object-fit: cover;
 }
 
@@ -305,7 +305,7 @@
     border-radius: 8px;
 }
 
-.video-container video {
+.historia__video {
     position: absolute;
     top: 0;
     left: 0;
