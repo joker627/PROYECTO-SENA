@@ -1,1 +1,1 @@
-web: gunicorn backend.src.main:create_app()
+gunicorn backend.src.main:create_app()
