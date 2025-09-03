@@ -86,6 +86,5 @@ Toda contribución será de carácter **abierto, gratuito y no lucrativo**.
   </a>
 
 </div>
-
-<p align="center" style="font-size:14px; font-weight:bold; color:#ff7d03; margin-top:15px;">📅 Año: 2025</p>
+<p align="center"><b>📅 Año: 2025</b></p> 
 
