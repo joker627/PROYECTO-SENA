@@ -135,9 +135,16 @@
     color: rgba(255,255,255,0.9);
 }
 
-.foot-nav {
+.foot-nav  {
     display: flex;
     gap: 1rem;
+    justify-content: center;
+    margin: 5px;
+}
+
+.foot-div {
+    padding-top: 10px;
+    margin: 1px;
     justify-content: center;
 }
 
@@ -145,8 +152,9 @@
     color: rgba(255,255,255,0.9);
     text-decoration: none;
     font-size: 0.95rem;
-    padding: 6px 8px;
+    margin: 1rem;
     border-radius: 6px;
+    text-align: justify;
 }
 
 .foot-link:hover,
