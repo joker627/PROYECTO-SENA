@@ -9,6 +9,11 @@
     --color-007: #718096;
     --color-008: #1A202C;
     --color-009: #255b67;
+    /* Nuevos colores (seguir numeración) */
+    --color-010: #FF9F43; /* acento cálido (naranja) */
+    --color-011: #0B1220; /* overlay oscuro */
+    --color-012: rgba(255,255,255,0.06); /* blanco translúcido para fondos */
+    --color-013: #7FC3B3; /* acento secundario suave */
 }
 
 /* Reset mínimo */
