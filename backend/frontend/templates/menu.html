@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Descripción general -->
+    <meta name="description"
+        content="Plataforma accesible que traduce lenguaje de señas a texto y texto a lenguaje de señas en tiempo real, facilitando la comunicación inclusiva entre personas sordas y oyentes." />
+
+    <!-- Descripción extendida estilo catálogo -->
+    <meta name="description"
+        content="App: Sign Technology, Función: Traductor de lenguaje de señas ↔ texto, Accesibilidad: Alta, Tiempo real: Sí, Plataforma: Web, Público: Sordos y oyentes." />
+
+    <!-- SEO social: Open Graph (Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="Sign Technology - Comunicación sin barreras" />
+    <meta property="og:description"
+        content="Traduce lenguaje de señas a texto y viceversa en tiempo real. Plataforma accesible para personas sordas y oyentes." />
+    <meta property="og:image" content="{{ url_for('static', filename='img/icon/logo.webp', _external=True) }}" />
+    <meta property="og:url" content="{{ request.url }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sign Technology - Comunicación sin barreras" />
+    <meta name="twitter:description"
+        content="Traduce señas a texto y texto a señas al instante. Tecnología accesible para una comunicación inclusiva." />
+    <meta name="twitter:image" content="{{ url_for('static', filename='img/icon/logo.webp', _external=True) }}" />
+
+    <!-- Título -->
+    <title>Sign Technology</title>
+
+    <!-- Ícono y CSS -->
+    <!-- main.css importa los CSS modulares; usar `url_for('static', ...)` para recursos -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/icon/logo.webp') }}" type="image/webp" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        <nav class="nav">
+            <div class="nav-logo">
+                <img src="{{ url_for('static', filename='img/icon/logo.webp') }}" alt="Logo" width="30" height="30" />
+                <h1>sign technology</h1>
+            </div>
+
+            <!--
+                            El botón hamburguesa controla el panel lateral en móvil.
+                            `aria-expanded` se actualiza desde JS y `aria-controls` apunta
+                            al id del panel para accesibilidad. Por defecto está cerrado.
+                        -->
+            <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div id="nav-links" class="nav-links" role="navigation" aria-hidden="false">
+                <!--
+                                    Enlaces de navegación:
+                                    - Usa Jinja (`url_for`) para rutas internas cuando exista
+                                    - Para texto o añadir más enlaces, modifica aquí
+                                -->
+                <a href="{{ url_for('home') }}" class="nav-link">Inicio</a>
+                <a href="#" class="nav-link">Iniciar Sesión</a>
+                <a href="#" class="nav-link">Registrarse</a>
+                <a href="#" class="nav-link">Sobre Nosotros</a>
+                <a href="#" class="nav-link">Desarrolladores</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- (Se ha eliminado el overlay por petición: el menú será grande y
+    ocupará la pantalla en móvil como en el diseño original.) -->
+
+    <main>{% block content %}{% endblock %}</main>
+    <footer class="footer" role="contentinfo" aria-label="Pie de página">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="brand-text">
+                    <h3>Sign Technology</h3>
+                    <p class="brand-tag">Accesibilidad y reconocimiento gestual</p>
+                    <label class="subscribe-label" for="subscribe-email">Suscríbete para recibir noticias</label>
+                    <form class="subscribe-form" action="" method="post" aria-label="Suscribirse al newsletter">
+                        <div class="subscribe-row">
+                            <input id="subscribe-email" name="email" type="email" required class="subscribe-input"
+                                placeholder="Tu correo electrónico" aria-label="Correo electrónico para suscripción" />
+                            <button type="submit" class="subscribe-btn">Suscribirse</button>
+                        </div>
+                        <small class="subscribe-note">Recibe novedades y actualizaciones del software.</small>
+                    </form>
+                </div>
+            </div>
+
+            <nav class="footer-nav" aria-label="Enlaces de pie">
+                <div class="footer-legal">
+                    <a href="#" class="footer-link">Terminos y condiciones</a>
+                    <a href="#" class="footer-link">Politica de privacidad</a>
+                </div>
+                <div class="footer-links-group" role="navigation" aria-label="Secciones">
+                    <a href="#" class="footer-link">Inicio</a>
+                    <a href="#" class="footer-link">Productos</a>
+                    <a href="#" class="footer-link">Precios</a>
+                    <a href="#" class="footer-link">Soporte</a>
+                </div>
+            </nav>
+
+            <div class="footer-contact-col">
+                <div class="footer-contact">
+                    Contacto:
+                    <a href="mailto:email@gmail.com">signtechnology@gmail.com</a>
+                </div>
+                <div class="footer-social" aria-label="Redes sociales">
+                    <a class="social-link" href="https://twitter.com/signtech" aria-label="Twitter" title="Twitter"
+                        target="_blank" rel="noopener">
+                        <img src="{{ url_for('static', filename='img/icon/twitter.svg') }}" alt="" />
+                    </a>
+                    <a href="https://www.instagram.com/signtechnology" aria-label="Instagram" title="Instagram"
+                        target="_blank" rel="noopener" class="social-link">
+                        <img src="{{ url_for('static', filename='img/icon/instagram.svg') }}" alt="" />
+                    </a>
+                    <a href="https://www.facebook.com/signtechnology" aria-label="Facebook" title="Facebook"
+                        target="_blank" rel="noopener" class="social-link">
+                        <img src="{{ url_for('static', filename='img/icon/facebook.svg') }}" alt="" />
+                    </a>
+                    <a class="social-link" href="https://www.linkedin.com/company/signtechnology" aria-label="LinkedIn"
+                        title="LinkedIn" target="_blank" rel="noopener">
+                        <img src="{{ url_for('static', filename='img/icon/linkedin.svg') }}" alt="" />
+                    </a>
+                    <a class="social-link" href="https://github.com/signtechnology" aria-label="GitHub" title="GitHub"
+                        target="_blank" rel="noopener">
+                        <img src="{{ url_for('static', filename='img/icon/github.svg') }}" alt="" />
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    <div class="footer-bottom">
+            <span>© {{ current_year }} SignTechnology. Todos los derechos
+                reservados.</span>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

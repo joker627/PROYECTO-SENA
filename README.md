@@ -26,7 +26,7 @@ Brindar una base tecnológica abierta para el aprendizaje y la innovación, gara
 ## 📜 Licencia
 Este software está protegido bajo la licencia **No Profit Open License (NPOL-2025)**, inspirada en MIT pero con cláusulas adicionales para mayor seguridad legal.  
 
-- ✔️ Se permite **usar, copiar, y modificar** el software en cualquier parte del mundo.  
+- ✔️ Se permite **usar, y contribuir** el software en cualquier parte del mundo.  
 - ❌ **Prohibido lucrar, vender, distribuir o monetizar** este software o derivados directos.  
 - ✔️ Puedes contribuir y mejorar el proyecto, siempre manteniendo abierto y gratuito el resultado.  
 - ❌ No se permite registrar patentes, marcas o derechos exclusivos basados en este software.  
