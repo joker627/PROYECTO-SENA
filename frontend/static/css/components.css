@@ -1,5 +1,6 @@
-/* Componentes reutilizables para la interfaz de usuario */
-/* ================= BOTONES ================= */
+/* Componentes reutilizables: botones e inputs
+    Clases canónicas: .btn, .btn--primary, .btn--secondary, etc.
+*/
 .btn {
     padding: 12px 24px;
     border-radius: 8px;
@@ -10,26 +11,26 @@
     transition: all 0.25s ease;
 }
 
-.btn--primario {
+.btn--primary {
     color: var(--color-005);
     background-color: var(--color-009);
     border: solid 2px var(--color-005);
 }
 
-.btn--primario:hover {
+.btn--primary:hover {
     background-color: var(--color-005);
     color: var(--color-009);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.btn--secundario {
+.btn--secondary {
     color: var(--color-005);
     background-color: var(--color-009);
     border: solid 2px var(--color-005);
 }
 
-.btn--secundario:hover {
+.btn--secondary:hover {
     background-color: var(--color-005);
     color: var(--color-009);
     transform: translateY(-2px);

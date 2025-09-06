@@ -1,6 +1,4 @@
-@import url('global.css');
-
-/* ============ COMPONENTE NAVBAR ============ */
+/* Estilos del menú hamburguesa y footer */
 .nav {
     position: fixed;
     top: 0;
@@ -11,7 +9,7 @@
     width: 100%;
     padding: 0.75rem 1.5rem;
     background-color: var(--color-001);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px #0000001a;
     z-index: 1000;
 }
 
@@ -21,25 +19,48 @@
     gap: 0.75rem;
 }
 
-.nav-logo img {
-
-    border-radius: 20%;
-    object-fit: contain;
-}
-
+/* Estilos del logo en la barra: asegúrate de que el texto sea legible
+   sobre el fondo de la nav (se usa color claro por defecto). */
 .nav-logo h1 {
-    color: var(--color-005);
-    font-size: 1.125rem;
-    font-weight: 600;
-    text-transform: capitalize;
     margin: 0;
+    color: var(--color-005);
+    /* blanco para alto contraste */
+    font-size: clamp(0.95rem, 1.2vw + 0.6rem, 1.15rem);
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: none;
 }
 
+/* Desktop: horizontal nav by default. Mobile/off-canvas handled in media queries. */
 .nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
+    align-items: center;
+    flex-direction: row;
+    position: static;
+    width: auto;
+    height: auto;
+    background: transparent;
+    padding: 0;
+    margin-left: auto;
+    /* push links to the right */
+    transition: none;
 }
 
+/* Activa el panel para mobile (media query overrides to off-canvas) */
+.nav-links.active {
+    transform: translateX(0);
+}
+
+/*
+            .nav-link
+            -----------------
+            Enlaces principales de la navegación. Si quieres cambiar texto,
+            orden o rutas, edita los <a> en `frontend/templates/menu.html`.
+            El padding vertical hace que cada enlace tenga una zona click-able
+            cómoda en escritorio; en móvil los estilos se sobrescriben
+            dentro del media query para ocupar todo el ancho.
+        */
 .nav-link {
     color: var(--color-005);
     text-decoration: none;
@@ -55,7 +76,7 @@
 }
 
 .nav-link::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -71,12 +92,14 @@
 
 .nav-hamburger {
     display: none;
+    /* aparece solo en pantallas pequeñas (ver media query) */
     background: none;
     border: none;
     cursor: pointer;
     padding: 0.5rem;
-    /* ensure it's clickable and above the mobile panel when shown */
-    z-index: 1101;
+    /* área clicable alrededor del icono */
+    z-index: 1300;
+    /* mantener por encima para que la X se vea */
 }
 
 .nav-hamburger span {
@@ -88,15 +111,16 @@
     transition: transform 0.25s ease, opacity 0.2s ease;
 }
 
-/* ============ COMPACT FOOTER BAR ============ */
-.foot {
-    /* base color with a subtle top-to-bottom overlay for depth */
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)), var(--color-001);
+/* Footer base */
+.footer {
+    /* background overlay */
+    background: linear-gradient(180deg, #ffffff05, rgba(0, 0, 0, 0.02)),
+        var(--color-001);
     color: var(--color-005);
-    border-top: 1px solid rgba(0,0,0,0.06);
+    border-top: 1px solid #0000000f;
 }
 
-.foot-bar {
+.footer-bar {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
@@ -106,21 +130,33 @@
     padding: 1.15rem 1.5rem;
 }
 
-/* Grid-based footer (alternative layout) */
-.foot-grid {
+/* Footer grid layout */
+.footer-grid {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr 300px;
-    gap: 1.25rem 2rem;
-    align-items: center;
+    gap: 1rem 1.75rem;
+    align-items: start;
     padding: 1.25rem 1.5rem;
 }
 
-.foot-brand {
+.footer-brand {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.subscribe-label {
+    font-size: 0.95rem;
+    color: #fffffff5;
+    font-weight: 600;
 }
 
 .brand-text h3 {
@@ -132,109 +168,246 @@
 .brand-tag {
     margin: 0;
     font-size: 0.82rem;
-    color: rgba(255,255,255,0.9);
+    color: #ffffffe6;
 }
 
-.foot-nav  {
+/* Subscription form */
+.subscribe-form {
+    margin-top: 0.6rem;
+}
+
+.subscribe-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.subscribe-input {
+    padding: 0.45rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #ffffff1f;
+    background: #ffffff0a;
+    color: #fff;
+    min-width: 180px;
+}
+
+.subscribe-input:focus {
+    outline: 2px solid #7fc3b340;
+}
+
+.subscribe-input::placeholder {
+    color: #ffffffb3;
+}
+
+.subscribe-btn {
+    background: var(--color-010);
+    color: #071018;
+    border: none;
+    padding: 0.45rem 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.subscribe-btn:hover,
+.subscribe-btn:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.subscribe-note {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    color: #ffffffc7;
+}
+
+.footer-nav {
     display: flex;
     gap: 1rem;
     justify-content: center;
     margin: 5px;
 }
 
-.foot-div {
+.footer-legal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: flex-start;
+}
+
+.footer-links-group {
+    display: flex;
+    gap: 0.6rem 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-div {
     padding-top: 10px;
     margin: 1px;
     justify-content: center;
 }
 
-.foot-link {
-    color: rgba(255,255,255,0.9);
+.footer-link {
+    color: #ffffffeb;
     text-decoration: none;
     font-size: 0.95rem;
-    margin: 1rem;
+    padding: 6px 8px;
     border-radius: 6px;
-    text-align: justify;
 }
 
-.foot-link:hover,
-.foot-link:focus {
-    background: rgba(255,255,255,0.04);
+.footer-link:hover,
+.footer-link:focus {
+    background: #ffffff0a;
+    color: #ffffff;
+}
+.footer-link:hover,
+.footer-link:focus {
+    background: #ffffff0a;
     color: #ffffff;
 }
 
-.foot-contact-col {
+.footer-contact-col {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 0.5rem;
 }
 
-.foot-bottom {
-    border-top: 1px solid rgba(255,255,255,0.04);
+/* Nota: override duplicado pequeño para .footer-social eliminado para evitar
+    definiciones conflictivas. Las reglas consolidadas para .footer-social
+    están más abajo en este archivo. */
+
+.footer-bottom {
+    border-top: 1px solid #ffffff0a;
     margin-top: 0.5rem;
     padding: 0.7rem 0 0.3rem 0;
     text-align: center;
-    color: rgba(255,255,255,0.86);
+    color: #ffffffdb;
     font-size: 0.88rem;
 }
 
-/* Responsive grid breakpoints */
+/* Footer responsive breakpoints */
 @media (max-width: 900px) {
-    .foot-grid {
+    .footer-grid {
         grid-template-columns: 1fr 1fr;
     }
-    .foot-contact-col {
+
+    .footer-contact-col {
         align-items: flex-end;
     }
 }
 
 @media (max-width: 640px) {
-    .foot-grid {
+    /* Móvil: apilar secciones del footer y centrar contenido */
+    .footer-grid {
         grid-template-columns: 1fr;
         padding: 0.9rem 0.9rem;
-        gap: 0.6rem;
+        gap: 0.9rem;
+        align-items: center; /* centrar verticalmente cada bloque */
+        text-align: center; /* texto centrado por defecto */
     }
-    .foot-brand {
+
+    /* Brand: logo y texto centrados */
+    .footer-brand {
         justify-content: center;
+        gap: 0.5rem;
+        text-align: center;
+        width: 100%;
     }
-    .foot-nav {
+
+    .footer-brand img {
+        width: 44px;
+        height: 44px;
+    }
+
+    /* Suscripción: apilar input + botón y hacerlos full-width para toque fácil */
+    .subscribe-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem; /* espacio táctil entre control y botón */
+    }
+
+    .subscribe-input {
+        width: 100%;
+        min-width: 0;
+        padding: 0.6rem 0.75rem; /* aumentar objetivo táctil */
+        border-radius: 10px;
+    }
+
+    .subscribe-btn {
+        width: 100%;
+        padding: 0.65rem 0.8rem;
+        border-radius: 10px;
+    }
+
+    /* Navegación y links: centrados y envueltos si hace falta */
+    .footer-nav {
         justify-content: center;
         flex-wrap: wrap;
-    }
-    .foot-contact-col {
+        gap: 0.6rem;
         align-items: center;
     }
-    .foot-bottom {
+
+    /* Columnas de contacto y legal centradas y ocupando ancho completo */
+    .footer-contact-col,
+    .footer-legal,
+    .footer-links-group {
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Socials: centrar y dar espacio adicional en móvil */
+    .footer-social {
+        justify-content: center;
+        margin-left: 0;
+        margin-top: 0.25rem;
+    }
+
+    .social-link {
+        width: 44px;
+        height: 44px;
+    }
+
+    .footer-bottom {
         font-size: 0.82rem;
+        padding-top: 0.6rem;
     }
 }
 
-.foot-left,
-.foot-center,
-.foot-right {
+.footer-left,
+.footer-center,
+.footer-right {
+    /* DEPRECATED: legacy footer layout helpers.
+       Keep temporarily for backward compatibility. Prefer using
+       the `.footer-grid` layout and related classes. Remove once
+       templates have been consolidated. */
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-.foot-left {
+.footer-left {
     flex: 1 1 auto;
 }
 
-.foot-center {
+.footer-center {
     flex: 0 1 auto;
     justify-content: center;
     text-align: center;
 }
 
-.foot-right {
+.footer-right {
     flex: 1 1 auto;
     justify-content: flex-end;
 }
 
-.foot-bar-link {
-    color: rgba(255,255,255,0.96);
+.footer-bar-link {
+    color: #fffffff5;
     text-decoration: none;
     font-size: 0.92rem;
     font-weight: 500;
@@ -242,37 +415,46 @@
     transition: color 0.14s ease, transform 0.14s ease;
 }
 
-.foot-bar-link:hover,
-.foot-bar-link:focus {
+.footer-bar-link:hover,
+.footer-bar-link:focus {
     color: #ffffff;
     transform: translateY(-2px);
 }
 
-.foot-bar-link:last-child {
+.footer-bar-link:last-child {
+    margin-right: 0;
+}
+.footer-bar-link:hover,
+.footer-bar-link:focus {
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.footer-bar-link:last-child {
     margin-right: 0;
 }
 
-.foot-contact {
-    color: rgba(255,255,255,0.98);
+.footer-contact {
+    color: #fffffffa;
     font-size: 0.96rem;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.foot-contact a {
-    color: #ffffff;
-    text-decoration: underline;
-    margin-left: 0.25rem;
+.footer-email,
+.footer-phone {
+    font-size: 0.75rem;
 }
 
-.foot-copy {
-    color: rgba(255,255,255,0.92);
+.footer-copy {
+    color: #ffffffeb;
     font-size: 0.9rem;
 }
 
 /* Social icons inside compact footer */
-.foot-social {
+.footer-social {
     display: inline-flex;
     gap: 0.5rem;
     margin-left: 0.75rem;
@@ -285,11 +467,12 @@
     width: 36px;
     height: 36px;
     border-radius: 8px;
-    background: rgba(255,255,255,0.06);
-    color: #ffffff; /* white icons for higher contrast */
+    background: #ffffff0f;
+    color: var(--color-005);
     text-decoration: none;
-    transition: background 0.16s cubic-bezier(.2,.9,.3,1), transform 0.12s ease, box-shadow 0.12s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    transition: background 0.16s cubic-bezier(0.2, 0.9, 0.3, 1),
+    transform 0.12s ease, box-shadow 0.12s ease;
+    box-shadow: 0 2px 6px #0000001f;
 }
 
 .social-link svg {
@@ -301,66 +484,80 @@
 
 .social-link:hover,
 .social-link:focus {
-    background: rgba(255,255,255,0.14);
+    background: var(--white-14);
     transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    box-shadow: 0 6px 18px #0000002e;
     outline: none;
 }
 
 @media (max-width: 640px) {
-    .foot-bar {
+    .footer-bar {
         flex-direction: column;
         align-items: stretch;
         padding: 0.75rem 0.9rem;
         gap: 0.45rem;
     }
-    .foot-left,
-    .foot-center,
-    .foot-right {
+
+    .footer-left,
+    .footer-center,
+    .footer-right {
         justify-content: center;
     }
-    .foot-left {
+
+    .footer-left {
         order: 1;
     }
-    .foot-center {
+
+    .footer-center {
         order: 2;
     }
-    .foot-right {
+
+    .footer-right {
         order: 3;
     }
 }
 
-/* ============ UTILIDADES DE MAQUETACIÓN ============ */
+/* Layout utilities */
 .main-content {
-    padding-top: 4.5rem; /* Ajuste para navbar fija */
-    min-height: calc(100vh - 200px); /* Ajuste para footer */
+    padding-top: 4.5rem;
+    /* navbar offset */
+    min-height: calc(100vh - 200px);
+    /* reserve footer */
 }
 
-/* ============ MEDIA QUERIES ============ */
+/* Media queries */
 @media (max-width: 768px) {
-    /* Estilos móviles para navbar: panel completo sin gap y links centrados */
+
+    /* Estilos móviles para navbar: panel lateral desde la izquierda
+       - el drawer ahora se despliega desde la izquierda (comportamiento
+         original esperado por el diseño)
+    */
+    /* Restauramos comportamiento original: panel completo en móvil */
     .nav-links {
         position: fixed;
-        top: 0; /* cubrir desde arriba; el padding-top compensará la altura de la barra */
-        left: -100%;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100vh;
         background-color: var(--color-001);
+        display: flex;
         flex-direction: column;
         align-items: center;
-        padding-top: 4.5rem; /* espacio para la nav fija */
+        padding-top: 4.5rem;
+        /* espacio para la nav fija */
         padding-left: 1rem;
         padding-right: 1rem;
         transition: transform 0.28s ease, background-color 0.2s ease;
-        transform: translateX(0); /* usamos left por compatibilidad, pero dejamos transform para animaciones futuras */
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
-        z-index: 1000;
+        transform: translateX(-100%);
+        /* off-canvas a la izquierda */
+        box-shadow: 0 8px 30px #0000002e;
+        z-index: 1200;
         gap: 0.35rem;
         overflow-y: auto;
     }
 
     .nav-links.active {
-        left: 0;
+        transform: translateX(0);
     }
 
     /* Links ahora ocupan todo el ancho útil y texto centrado */
@@ -370,23 +567,26 @@
         margin: 0.25rem 0;
         padding: 0.9rem 1rem;
         border-radius: 8px;
-        text-align: center; /* centrado de las letras */
+        text-align: center;
+        /* centrado de las letras */
         font-size: 1rem;
         background: transparent;
         box-shadow: none;
-        transition: background-color 0.16s ease, transform 0.12s ease, color 0.16s ease;
+        transition: background-color 0.16s ease, transform 0.12s ease,
+            color 0.16s ease;
     }
 
     .nav-links .nav-link:hover,
     .nav-links .nav-link:focus {
-        background-color: rgba(255,255,255,0.04);
+        background-color: #ffffff0a;
         color: var(--color-003);
         transform: translateX(2px);
         outline: none;
+        color: var(--color-011);
     }
 
     /* Eliminamos separadores que puedan crear saltos visuales grandes */
-    .nav-links .nav-link + .nav-link {
+    .nav-links .nav-link+.nav-link {
         border-top: none;
         padding-top: 0.25rem;
     }
@@ -414,42 +614,99 @@
     }
 
     /* Estilos móviles para footer */
-    .foot-links {
+    .footer-links-group {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .footer-links-group {
         flex-direction: column;
         gap: 1rem;
     }
 }
-    @media (max-width: 480px) {
-        .nav-logo h1 {
-            font-size: 1rem;
-        }
-        .nav-link {
-            font-size: 0.75rem;
-        }
-        .foot-title {
-            font-size: 1rem;
-        }
-        .foot-links {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            flex-wrap: wrap;
-        }
-        .foot-links {
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .foot-link {
-            font-size: 0.75rem;
-        }
-        .foot-contact {
-            margin-bottom: 0.5rem;
-        }
-        .foot-email,
-        .foot-phone {
-            font-size: 0.75rem;
-        }
-        .foot-copy {
-            font-size: 0.625rem;
-        }
+
+@media (max-width: 480px) {
+    .nav-logo h1 {
+        font-size: 1rem;
     }
+
+    .nav-link {
+        font-size: 0.75rem;
+    }
+
+    .footer-title {
+        font-size: 1rem;
+    }
+
+    .footer-links-group {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .footer-link {
+        font-size: 0.75rem;
+    }
+
+    .footer-contact {
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-email,
+    .footer-phone {
+        font-size: 0.75rem;
+    }
+
+    .footer-copy {
+        font-size: 0.625rem;
+    }
+    .footer-title {
+        font-size: 1rem;
+    }
+
+    .footer-links-group {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .footer-link {
+        font-size: 0.75rem;
+    }
+
+    .footer-contact {
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-email,
+    .footer-phone {
+        font-size: 0.75rem;
+    }
+
+    .footer-copy {
+        font-size: 0.625rem;
+    }
+    /* Ajustes extra para pantallas muy pequeñas: reducir padding y aumentar targets */
+    .footer-grid {
+        padding: 0.6rem 0.6rem;
+        gap: 0.75rem;
+    }
+
+    .subscribe-input {
+        padding: 0.6rem 0.75rem;
+    }
+
+    .subscribe-btn {
+        padding: 0.65rem 0.8rem;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+    }
+}
