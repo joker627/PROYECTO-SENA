@@ -1,0 +1,54 @@
+{% extends "menu.html" %}
+{% block title %}login{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/login.css') }}">
+
+<body class="color-page">
+
+    <div class="login-container">
+        <div class="login-left">
+            <div class="home-content">
+                <h1 class="home-title">Traducción de Lenguaje de Señas a Texto en Tiempo Real</h1>
+                <p class="home-text">"Transformamos la comunicación en inclusión: nuestro software traduce palabras en señas, rompiendo barreras y uniendo mundos con cada gesto."</p>
+                <div class="home-actions">
+                    <a href="#" class="btn btn--primary">Saber más</a>
+                </div>
+            </div>
+        </div>
+        <div class="login-right">
+            <form method="POST" action="{{ url_for('auth.login') }}" class="login-form">
+                <h2 class="login-title">Iniciar sesión</h2>
+                <div class="input-icon-group">
+                    <img src="{{ url_for('static', filename='img/icon/user.svg') }}" alt="">
+                    <input type="text" name="username" placeholder="Usuario" required>
+                </div>
+                <div class="input-icon-group">
+                    <img src="{{ url_for('static', filename='img/icon/password.svg') }}" alt="">
+                    <input type="password" name="password" placeholder="Contraseña" required>
+                </div>
+                <div class="remember-me">
+                    <div class="remember-left">
+                        <input type="checkbox" id="remember_me" name="remember_me">
+                        <label for="remember_me">Recordarme</label>
+                    </div>
+                    <div class="remember-right">
+                        <a href="#" class="forgot-password">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </div>
+                </div>
+                    <p class="login-text">No tienes una cuenta? <a href="{{ url_for('auth.register') }}">Regístrate</a></p>
+                    <button type="submit" class="btn">Entrar</button>
+                <span class="login-divider">o</span>
+                <div class="login-social">
+                    <button type="button" class="social-btn google">
+                        <img src="{{ url_for('static', filename='img/social/google.svg') }}" alt="Google logo">
+                        Iniciar sesión con Google
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+</body>
