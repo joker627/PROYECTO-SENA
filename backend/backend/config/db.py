@@ -1,11 +1,12 @@
 ﻿import pymysql
+from .conexion import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_CHARSET, DB_CURSORCLASS
 
 def get_db_connection():
 	return pymysql.connect(
-		host='localhost',
-		user='manuelx6',
-		password='Manueldev@.55',
-		db='sing_technology',
-		charset='utf8mb4',
+		host=DB_HOST,
+		user=DB_USER,
+		password=DB_PASSWORD,
+		db=DB_NAME,
+		charset=DB_CHARSET,
 		cursorclass=pymysql.cursors.DictCursor
 	)
