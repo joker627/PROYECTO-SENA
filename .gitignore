@@ -80,3 +80,4 @@ desktop.ini
 .cache
 .ipynb_checkpoints/
 .ipynb_checkpoints
+/backend/config/conexion.py

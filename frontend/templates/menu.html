@@ -32,7 +32,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/icon/logo.webp') }}" type="image/webp" />
     <!--CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main/main.css') }}" />
     <!-- Título -->
     <title>Sign Technology</title>
 
@@ -82,6 +82,15 @@
 
 
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
         {% block content %}
         {% endblock %}
     </main>
