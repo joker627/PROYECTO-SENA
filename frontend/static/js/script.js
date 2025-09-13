@@ -51,4 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleMenu();
         }
     });
+    // Ocultar notificaciones flash automáticamente
+    const FLASH_FADE_DURATION_MS = 500;
+    setTimeout(function() {
+        document.querySelectorAll('.flash-message').forEach(function(msg) {
+            msg.style.transition = `opacity ${FLASH_FADE_DURATION_MS/1000}s`;
+            msg.style.opacity = '0';
+            setTimeout(function() { msg.remove(); }, FLASH_FADE_DURATION_MS);
+        });
+    }, 4000);
 });
