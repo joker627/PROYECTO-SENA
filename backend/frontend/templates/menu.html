@@ -29,26 +29,18 @@
         content="Traduce señas a texto y texto a señas al instante. Tecnología accesible para una comunicación inclusiva." />
     <meta name="twitter:image" content="{{ url_for('static', filename='img/icon/logo.webp', _external=True) }}" />
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/icon/logo.webp') }}" type="image/webp" />
-    <!--CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main/main.css') }}" />
     <!-- Título -->
     <title>Sign Technology</title>
+
+    <!-- Ícono y CSS -->
+    <!-- main.css importa los CSS modulares; usar `url_for('static', ...)` para recursos -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/icon/logo.webp') }}" type="image/webp" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
 
     {% block head %}{% endblock %}
 </head>
 
 <body>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div class="flash-messages">
-        {% for category, message in messages %}
-        <div class="flash-message flash-{{ category }}">{{ message }}</div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
     <header>
         <nav class="nav">
             <div class="nav-logo">
@@ -56,44 +48,36 @@
                 <h1>sign technology</h1>
             </div>
 
-            <!-- boton hamburguesa -->
+            <!--
+                            El botón hamburguesa controla el panel lateral en móvil.
+                            `aria-expanded` se actualiza desde JS y `aria-controls` apunta
+                            al id del panel para accesibilidad. Por defecto está cerrado.
+                        -->
             <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <!-- Links -->
+
             <div id="nav-links" class="nav-links" role="navigation" aria-hidden="false">
-                <!-- Usar url_for para rutas internas -->
-                <a href="{{ url_for('main.inicio') }}" class="nav-link">Inicio</a>
+                <!--
+                                    Enlaces de navegación:
+                                    - Usa Jinja (`url_for`) para rutas internas cuando exista
+                                    - Para texto o añadir más enlaces, modifica aquí
+                                -->
+                <a href="{{ url_for('home') }}" class="nav-link">Inicio</a>
+                <a href="#" class="nav-link">Iniciar Sesión</a>
+                <a href="#" class="nav-link">Registrarse</a>
                 <a href="#" class="nav-link">Sobre Nosotros</a>
-                {% if not user %}
-                    <a href="{{ url_for('auth.login') }}" class="nav-link">Iniciar Sesión</a>
-                    <a href="{{ url_for('auth.register') }}" class="nav-link">Registrarse</a>
-                {% else %}
-                    <div class="nav-avatar" style="display:inline-block;vertical-align:middle;background:#eee;border-radius:50%;width:32px;height:32px;text-align:center;line-height:32px;font-weight:bold;color:#333;margin-right:8px;">
-                        {{ user[:2]|upper }}
-                    </div>
-                    <a href="{{ url_for('auth.logout') }}" class="nav-link">Cerrar sesión</a>
-                {% endif %}
+                <a href="#" class="nav-link">Desarrolladores</a>
             </div>
         </nav>
     </header>
 
+    <!-- (Se ha eliminado el overlay por petición: el menú será grande y
+    ocupará la pantalla en móvil como en el diseño original.) -->
 
-    <main>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <ul>
-            {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}
-        {% endblock %}
-    </main>
+    <main>{% block content %}{% endblock %}</main>
     <footer class="footer" role="contentinfo" aria-label="Pie de página">
         <div class="footer-grid">
             <div class="footer-brand">
@@ -118,7 +102,7 @@
                     <a href="#" class="footer-link">Politica de privacidad</a>
                 </div>
                 <div class="footer-links-group" role="navigation" aria-label="Secciones">
-                    <a href="/" class="footer-link">Inicio</a>
+                    <a href="#" class="footer-link">Inicio</a>
                     <a href="#" class="footer-link">Productos</a>
                     <a href="#" class="footer-link">Precios</a>
                     <a href="#" class="footer-link">Soporte</a>
@@ -133,30 +117,30 @@
                 <div class="footer-social" aria-label="Redes sociales">
                     <a class="social-link" href="https://twitter.com/signtech" aria-label="Twitter" title="Twitter"
                         target="_blank" rel="noopener">
-                        <img src="{{ url_for('static', filename='img/social/twitter.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/icon/twitter.svg') }}" alt="" />
                     </a>
                     <a href="https://www.instagram.com/signtechnology" aria-label="Instagram" title="Instagram"
                         target="_blank" rel="noopener" class="social-link">
-                        <img src="{{ url_for('static', filename='img/social/instagram.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/icon/instagram.svg') }}" alt="" />
                     </a>
                     <a href="https://www.facebook.com/signtechnology" aria-label="Facebook" title="Facebook"
                         target="_blank" rel="noopener" class="social-link">
-                        <img src="{{ url_for('static', filename='img/social/facebook.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/icon/facebook.svg') }}" alt="" />
                     </a>
                     <a class="social-link" href="https://www.linkedin.com/company/signtechnology" aria-label="LinkedIn"
                         title="LinkedIn" target="_blank" rel="noopener">
-                        <img src="{{ url_for('static', filename='img/social/linkedin.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/icon/linkedin.svg') }}" alt="" />
                     </a>
                     <a class="social-link" href="https://github.com/signtechnology" aria-label="GitHub" title="GitHub"
                         target="_blank" rel="noopener">
-                        <img src="{{ url_for('static', filename='img/social/github.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/icon/github.svg') }}" alt="" />
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="footer-bottom">
-            <span>© 2025 SignTechnology. Todos los derechos
+    <div class="footer-bottom">
+            <span>© {{ current_year }} SignTechnology. Todos los derechos
                 reservados.</span>
         </div>
     </footer>

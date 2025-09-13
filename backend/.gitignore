@@ -77,7 +77,3 @@ desktop.ini
 *.bak
 *.tmp
 *.orig
-.cache
-.ipynb_checkpoints/
-.ipynb_checkpoints
-/backend/config/conexion.py
