@@ -1,9 +1,0 @@
-/* Archivo principal: importa los archivos CSS modulares */
-@import url('global.css');
-@import url('components.css');
-@import url('menu.css');
-@import url('index.css');
-
-/* Nota: este archivo solo agrupa las importaciones CSS.
-   Edita los archivos individuales en `frontend/static/css/`.
-   Para producción genera un bundle/minificado fuera del repo. */

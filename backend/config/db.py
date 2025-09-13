@@ -1,12 +1,13 @@
-import os
-﻿import pymysql
+﻿# backend/config/db.py
+import pymysql
+from .conexion import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_CHARSET, DB_CURSORCLASS
 
 def get_db_connection():
 	return pymysql.connect(
-		host=os.environ.get('DB_HOST', 'localhost'),
-		user=os.environ.get('DB_USER', ''),
-		password=os.environ.get('DB_PASSWORD', ''),
-		db=os.environ.get('DB_NAME', ''),
-		charset='utf8mb4',
+		host=DB_HOST,
+		user=DB_USER,
+		password=DB_PASSWORD,
+		db=DB_NAME,
+		charset=DB_CHARSET,
 		cursorclass=pymysql.cursors.DictCursor
 	)
