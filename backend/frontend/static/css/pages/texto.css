@@ -1,0 +1,142 @@
+/* Styles for texto.html - mirror of senas page but for text input */
+
+@import '../utils/global.css';
+
+.texto-page {
+  /* reuse variables from project */
+  background: var(--color-004);
+}
+
+/* reuse senas container rules */
+.senas-page {
+    background-color: var(--color-003);
+    min-height: 100vh;
+    /* leave space for fixed nav */
+    padding: 1rem;
+    padding-top: calc(1rem + 4.5rem);
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.senas-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    min-height: auto;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 1.5rem auto;
+}
+
+.senas-left,
+.senas-right {
+    flex: 1 1 420px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.camera-card {
+    background: var(--color-001);
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 900px;
+}
+
+.camera-preview {
+    background: #000;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-controls {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: transparent;
+}
+
+.translation-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 900px;
+}
+.translation-box {
+    background: transparent;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    color: var(--color-001);
+    border: 1px solid rgba(0,0,0,0.06);
+}
+.translation-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+.action-btn {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: var(--color-002);
+    color: var(--color-004);
+    font-weight: 600;
+}
+.action-btn + .action-btn { background: var(--color-006); color: var(--color-001); }
+
+/* Page-specific utilities previously in components.css */
+.textarea-input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+    resize: vertical;
+    font-size: 1rem;
+}
+.preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.result-text {
+    color: var(--color-004);
+    font-weight: 700;
+    padding: 0.25rem 0;
+}
+.translation-actions--spaced { margin-top: 0.75rem; }
+.action-btn.primary { background: var(--color-002); color: var(--color-004); }
+.action-btn.alt { background: var(--color-006); color: var(--color-001); }
+
+/* Active mode visual state (match senas.css) */
+.action-btn.active {
+    background: var(--color-002);
+    color: var(--color-004);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+/* Ensure anchor buttons look like buttons */
+.translation-actions a.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+@media (max-width: 900px) {
+    .senas-container { flex-direction: column; }
+}
