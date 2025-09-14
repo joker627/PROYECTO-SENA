@@ -1,0 +1,83 @@
+# ========================================
+# Python
+# ========================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+*.dist-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+.coverage
+coverage.xml
+htmlcov/
+*.log
+
+# Virtualenv
+.env
+.venv
+env/
+venv/
+ENV/
+
+# ========================================
+# Uploads y archivos temporales
+# ========================================
+/backend/uploads/*
+!/backend/uploads/.gitkeep
+
+# ========================================
+# Node / Frontend
+# ========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Builds
+/dist
+/build
+/.parcel-cache
+/.vite
+/.nuxt
+/.next
+/.svelte-kit
+/.cache
+/.temp
+*.tsbuildinfo
+
+# ========================================
+# Sistema operativo
+# ========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================================
+# IDEs y editores
+# ========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# ========================================
+# Otros
+# ========================================
+*.bak
+*.tmp
+*.orig
+.cache
+.ipynb_checkpoints/
+.ipynb_checkpoints
+/backend/config/conexion.py
