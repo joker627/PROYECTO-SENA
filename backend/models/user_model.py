@@ -1,28 +1,28 @@
 from config.db import get_db_connection
 
 # Funciones para interactuar con la tabla de usuarios
-def get_user_by_username(username):
+def get_user_by_email(correo):
     with get_db_connection() as conn:
         with conn.cursor() as cursor: 
-            cursor.execute('SELECT * FROM users WHERE username=%s', (username,))
+            cursor.execute('SELECT * FROM usuarios WHERE correo=%s', (correo,))
             return cursor.fetchone()
 
 
-# Validar usuario
-def validate_user(username, password):
-	user = get_user_by_username(username)
-	if user and user['password'] == password:
-		return user
-	return None
+# Validar usuario por correo y contraseña
+def validate_user(correo, contrasena):
+    user = get_user_by_email(correo)
+    if user and user['contrasena'] == contrasena:
+        return user
+    return None
 
 # Registrar nuevo usuario
-def register_user(username, password, email):
+def register_user(nombre, correo, contrasena):
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             try:
-                cursor.execute('INSERT INTO users (username, password, email) VALUES (%s, %s, %s)', (username, password, email))
+                cursor.execute('INSERT INTO usuarios (nombre, correo, contrasena) VALUES (%s, %s, %s)', (nombre, correo, contrasena))
                 conn.commit()
                 return True
             except Exception as e:
-                print(f"Error registering user: {e}")
+                print(f"Eror al registrar el usuario: {e}")
                 return False

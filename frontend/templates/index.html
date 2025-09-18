@@ -1,38 +1,46 @@
-﻿{% extends 'menu.html' %} {% block head %} {% endblock %} {% block content %}
+﻿{% extends 'menu.html' %}
 
-<!-- Sección principal -->
+{% block head %}{% endblock %}
 
+{% block content %}
+
+<!-- ========== HOME PRINCIPAL ========== -->
 <section class="home">
     <div class="home-grid">
-        <!-- Izquierda: contenido principal -->
+
+        <!-- ========== CONTENIDO IZQUIERDO ========== -->
         <div class="home-left">
             <div class="home-content">
                 <h1 class="home-title">
-                    Conectando al mundo a traves del lenguaje de señas
+                    Conectando al mundo a través del lenguaje de señas
                 </h1>
+
                 <p class="home-text">
-                    Tecnologia avanzada que hace accesible la comunicacion para todos.
-                    Traduce, aprende y conecta sin barreras.
+                    Tecnología avanzada que hace accesible la comunicación para todos. Traduce, aprende y conecta sin barreras.
                 </p>
             </div>
 
             <div class="home-media">
-                <video autoplay muted loop playsinline class="home-video" title="Demostracion de traducion en tiempo real"
-                    loading="lazy" controls>
+                <video autoplay muted loop playsinline class="home-video"
+                    title="Demostración de traducción en tiempo real" loading="lazy" controls>
                     <source src="{{ url_for('static', filename='video/demo.mp4') }}" type="video/mp4">
                     Tu navegador no soporta la etiqueta de video.
                 </video>
             </div>
+
             <h2 class="home-title">Seleccione el modo</h2>
+
             <div class="home-actions">
-                <a href="#" class="btn btn--primary">Señas a texto</a>
-                <a href="#" class="btn btn--secondary">Texto a señas</a>
+                <a href="{{ url_for('main.senas') }}" class="btn btn--primary">Señas a texto</a>
+                <a href="{{ url_for('main.texto') }}" class="btn btn--secondary">Texto a señas</a>
             </div>
         </div>
-        <!-- Panel de opciones -->
+
+        <!-- ========== CONTENIDO DERECHO: Panel de opciones ========== -->
         <aside class="right-panel">
             <div class="options">
-                <!-- Option card: señas a texto -->
+
+                <!-- Card: señas a texto -->
                 <div class="option-card">
                     <div class="option-head">
                         <h2 class="option-title">SEÑAS A TEXTO</h2>
@@ -40,7 +48,7 @@
                     <div class="option-list">
                         <div class="option-item">
                             <div class="item-number">1</div>
-                            <p>Sube tu video o activa la camara</p>
+                            <p>Sube tu video o activa la cámara</p>
                         </div>
                         <div class="option-item">
                             <div class="item-number">2</div>
@@ -48,16 +56,16 @@
                         </div>
                         <div class="option-item">
                             <div class="item-number">3</div>
-                            <p>Traduccion automatica a texto</p>
+                            <p>Traducción automática a texto</p>
                         </div>
                         <div class="option-item">
                             <div class="item-number">4</div>
-                            <p>Comparte o guarda la traduccion</p>
+                            <p>Comparte o guarda la traducción</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Option card: Texto a señas-->
+                <!-- Card: texto a señas -->
                 <div class="option-card">
                     <div class="option-head">
                         <h2 class="option-title">TEXTO A SEÑAS</h2>
@@ -73,7 +81,7 @@
                         </div>
                         <div class="option-item">
                             <div class="item-number">3</div>
-                            <p>Visualiza la animacion en señas</p>
+                            <p>Visualiza la animación en señas</p>
                         </div>
                         <div class="option-item">
                             <div class="item-number">4</div>
@@ -81,82 +89,77 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </aside>
+
     </div>
 </section>
+
+<!-- ========== CARACTERÍSTICAS ========== -->
 <section class="features">
     <div class="features-grid">
 
-        <!-- Característica 1 -->
         <article class="feature">
             <div class="feature-icon">
-                <img src="{{ url_for('static', filename='img/icon/1.svg') }}" alt="Traducción en tiempo real"
-                    class="feature-img" width="64" height="64" loading="lazy" />
+                <img src="{{ url_for('static', filename='img/icon/1.svg') }}"
+                    alt="Traducción en tiempo real" class="feature-img" width="64" height="64" loading="lazy" />
             </div>
-
             <div class="feature-content">
                 <h3 class="feature-title">Traducción en tiempo real</h3>
-                <p class="feature-text">
-                    Convierte el lenguaje de señas en texto instantáneamente.
-                </p>
+                <p class="feature-text">Convierte el lenguaje de señas en texto instantáneamente.</p>
             </div>
         </article>
 
-        <!-- Característica 2 -->
         <article class="feature">
             <div class="feature-icon">
-                <img src="{{ url_for('static', filename='img/icon/2.svg') }}" alt="Adaptación de contenido"
-                    class="feature-img" width="64" height="64" loading="lazy" />
+                <img src="{{ url_for('static', filename='img/icon/2.svg') }}"
+                    alt="Adaptación de contenido" class="feature-img" width="64" height="64" loading="lazy" />
             </div>
             <div class="feature-content">
                 <h3 class="feature-title">Adaptación regional</h3>
-                <p class="feature-text">
-                    Señas no estandarizadas para diversas regiones colombianas.
-                </p>
+                <p class="feature-text">Señas no estandarizadas para diversas regiones colombianas.</p>
             </div>
         </article>
 
-        <!-- Característica 3 -->
         <article class="feature">
             <div class="feature-icon">
-                <img src="{{ url_for('static', filename='img/icon/3.svg') }}" alt="Accesibilidad mejorada"
-                    class="feature-img" width="64" height="64" loading="lazy" />
+                <img src="{{ url_for('static', filename='img/icon/3.svg') }}"
+                    alt="Accesibilidad mejorada" class="feature-img" width="64" height="64" loading="lazy" />
             </div>
             <div class="feature-content">
                 <h3 class="feature-title">Fácil de usar</h3>
                 <p class="feature-text">Interfaz intuitiva y accesible para todos.</p>
             </div>
         </article>
+
     </div>
 </section>
 
-<!-- Sección de estadísticas -->
+<!-- ========== ESTADÍSTICAS ========== -->
 <section class="stats">
     <h2 class="stats-title">Nuestro impacto</h2>
-
     <div class="stats-grid">
         <div class="dato">
-            <span class="dato__valor">
-                1000<span class="dato__simbolo">+</span>
-            </span>
+            <span class="dato__valor">1000<span class="dato__simbolo">+</span></span>
             <span class="dato__texto">Cantidad de usos</span>
         </div>
         <div class="dato">
-            <span class="dato__valor"> 500<span class="dato__simbolo">+</span> </span>
+            <span class="dato__valor">500<span class="dato__simbolo">+</span></span>
             <span class="dato__texto">Traducciones diarias</span>
         </div>
         <div class="dato">
-            <span class="dato__valor"> 100<span class="dato__simbolo">+</span> </span>
+            <span class="dato__valor">100<span class="dato__simbolo">+</span></span>
             <span class="dato__texto">Señas estandarizadas</span>
         </div>
     </div>
 </section>
 
-<!--Historias de usuario -->
+<!-- ========== HISTORIAS DE USUARIO ========== -->
 <section class="stories">
     <h2 class="stories-title">Historias de nuestros usuarios</h2>
     <div class="stories-grid">
+
         <article class="story">
             <div class="video-container">
                 <video autoplay muted loop playsinline class="story-video" loading="lazy" controls>
@@ -166,10 +169,10 @@
             </div>
             <h3 class="story-name">Ashley Rodriguez</h3>
             <p class="story-text">
-                "Gracias a esta herramienta, puedo comunicarme mejor con mi hija. La
-                traducción en tiempo real es increíble."
+                "Gracias a esta herramienta, puedo comunicarme mejor con mi hija. La traducción en tiempo real es increíble."
             </p>
         </article>
+
         <article class="story">
             <div class="video-container">
                 <video autoplay muted loop playsinline class="story-video" loading="lazy" controls>
@@ -179,10 +182,10 @@
             </div>
             <h3 class="story-name">María Gómez</h3>
             <p class="story-text">
-                "La adaptación regional me ha ayudado a entender mejor las señas de mi
-                comunidad."
+                "La adaptación regional me ha ayudado a entender mejor las señas de mi comunidad."
             </p>
         </article>
+
         <article class="story">
             <div class="video-container">
                 <video autoplay muted loop playsinline class="story-video" loading="lazy" controls>
@@ -195,6 +198,7 @@
                 "Es fácil de usar y me ha permitido aprender nuevas señas rápidamente."
             </p>
         </article>
+
     </div>
 </section>
 

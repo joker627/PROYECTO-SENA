@@ -59,4 +59,24 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() { msg.remove(); }, 500);
         });
     }, 4000);
+
+    // Menú desplegable de usuario (ajustes/perfil)
+    const dropdown = document.querySelector('.nav-dropdown');
+    const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
+    if (dropdown && dropdownToggle) {
+        dropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.classList.toggle('open');
+            const expanded = dropdown.classList.contains('open');
+            dropdownToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        });
+
+        // Cerrar el dropdown al hacer clic fuera
+        document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
 });

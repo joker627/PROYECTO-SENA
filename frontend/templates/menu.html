@@ -1,45 +1,20 @@
+<!-- =================== HEAD =================== -->
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Descripción general -->
-    <meta name="description"
-        content="Plataforma accesible que traduce lenguaje de señas a texto y texto a lenguaje de señas en tiempo real, facilitando la comunicación inclusiva entre personas sordas y oyentes." />
-
-    <!-- Descripción extendida estilo catálogo -->
-    <meta name="description"
-        content="App: Sign Technology, Función: Traductor de lenguaje de señas ↔ texto, Accesibilidad: Alta, Tiempo real: Sí, Plataforma: Web, Público: Sordos y oyentes." />
-
-    <!-- SEO social: Open Graph (Facebook, LinkedIn, etc.) -->
-    <meta property="og:title" content="Sign Technology - Comunicación sin barreras" />
-    <meta property="og:description"
-        content="Traduce lenguaje de señas a texto y viceversa en tiempo real. Plataforma accesible para personas sordas y oyentes." />
-    <meta property="og:image" content="{{ url_for('static', filename='img/icon/logo.webp', _external=True) }}" />
-    <meta property="og:url" content="{{ request.url }}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_ES" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Sign Technology - Comunicación sin barreras" />
-    <meta name="twitter:description"
-        content="Traduce señas a texto y texto a señas al instante. Tecnología accesible para una comunicación inclusiva." />
-    <meta name="twitter:image" content="{{ url_for('static', filename='img/icon/logo.webp', _external=True) }}" />
-
-    <!-- Favicon -->
+    <meta name="description" content="Sign Technology: traductor de lenguaje de señas ↔ texto en tiempo real." />
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/icon/logo.webp') }}" type="image/webp" />
-    <!--CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main/main.css') }}" />
-    <!-- Título -->
     <title>Sign Technology</title>
-
     {% block head %}{% endblock %}
 </head>
 
 <body>
+
+    <!-- ========== FLASH MESSAGES ========== -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     <div class="flash-messages">
@@ -49,53 +24,63 @@
     </div>
     {% endif %}
     {% endwith %}
+
+    <!-- ========== HEADER & NAV ========== -->
     <header>
         <nav class="nav">
             <div class="nav-logo">
                 <img src="{{ url_for('static', filename='img/icon/logo.webp') }}" alt="Logo" width="30" height="30" />
-                <h1>sign technology</h1>
+                <h1>
+                    <a href="{{ url_for('main.inicio') }}">sign technology</a>
+                </h1>
             </div>
 
-            <!-- boton hamburguesa -->
+            <!-- Botón hamburguesa -->
             <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <!-- Links -->
+
+            <!-- Links de navegación -->
             <div id="nav-links" class="nav-links" role="navigation" aria-hidden="false">
-                <!-- Usar url_for para rutas internas -->
                 <a href="{{ url_for('main.inicio') }}" class="nav-link">Inicio</a>
                 <a href="#" class="nav-link">Sobre Nosotros</a>
                 {% if not user %}
-                    <a href="{{ url_for('auth.login') }}" class="nav-link">Iniciar Sesión</a>
-                    <a href="{{ url_for('auth.register') }}" class="nav-link">Registrarse</a>
+                <a href="{{ url_for('auth.login') }}" class="nav-link">Iniciar Sesión</a>
+                <a href="{{ url_for('auth.register') }}" class="nav-link">Registrarse</a>
                 {% else %}
-                    <div class="nav-avatar" style="display:inline-block;vertical-align:middle;background:#eee;border-radius:50%;width:32px;height:32px;text-align:center;line-height:32px;font-weight:bold;color:#333;margin-right:8px;">
-                        {{ user[:2]|upper }}
+                <div class="nav-dropdown nav-hide-mobile">
+                    <button class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        <span>{{ user.nombre }}</span>
+                        <img src="{{ url_for('static', filename='img/icon/settings.svg') }}" alt="Ajustes" width="25"
+                            height="25" />
+                    </button>
+                    <div class="nav-dropdown-menu">
+                        <a href="{{ url_for('auth.logout') }}" class="nav-link">Cerrar sesión</a>
+                        <a href="{{ url_for('auth.profile') }}" class="nav-link">Ir a perfil</a>
                     </div>
+                </div>
+                <!--navegacion movil-->
+                <div class="nav-avatar nav-hide-mobile">{{ user[:2]|upper }}</div>
+                <div class="nav-mobile-user">
                     <a href="{{ url_for('auth.logout') }}" class="nav-link">Cerrar sesión</a>
+                    <a href="{{ url_for('auth.profile') }}" class="nav-link">Ir a perfil</a>
+                </div>
                 {% endif %}
             </div>
         </nav>
     </header>
 
-
+    <!-- ========== MAIN CONTENT ========== -->
     <main>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <ul>
-            {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
+
+    <!-- ========== FOOTER ========== -->
     <footer class="footer" role="contentinfo" aria-label="Pie de página">
         <div class="footer-grid">
+
             <div class="footer-brand">
                 <div class="brand-text">
                     <h3>Sign Technology</h3>
@@ -131,37 +116,44 @@
                     <a href="mailto:email@gmail.com">signtechnology@gmail.com</a>
                 </div>
                 <div class="footer-social" aria-label="Redes sociales">
+
                     <a class="social-link" href="https://twitter.com/signtech" aria-label="Twitter" title="Twitter"
                         target="_blank" rel="noopener">
-                        <img src="{{ url_for('static', filename='img/social/twitter.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/social/twitter.svg') }}" alt="" />
                     </a>
+
                     <a href="https://www.instagram.com/signtechnology" aria-label="Instagram" title="Instagram"
                         target="_blank" rel="noopener" class="social-link">
-                        <img src="{{ url_for('static', filename='img/social/instagram.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/social/instagram.svg') }}" alt="" />
                     </a>
+
                     <a href="https://www.facebook.com/signtechnology" aria-label="Facebook" title="Facebook"
                         target="_blank" rel="noopener" class="social-link">
-                        <img src="{{ url_for('static', filename='img/social/facebook.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/social/facebook.svg') }}" alt="" />
                     </a>
+
                     <a class="social-link" href="https://www.linkedin.com/company/signtechnology" aria-label="LinkedIn"
                         title="LinkedIn" target="_blank" rel="noopener">
-                        <img src="{{ url_for('static', filename='img/social/linkedin.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/social/linkedin.svg') }}" alt="" />
                     </a>
+
                     <a class="social-link" href="https://github.com/signtechnology" aria-label="GitHub" title="GitHub"
                         target="_blank" rel="noopener">
-                        <img src="{{ url_for('static', filename='img/social/github.svg') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/social/github.svg') }}" alt="" />
                     </a>
+
                 </div>
             </div>
-        </div>
 
+        </div>
         <div class="footer-bottom">
-            <span>© 2025 SignTechnology. Todos los derechos
-                reservados.</span>
+            <span>© 2025 SignTechnology. Todos los derechos reservados.</span>
         </div>
     </footer>
 
+    <!-- ========== SCRIPTS ========== -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 </body>
 
 </html>
