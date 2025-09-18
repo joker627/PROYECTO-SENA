@@ -1,0 +1,85 @@
+{% extends 'menu.html' %}
+
+{% block title %}Texto a Señas{% endblock %}
+
+{% block content %}
+
+<!-- ========== TEXTO A SEÑAS PAGE PRINCIPAL ========== -->
+<div class="senas-page">
+    <div class="senas-container">
+        <!-- ========== CONTENIDO IZQUIERDO: Panel de traducción ========== -->
+        <div class="senas-left">
+            <div class="translation-panel">
+                <div class="translation-box">
+                    <h2>Texto</h2>
+                    <textarea id="input-text" rows="8" placeholder="Escribe aquí el texto que quieres traducir..." class="textarea-input"></textarea>
+                </div>
+                <div class="translation-actions translation-actions--spaced">
+                    <button id="mode-text-to-sign" class="action-btn primary active">Texto a Señas</button>
+                    <a href="{{ url_for('main.senas') }}" id="mode-sign-to-text" class="action-btn alt">Señas a Texto</a>
+                </div>
+                <div class="translation-actions">
+                    <button id="translate-btn" class="action-btn primary">Traducir</button>
+                    <button id="clear-btn" class="action-btn alt">Borrar</button>
+                </div>
+            </div>
+        </div>
+        <!-- ========== CONTENIDO DERECHO: Panel de resultado ========== -->
+        <div class="senas-right">
+            <div class="camera-card">
+                <div class="camera-preview">
+                    <!-- Marcador de posición: GIF animado o imagen de señas -->
+                    <img id="sign-preview" src="{{ url_for('static', filename='img/video/demo2.jpg') }}" alt="Señas" class="preview-img" />
+                </div>
+                <div class="camera-controls">
+                    <div id="result-text" class="result-text">Resultado aparecerá aquí</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== SCRIPT: Traducción y UI ========== -->
+<script>
+    (function () {
+        const translateBtn = document.getElementById('translate-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const input = document.getElementById('input-text');
+        const result = document.getElementById('result-text');
+        translateBtn.addEventListener('click', function () {
+            const text = input.value.trim();
+            if (!text) { result.textContent = 'Escribe algo para traducir.'; return; }
+            // Simulated translation behaviour: reverse words as a placeholder
+            const translated = text.split(' ').reverse().join(' ');
+            result.textContent = translated;
+        });
+        clearBtn.addEventListener('click', function () { input.value = ''; result.textContent = 'Resultado aparecerá aquí'; });
+    })();
+</script>
+
+<!-- ========== SCRIPT: Modo activo UI ========== -->
+<script>
+    (function(){
+        const textBtn = document.getElementById('mode-text-to-sign');
+        const signLink = document.getElementById('mode-sign-to-text');
+        function setActive(el){
+            const els = document.querySelectorAll('.translation-actions .action-btn');
+            els.forEach(e=>e.classList.remove('active'));
+            if(el) el.classList.add('active');
+        }
+        // set active based on URL
+        if(window.location.pathname && window.location.pathname.includes('/senas')){
+            setActive(signLink);
+        } else {
+            setActive(textBtn);
+        }
+        if(textBtn){
+            textBtn.addEventListener('click', ()=> setActive(textBtn));
+        }
+        if(signLink){
+            signLink.addEventListener('click', function(e){ setActive(signLink); });
+        }
+    })();
+</script>
+
+{% endblock %}

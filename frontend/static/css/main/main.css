@@ -1,11 +1,13 @@
 /* Archivo principal: importa los archivos CSS modulares */
 @import '../utils/global.css';
-@import '../utils/components.css';
 @import '../utils/flash.css';
 @import '../pages/menu.css';
 @import '../pages/index.css';
 @import '../pages/login.css';
 @import '../pages/register.css';
+@import '../pages/senas.css';
+@import '../pages/texto.css';
+@import '../pages/profile.css';
 
 /* Nota: este archivo solo agrupa las importaciones CSS.
    Edita los archivos individuales en `frontend/static/css/`.

@@ -1,0 +1,124 @@
+{% extends 'menu.html' %}
+
+{% block title %}Senas{% endblock %}
+
+{% block content %}
+
+<!-- ========== SENAS PAGE PRINCIPAL ========== -->
+<div class="senas-page">
+    <div class="senas-container">
+
+        <!-- ========== CONTENIDO IZQUIERDO: Cámara ========== -->
+        <div class="senas-left">
+            <div class="camera-card">
+                <div class="camera-preview">
+                    <video id="camera" autoplay playsinline muted></video>
+                </div>
+                <div class="camera-controls">
+                    <button id="start-camera" class="camera-btn camera-start">Iniciar</button>
+                    <button id="stop-camera" class="camera-btn camera-stop">Detener</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========== CONTENIDO DERECHO: Panel de traducción ========== -->
+        <div class="senas-right">
+            <div class="translation-panel">
+                <div class="translation-box">
+                    <h2>Traducción</h2>
+                    <div id="translation-text">Aquí aparecerá la traducción de señas...</div>
+                </div>
+                <div class="translation-actions">
+                    <button id="mode-sign-to-text" class="action-btn primary active">Señas a Texto</button>
+                    <a href="{{ url_for('main.texto') }}" id="mode-text-to-sign" class="action-btn alt">Texto a Señas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== SCRIPT: Cámara y UI ========== -->
+<script>
+    (function () {
+        const video = document.getElementById('camera');
+        const startBtn = document.getElementById('start-camera');
+        const stopBtn = document.getElementById('stop-camera');
+        let currentStream = null;
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+                currentStream = stream;
+                video.srcObject = stream;
+                startBtn.textContent = 'En curso';
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+            } catch (err) {
+                console.warn('No se pudo acceder a la cámara', err);
+                const t = document.getElementById('translation-text');
+                if (t) t.textContent = 'No se pudo acceder a la cámara. Por favor permita el acceso o use un dispositivo con cámara.';
+                startBtn.textContent = 'Reintentar';
+                startBtn.disabled = false;
+            }
+        }
+
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+            video.srcObject = null;
+            startBtn.textContent = 'Iniciar';
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        }
+
+        startBtn.addEventListener('click', function () {
+            startBtn.disabled = true;
+            startBtn.textContent = 'Solicitando...';
+            startCamera();
+        });
+
+        stopBtn.addEventListener('click', function () {
+            stopCamera();
+        });
+
+        // initialize UI state
+        stopBtn.disabled = true;
+
+        // try auto-start if permission already granted
+        if (navigator.permissions) {
+            navigator.permissions.query({ name: 'camera' }).then(function (perm) {
+                if (perm.state === 'granted') startCamera();
+            }).catch(() => {});
+        }
+        // Mode switching UI
+        (function(){
+            const signBtn = document.getElementById('mode-sign-to-text');
+            const textLink = document.getElementById('mode-text-to-sign');
+            function setActive(el){
+                const els = document.querySelectorAll('.translation-actions .action-btn');
+                els.forEach(e=>e.classList.remove('active'));
+                if(el) el.classList.add('active');
+            }
+            // set active based on URL
+            if(window.location.pathname && window.location.pathname.includes('/texto')){
+                setActive(textLink);
+            } else {
+                setActive(signBtn);
+            }
+            if(signBtn){
+                signBtn.addEventListener('click', ()=> setActive(signBtn));
+            }
+            if(textLink){
+                textLink.addEventListener('click', function(e){
+                    // ensure navigation happens and mark active for immediate feedback
+                    setActive(textLink);
+                    // allow default anchor navigation
+                });
+            }
+        })();
+    })();
+</script>
+
+{% endblock %}

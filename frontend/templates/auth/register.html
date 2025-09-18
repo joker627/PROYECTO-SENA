@@ -3,45 +3,69 @@
 {% block title %}register{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/register.css') }}">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
 
-<body class="color-page">
+<!-- ========== REGISTER PAGE PRINCIPAL ========== -->
+<div class="register-page">
     <div class="register-container">
+
+        <!-- ========== CONTENIDO IZQUIERDO: Info y CTA ========== -->
         <div class="register-left">
             <div class="home-content">
-                <h1 class="home-title">Traducción de Lenguaje de Señas a Texto en Tiempo Real</h1>
-                <p class="home-text">"Transformamos la comunicación en inclusión: nuestro software traduce palabras en señas, rompiendo barreras y uniendo mundos con cada gesto."</p>
+                <h1 class="home-title">
+                    Traducción de Lenguaje de Señas a Texto en Tiempo Real
+                </h1>
+
+                <p class="home-text">
+                    "Transformamos la comunicación en inclusión: nuestro software traduce palabras en señas, rompiendo barreras y uniendo mundos con cada gesto."
+                </p>
+
                 <div class="home-actions">
                     <a href="#" class="btn btn--primary">Saber más</a>
                 </div>
             </div>
         </div>
+
+        <!-- ========== CONTENIDO DERECHO: Formulario ========== -->
         <div class="register-right">
             <form method="POST" action="{{ url_for('auth.register') }}" class="register-form">
+
                 <h2 class="register-title">Registrarse</h2>
+
+
                 <div class="register-icon-group">
                     <img src="{{ url_for('static', filename='img/icon/user.svg') }}" alt="" class="register-icon">
-                    <input type="text" name="username" placeholder="Usuario" required>
+                    <input type="text" name="nombre" placeholder="Nombre" required>
                 </div>
+
                 <div class="register-icon-group">
                     <img src="{{ url_for('static', filename='img/icon/email.svg') }}" alt="" class="register-icon">
-                    <input type="email" name="email" placeholder="Correo electrónico" required>
+                    <input type="email" name="correo" placeholder="Correo electrónico" required>
                 </div>
+
                 <div class="register-icon-group">
                     <img src="{{ url_for('static', filename='img/icon/password.svg') }}" alt="" class="register-icon">
-                    <input type="password" name="password" placeholder="Contraseña" required>
+                    <input type="password" name="contrasena" placeholder="Contraseña" required>
                 </div>
-                <p class="register-text">Ya tienes una cuenta? <a href="{{ url_for('auth.login') }}">Iniciar sesión</a></p>
+
+                <p class="register-text">
+                    Ya tienes una cuenta? <a href="{{ url_for('auth.login') }}">Iniciar sesión</a>
+                </p>
+
                 <button type="submit" class="btn">Registrarse</button>
+
                 <span class="register-divider">o</span>
+
                 <div class="register-social">
                     <button type="button" class="social-btn google">
                         <img src="{{ url_for('static', filename='img/social/google.svg') }}" alt="Google logo">
                         Registrarse con Google
                     </button>
                 </div>
+
             </form>
         </div>
+
     </div>
+</div>
+
 {% endblock %}

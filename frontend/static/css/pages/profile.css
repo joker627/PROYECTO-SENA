@@ -1,0 +1,103 @@
+/* Perfil de usuario con slider lateral */
+
+.profile-slider-container {
+    background: var(--color-004);
+	height: 80%;
+	width: 100%;
+	box-sizing: border-box;
+    display: flex;
+    padding-top: 3rem;
+}
+
+
+.profile-sidebar {
+    background: var(--color-001);
+    padding: 2rem ;
+    width: 20%;
+    height: auto;
+    color: var(--color-006);
+}
+.profile-sidebar h3 {
+    margin-bottom: 0.5rem;
+    color: var(--color-010);
+}
+.profile-sub {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    margin-bottom: 2rem;
+}
+.profile-nav ul {
+    list-style: none;
+    padding: 0;
+}
+.profile-nav li {
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+    color: var(--color-005);
+    cursor: pointer;
+}
+.profile-nav .active span {
+    font-weight: bold;
+    color: var(--color-010);
+}
+.profile-main {
+    flex: 1;
+    padding: 2rem 2.5rem;
+    background: var(--color-004);
+    border-radius: 0 16px 16px 0;
+}
+.profile-title {
+    margin-bottom: 2rem;
+    color: var(--color-001);
+}
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.profile-img-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.profile-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: var(--color-004);
+    border: 2px solid var(--color-005);
+    object-fit: cover;
+}
+.profile-img-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.profile-fields label {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--color-008);
+    font-weight: 500;
+}
+.profile-fields .input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-013);
+    background: var(--color-004);
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+    color: var(--color-008);
+}
+.profile-email-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 1.2rem;
+}
+.profile-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}

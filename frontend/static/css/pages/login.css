@@ -1,12 +1,21 @@
 /* Estilos para la página de login */
+.login-page {
+	background-color: var(--color-002);
+	height: 100%;
+	padding: 0.5rem;
+	width: 100%;
+	box-sizing: border-box;
+}
+
 .login-container {
 	display: flex;
 	justify-content: center;
 	align-items: stretch;
-	min-height: 80vh;
+	height: 100%;
 	gap: 2.5rem;
+	width: 100%;
 	max-width: 1200px;
-	margin: 3rem auto;
+	margin: 1rem;
 }
 
 .login-left,
@@ -19,12 +28,6 @@
 	align-items: center;
 }
 
-.login-right {
-	background: var(--color-013);
-	border-radius: 0 18px 18px 0;
-	box-shadow: 0 4px 24px var(--color-012);
-}
-
 .login-container {
 	display: flex;
 	justify-content: center;
@@ -33,13 +36,15 @@
 	gap: 2rem;
 }
 
+.login-right {
+	background: var(--color-013);
+	border-radius:  18px;
+}
 
 .login-left {
 	flex: 1;
-	padding: 2rem 1.5rem;
+	padding:1.5rem;
     max-width: 50%;
-	border-radius: 16px;
-	box-shadow: 0 2px 12px var(--color-012);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -216,23 +221,88 @@
 }
 
 
-@media (max-width: 900px) {
+
+/* ===================== Responsive tablet y móvil ===================== */
+@media (max-width: 900px) {	
 	.login-container {
 		flex-direction: column;
 		gap: 1.5rem;
-		min-height: 100vh;
-		max-width: 98vw;
-		margin: 1.5rem auto;
+		height: 100%;
+		padding: 1rem;
+		width: 100%;
+		margin: 0.5rem;
+		background: var(--color-002);
 	}
 	.login-left {
-		border-radius: 16px 16px 0 0;
-		border-right: none;
-		box-shadow: 0 2px 8px var(--color-012);
+		border-radius: 16px;
 		width: 100%;
+		padding: 0.5rem;
 	}
-	.login-right {
-		border-radius: 0 0 16px 16px;
-		box-shadow: 0 2px 8px var(--color-012);
+
+	.home-content {
+		max-width: 100%;
+		margin: 0.5rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.home-title {
+		font-size: 0.5rem;
+		margin-bottom: 0.5rem;
+		text-align: center;
+		padding-top: 1rem;
+	}
+
+	.home-text {
+		font-size: 0.5rem;
+		text-align: center;
+		margin-bottom: 0.4rem;
+	}
+
+	.home-actions {
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+		margin-bottom: 24px;
+	}
+
+	.btn,
+	.btn-primary {
 		width: 100%;
+		max-width: 300px;
+		padding: 1rem;
+		font-size: 1rem;
+	}
+
+	.login-right {
+		border-radius: 16px;
+		width: 100%;
+		background: var(--color-003);
+		margin: 0;
+		padding: 1rem;
+	}
+	.login-title {
+		font-size: 2rem;
+		text-align: center;
+	}
+	.login-form {
+		width: 100%;
+		max-width: 98vw;
+		min-width: 0;
+	}
+	.login-title {
+		font-size: 2.5rem;
+		margin-bottom: 1rem;
+		text-align: center;
+		transform: translateX(10px);
+	}
+	.home-title {
+		font-size: 1.5rem;
+		margin-bottom: 1rem;
+		text-align: center;
+		padding-top: 1rem;
 	}
 }

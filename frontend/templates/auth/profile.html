@@ -1,0 +1,50 @@
+{% extends "menu.html" %}
+
+{% block title %}Perfil de Usuario{% endblock %}
+
+{% block content %}
+
+<div class="profile-slider-container grid-container">
+    <aside class="profile-sidebar">
+        <h3>Mi Perfil</h3>
+        <p class="profile-sub">Gestiona tu cuenta y preferencias</p>
+        <nav class="profile-nav">
+            <ul>
+                <li class="active"><span>Información personal</span></li>
+                <li><span>Accesibilidad</span></li>
+                <li><span>Historial</span></li>
+                <li><span>Seguridad</span></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="profile-main main">
+        <h2 class="profile-title">Información personal</h2>
+        <form class="profile-form" method="POST" action="#">
+            <div class="profile-img-section">
+                <img src="{{ url_for('static', filename='img/icon/user.svg') }}" alt="Foto de perfil" class="profile-img">
+                <div class="profile-img-actions">
+                    <button type="button" class="btn btn--primary">Subir imagen</button>
+                    <button type="button" class="btn btn--danger">Eliminar</button>
+                </div>
+            </div>
+            <div class="profile-fields">
+                <label for="nombre">Nombre de Usuario</label>
+                <input type="text" id="nombre" name="nombre" value="{{ user }}" class="input" readonly>
+
+                <label for="correo">Correo Electrónico</label>
+                <div class="profile-email-group">
+                    <input type="email" id="correo" name="correo" value="juan.perez@email.com" class="input" readonly>
+                    <button type="button" class="btn btn--primary">Verificar</button>
+                </div>
+
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="Cambiar Contraseña" class="input">
+            </div>
+            <div class="profile-actions">
+                <button type="button" class="btn btn--secondary">Cancelar</button>
+                <button type="submit" class="btn btn--primary">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
