@@ -1,23 +1,4 @@
-@media (max-width: 480px) {
-  .home-actions {
-    flex-direction: column;
-    gap: 0.8rem;
-    margin: 18px 0;
-    align-items: center;
-  }
-  .home-actions .btn {
-    width: 90vw;
-    max-width: 98vw;
-    font-size: 1.15rem;
-    padding: 1rem 0.5rem;
-    border-radius: 12px;
-    text-align: center;
-    margin: 0 auto;
-    display: block;
-  }
-}
-
-/* Home section */
+/* ========== HOME ========== */
 .home {
   padding-top: 70px;
   background-color: var(--color-002);
@@ -54,7 +35,7 @@
 
 .home-text {
   font-size: 1.2rem;
-  color: var(--color-008);
+  color: var(--color-006);
   max-width: 700px;
   text-align: center;
   margin: 0 auto;
@@ -68,76 +49,56 @@
   flex-wrap: wrap;
 }
 
-/* Buttons on the home actions area */
 .home-actions .btn {
   padding: 0.75rem 1.1rem;
   border-radius: 10px;
   font-weight: 700;
   letter-spacing: 0.2px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
 }
+
 .home-actions .btn--primary {
   background: var(--color-001);
   color: var(--color-005);
 }
+
 .home-actions .btn--secondary {
   background: var(--color-001);
   color: var(--color-005);
 }
+
 .home-actions .btn:hover {
   transform: translateY(-2px);
   background-color: var(--color-009);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
 }
 
-@media (max-width: 900px) {
-  .home-actions .btn {
-    width: 100%;
-    max-width: 420px;
-  }
-}
-
+/* ========== VIDEO ========== */
 .home-media {
   position: relative;
   width: 100%;
   max-width: 700px;
-  padding: 20px;
   margin: 0 auto;
-}
-
-.home-media::before {
-  content: "";
-  display: block;
-  padding-top: 56.25%;
+  background: var(--color-002);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .home-video {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  width: calc(100% - 40px);
-  height: calc(100% - 40px);
+  width: 100%;
+  aspect-ratio: 16/9;
   border: none;
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  /* Remove overlay color so video frames are visible during debugging */
   background-color: transparent;
-  object-fit: contain;
-  z-index: 0;
-}
-
-/* Right panel (options) */
-.right-panel {
-  flex: 1 1 350px;
-  min-width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  object-fit: cover;
+  display: block;
 }
 
 .options {
   display: flex;
+  flex-direction: row;
   gap: 2rem;
   justify-content: center;
   flex-wrap: wrap;
@@ -151,7 +112,6 @@
   min-width: 280px;
   max-width: 400px;
   background: rgba(255, 255, 255, 0.1);
-  /* Temporarily disable backdrop blur that can obscure videos underneath */
   backdrop-filter: none;
   border-radius: 20px;
   padding: 1.5rem;
@@ -220,7 +180,7 @@
   line-height: 1.4;
 }
 
-/* Features */
+/* ========== CARACTERÍSTICAS ========== */
 .features {
   padding: 40px 20px;
   background-color: var(--color-005);
@@ -273,28 +233,28 @@
 
 .feature-title {
   font-size: 1.3rem;
-  color: var(--color-009);
+  color: var(--color-001);
   margin-bottom: 10px;
 }
 
 .feature-text {
-  color: var(--color-008);
+  color: var(--color-009);
   line-height: 1.5;
   font-size: 1rem;
 }
 
-/* Statistics */
-.stats-title {
-  font-size: 2rem;
-  margin-bottom: 30px;
-  color: var(--color-005);
-}
-
+/* ================== ESTADÍSTICAS ================== */
 .stats {
   padding: 40px 20px;
   background-color: var(--color-001);
   color: var(--color-005);
   text-align: center;
+}
+
+.stats-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: var(--color-005);
 }
 
 .stats-grid {
@@ -324,7 +284,6 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
-/* Valor principal: número grande y responsivo */
 .dato__valor {
   font-size: clamp(1.6rem, 4vw, 2.6rem);
   line-height: 1;
@@ -349,40 +308,11 @@
   margin-top: 8px;
 }
 
-/* Reducir animaciones para usuarios que prefieran menos movimiento */
-@media (prefers-reduced-motion: reduce) {
-
-  .dato,
-  .dato:hover {
-    transition: none;
-    transform: none;
-    box-shadow: none;
-  }
-
-}
-
-/* Stories */
+/* ================ HISTORIAS DE USUARIO ================ */
 .stories {
   padding: 40px 20px;
   background-color: var(--color-005);
   text-align: center;
-}
-
-.video-container {
-  position: relative;
-  padding-top: 56.25%;
-  /* 16:9 Aspect Ratio */
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.story-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
 }
 
 .stories-title {
@@ -411,6 +341,22 @@
   transform: translateY(-5px);
 }
 
+.video-container {
+  position: relative;
+  padding-top: 56.25%;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.story-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
 .story-name {
   font-size: 1.2rem;
   color: var(--color-001);
@@ -423,8 +369,26 @@
   font-size: 1rem;
 }
 
-/* Responsive */
+/* ==================== RESPONSIVE ==================== */
+
+/* Reducir animaciones para usuarios que prefieran menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+
+  .dato,
+  .dato:hover {
+    transition: none;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* Tablet y pantallas medianas */
 @media (max-width: 900px) {
+  .home-actions .btn {
+    width: 100%;
+    max-width: 420px;
+  }
+
   .home-grid {
     flex-direction: column;
     gap: 32px;
@@ -471,6 +435,7 @@
   }
 }
 
+/* Tablets pequeñas */
 @media (max-width: 768px) {
   .home-title {
     font-size: 2rem;
@@ -496,9 +461,11 @@
   }
 }
 
+/* Móviles grandes */
 @media (max-width: 600px) {
-  .home {
-    padding-top: 80px;
+  .options {
+    flex-direction: column !important;
+    align-items: center;
   }
 
   .home-title {
@@ -526,7 +493,26 @@
   }
 }
 
+/* Móviles pequeños */
 @media (max-width: 480px) {
+  .home-actions {
+    flex-direction: column;
+    gap: 0.8rem;
+    margin: 18px 0;
+    align-items: center;
+  }
+
+  .home-actions .btn {
+    width: 90vw;
+    max-width: 98vw;
+    font-size: 1.15rem;
+    padding: 1rem 0.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+  }
+
   .home-title {
     font-size: 1.6rem;
   }
@@ -552,4 +538,10 @@
   .feature-title {
     font-size: 1.1rem;
   }
+}
+
+.right-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

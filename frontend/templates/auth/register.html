@@ -42,9 +42,32 @@
                     <input type="email" name="correo" placeholder="Correo electrónico" required>
                 </div>
 
+
                 <div class="register-icon-group">
                     <img src="{{ url_for('static', filename='img/icon/password.svg') }}" alt="" class="register-icon">
                     <input type="password" name="contrasena" placeholder="Contraseña" required>
+                </div>
+
+                <div class="register-icon-group">
+                    <img src="{{ url_for('static', filename='img/icon/settings.svg') }}" alt="" class="register-icon">
+                    <div class="register-radio-block">
+                        <label class="register-label">¿Eres una persona con discapacidad auditiva?</label>
+                        <div class="register-radio-group">
+                            {% for rol in roles %}
+                                {% if rol.nombre_rol == 'discapacitado' %}
+                                    <label class="register-radio-option">
+                                        <input type="radio" name="rol" value="{{ rol.id_rol }}" required>
+                                        <span class="register-radio-text">Sí</span>
+                                    </label>
+                                {% elif rol.nombre_rol == 'oyente' %}
+                                    <label class="register-radio-option">
+                                        <input type="radio" name="rol" value="{{ rol.id_rol }}" required>
+                                        <span class="register-radio-text">No</span>
+                                    </label>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
 
                 <p class="register-text">
