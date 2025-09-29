@@ -22,5 +22,17 @@ def texto():
     return render_template('texto.html', user=session.get('user'))
 
 
+@main_bp.route("/page1")
+def page1():
+     from flask import session
+     return render_template("politicas/page1.html")
+
+
+
+@main_bp.route("/page2")
+def page2():
+     from flask import session
+     return render_template("terminos/page2.html")
+
 
 

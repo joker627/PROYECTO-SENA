@@ -8,6 +8,8 @@
 @import '../pages/senas.css';
 @import '../pages/texto.css';
 @import '../pages/profile.css';
+@import '../pages/page1.css';
+@import '../pages/page2.css';
 
 /* Nota: este archivo solo agrupa las importaciones CSS.
    Edita los archivos individuales en `frontend/static/css/`.

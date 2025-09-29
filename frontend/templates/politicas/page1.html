@@ -1,0 +1,92 @@
+{% extends 'menu.html' %}
+
+{% block head %}Politica y Privacidad{% endblock %}
+
+{% block content %}
+ 
+    <div class="container">
+        
+        <div class="content">
+            <h1>POLÍTICA DE PRIVACIDAD</h1>
+            
+            <div class="intro-text">
+                En Sign Technology, valoramos la privacidad y la seguridad de nuestros usuarios. Esta Política de Privacidad describe cómo recopilamos, usamos, protegemos y conservamos la información generada durante el uso de nuestro sistema de traducción de señas.
+            </div>
+
+            <h2><span class="section-number">1</span>Información que recopilamos</h2>
+            <p>Al utilizar nuestro software, se recopilan dos tipos de información:</p>
+
+            <h3>a. Información de registro del usuario:</h3>
+            <ul>
+                <li>Nombre de usuario</li>
+                <li>Correo electrónico</li>
+                <li>Contraseña cifrada</li>
+                <li>Fecha de registro</li>
+                <li>Método de acceso (manual o mediante Google)</li>
+            </ul>
+            <p>Esta información es necesaria para permitir el acceso personalizado y seguro al sistema.</p>
+
+            <h3>b. Datos de interacción con el sistema (Landmarks):</h3>
+            <p>Recopilamos automáticamente datos técnicos conocidos como <em>landmarks</em>, que representan puntos de referencia espaciales del cuerpo, rostro y manos del usuario. Estos puntos son generados por algoritmos de visión artificial y se almacenan como coordenadas numéricas (por ejemplo, posiciones X, Y, Z).</p>
+
+            <div class="important-note">
+                <h4>Importante:</h4>
+                <ul>
+                    <li>No se recopilan imágenes, grabaciones de video ni datos biométricos.</li>
+                    <li>No es posible identificar personalmente a un usuario a partir de estos datos.</li>
+                </ul>
+            </div>
+
+            <h2><span class="section-number">2</span>Finalidad del uso de los datos</h2>
+            <p>Los datos recopilados se utilizan exclusivamente para:</p>
+            <ul>
+                <li>Mejorar el rendimiento y precisión del sistema de traducción.</li>
+                <li>Corregir errores detectados mediante retroalimentación de los usuarios.</li>
+                <li>Entrenar modelos de inteligencia artificial para ampliar la cobertura y comprensión de señas no estandarizadas.</li>
+                <li>Desarrollar nuevas funcionalidades y adaptar el sistema a diversos contextos de uso.</li>
+            </ul>
+
+            <h2><span class="section-number">3</span>Almacenamiento y conservación de los datos</h2>
+            <ul>
+                <li>Los datos personales (nombre, correo) están protegidos con <em>mecanismos de cifrado y acceso restringido</em>.</li>
+                <li>Los landmarks se almacenan de forma anónima y segura, sin vínculo directo con la identidad del usuario.</li>
+                <li>La eliminación de la cuenta no implica la eliminación de los datos anónimos de <em>landmarks</em>, ya que estos forman parte de una base técnica fundamental para el entrenamiento y evolución del software.</li>
+            </ul>
+
+            <h2><span class="section-number">4</span>Compartición de datos</h2>
+            <div class="highlight-box">
+                <p><strong>No compartimos, vendemos ni transferimos información personal ni datos de landmarks con terceros.</strong> Toda la información se usa exclusivamente dentro de los equipos técnicos de Sign Technology.</p>
+            </div>
+
+            <h2><span class="section-number">5</span>Derechos del usuario</h2>
+            <p>El usuario tiene derecho a:</p>
+            <ul>
+                <li>Acceder y modificar la información registrada en su perfil.</li>
+                <li>Eliminar su cuenta del sistema, junto con sus datos personales asociados (exceptuando los landmarks).</li>
+                <li>Consultar esta política en cualquier momento desde la interfaz del software.</li>
+            </ul>
+
+            <h2><span class="section-number">6</span>Seguridad</h2>
+            <p>Implementamos medidas de seguridad avanzadas para proteger toda la información procesada y almacenada, incluyendo:</p>
+            <ul>
+                <li>Cifrado de contraseñas y comunicaciones (por ejemplo, AES-256).</li>
+                <li>Acceso restringido al entorno de datos.</li>
+                <li>Auditorías periódicas para verificar el cumplimiento de buenas prácticas en privacidad.</li>
+            </ul>
+
+            <h2><span class="section-number">7</span>Cambios en esta política</h2>
+            <p>Nos reservamos el derecho de modificar esta Política de Privacidad para adaptarla a nuevas exigencias legales, técnicas o del propio sistema. Las actualizaciones se informarán oportunamente dentro de la aplicación.</p>
+
+            <h2><span class="section-number">8</span>Contacto</h2>
+            <p>Para preguntas, sugerencias o inquietudes relacionadas con esta política, puedes escribirnos a:</p>
+        </div>
+
+        <div class="contact-box">
+            <h2 style="border: none; margin-top: 0; color: #27ae60;">Información de contacto</h2>
+            <p class="contact-text">Para consultas sobre esta política de privacidad, contáctanos a través de nuestros canales oficiales.</p>
+        </div>
+
+    </div>
+
+
+  {% endblock %}
