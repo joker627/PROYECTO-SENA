@@ -29,11 +29,11 @@
             </div>
             <div class="profile-fields">
                 <label for="nombre">Nombre de Usuario</label>
-                <input type="text" id="nombre" name="nombre" value="{{ user }}" class="input" readonly>
+                <input type="text" id="nombre" name="nombre" value="{{ user['nombre'] }}" class="input" readonly>
 
                 <label for="correo">Correo Electrónico</label>
                 <div class="profile-email-group">
-                    <input type="email" id="correo" name="correo" value="juan.perez@email.com" class="input" readonly>
+                    <input type="email" id="correo" name="correo" value="{{ user['correo'] }}" class="input" readonly>
                     <button type="button" class="btn btn--primary">Verificar</button>
                 </div>
 

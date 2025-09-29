@@ -1,5 +1,6 @@
-/* Variables globales y estilos base. Editar colores y tamaños aquí. */
+/* =========== VARIABLES GLOBALES =========== */
 :root {
+    /* Colores principales */
     --color-001: #2c6975;
     --color-002: #4a8e7c;
     --color-003: #cde0c9;
@@ -13,9 +14,21 @@
     --color-011: #0b1220;
     --color-012: #ffffff0f;
     --color-013: #7fc3b3;
+    --color-014: #0d4a56;
+    --color-015: #dc3545;
+    --color-016: #28a745;
+    --color-017: #ffc107;
+    --color-018: #007bff;
+    --color-019: #6c757d;
+    --color-020: #e9ecef;
+    --color-021: rgba(26, 139, 158, 0.9);
+    --color-022: rgba(44, 105, 117, 0.8);
+    --color-023: rgba(13, 74, 86, 0.7);
+    --color-024: rgba(255, 255, 255, 0.9);
+    --color-025: rgba(255, 255, 255, 0.1);
 }
 
-/* Reset mínimo */
+/* =========== RESET GLOBAL =========== */
 * {
     margin: 0;
     padding: 0;

@@ -10,11 +10,12 @@ def create_app():
     # Clave secreta para sesiones
     app.secret_key = 'tu_clave_secreta_super_segura_2025'
     
-    # Registrar el blueprint de rutas principales
+    # Registrar blueprints
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
+    
     return app
 
 app = create_app()
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0',)
+    app.run(debug=True, host='0.0.0.0', port=80080)
