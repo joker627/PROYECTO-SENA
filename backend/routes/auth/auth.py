@@ -1,6 +1,7 @@
 # backend/routes/auth/auth.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from models.user_model import validate_user, register_user, get_user_by_email, get_all_roles
+from backend.models.user_model import validate_user, register_user, get_user_by_email, get_all_roles
+
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
