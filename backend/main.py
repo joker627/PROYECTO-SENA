@@ -1,6 +1,7 @@
 ﻿from flask import Flask
-from routes.auth.auth import auth_bp
-from routes.routes import main_bp
+from backend.routes.auth.auth import auth_bp
+from backend.routes.routes import main_bp
+
 
 import sys, os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
