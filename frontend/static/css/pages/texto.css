@@ -116,6 +116,9 @@
     color: var(--color-004);
     font-weight: 700;
     padding: 0.25rem 0;
+    min-height: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 .translation-actions--spaced { margin-top: 0.75rem; }
 .action-btn.primary { background: var(--color-002); color: var(--color-004); }
@@ -137,6 +140,193 @@
     text-decoration: none;
 }
 
+/* Placeholder para señas - mejora visual */
+.sign-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--color-004);
+    background: linear-gradient(135deg, #2c6975, #4a8e7c);
+}
+
+.sign-placeholder span {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.sign-placeholder p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+/* Tablets medianas (900px y menos) */
 @media (max-width: 900px) {
-    .senas-container { flex-direction: column; }
+    .senas-page {
+        padding: 0.75rem;
+        padding-top: calc(0.75rem + 4.5rem);
+    }
+
+    .senas-container {
+        flex-direction: column;
+        gap: 1.5rem;
+        margin: 1rem auto;
+    }
+
+    .senas-left,
+    .senas-right {
+        flex: none;
+        min-width: auto;
+        width: 100%;
+    }
+
+    .translation-panel {
+        max-width: 100%;
+    }
+
+    .textarea-input {
+        min-height: 120px;
+    }
+}
+
+/* Tablets pequeñas (768px y menos) */
+@media (max-width: 768px) {
+    .senas-page {
+        padding: 0.5rem;
+        padding-top: calc(0.5rem + 4.5rem);
+    }
+
+    .senas-container {
+        gap: 1.25rem;
+        margin: 0.75rem auto;
+    }
+
+    .camera-card {
+        max-width: 100%;
+    }
+
+    .translation-box {
+        padding: 0.875rem 1rem;
+    }
+
+    .translation-actions {
+        gap: 0.5rem;
+    }
+
+    .action-btn {
+        padding: 0.75rem 0.875rem;
+        font-size: 0.9rem;
+    }
+
+    .textarea-input {
+        padding: 0.875rem;
+        font-size: 0.95rem;
+    }
+
+    .result-text {
+        font-size: 0.9rem;
+    }
+}
+
+/* Móviles (600px y menos) */
+@media (max-width: 600px) {
+    .senas-container {
+        gap: 1rem;
+        margin: 0.5rem auto;
+    }
+
+    .camera-preview {
+        aspect-ratio: 4 / 3;
+    }
+
+    .camera-controls {
+        padding: 0.75rem;
+    }
+
+    .translation-box h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .textarea-input {
+        min-height: 100px;
+    }
+
+    .sign-placeholder span {
+        font-size: 2.5rem;
+    }
+
+    .sign-placeholder p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Móviles pequeños (480px y menos) */
+@media (max-width: 480px) {
+    .senas-page {
+        padding: 0.25rem;
+        padding-top: calc(0.25rem + 4.5rem);
+    }
+
+    .senas-container {
+        gap: 0.75rem;
+        margin: 0.25rem auto;
+    }
+
+    .camera-card {
+        border-radius: 8px;
+    }
+
+    .translation-box {
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+
+    .translation-box h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .translation-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .translation-actions--spaced {
+        margin-top: 1rem;
+    }
+
+    .action-btn {
+        flex: none;
+        padding: 0.875rem 1rem;
+        font-size: 0.95rem;
+        width: 100%;
+    }
+
+    .textarea-input {
+        min-height: 80px;
+        padding: 0.75rem;
+    }
+
+    .result-text {
+        font-size: 0.85rem;
+        padding: 0.5rem 0;
+    }
+
+    .sign-placeholder span {
+        font-size: 2rem;
+    }
+
+    .sign-placeholder p {
+        font-size: 0.85rem;
+    }
+
+    .camera-controls {
+        padding: 0.5rem;
+    }
 }

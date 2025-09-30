@@ -28,8 +28,11 @@
         <div class="senas-right">
             <div class="camera-card">
                 <div class="camera-preview">
-                    <!-- Marcador de posición: GIF animado o imagen de señas -->
-                    <img id="sign-preview" src="{{ url_for('static', filename='img/video/demo2.jpg') }}" alt="Señas" class="preview-img" />
+                    <!-- Marcador de posición: placeholder para señas -->
+                    <div id="sign-preview" class="sign-placeholder">
+                        <span>👋</span>
+                        <p>Señas aparecerán aquí</p>
+                    </div>
                 </div>
                 <div class="camera-controls">
                     <div id="result-text" class="result-text">Resultado aparecerá aquí</div>
@@ -39,47 +42,7 @@
     </div>
 </div>
 
-<!-- ========== SCRIPT: Traducción y UI ========== -->
-<script>
-    (function () {
-        const translateBtn = document.getElementById('translate-btn');
-        const clearBtn = document.getElementById('clear-btn');
-        const input = document.getElementById('input-text');
-        const result = document.getElementById('result-text');
-        translateBtn.addEventListener('click', function () {
-            const text = input.value.trim();
-            if (!text) { result.textContent = 'Escribe algo para traducir.'; return; }
-            // Simulated translation behaviour: reverse words as a placeholder
-            const translated = text.split(' ').reverse().join(' ');
-            result.textContent = translated;
-        });
-        clearBtn.addEventListener('click', function () { input.value = ''; result.textContent = 'Resultado aparecerá aquí'; });
-    })();
-</script>
-
-<!-- ========== SCRIPT: Modo activo UI ========== -->
-<script>
-    (function(){
-        const textBtn = document.getElementById('mode-text-to-sign');
-        const signLink = document.getElementById('mode-sign-to-text');
-        function setActive(el){
-            const els = document.querySelectorAll('.translation-actions .action-btn');
-            els.forEach(e=>e.classList.remove('active'));
-            if(el) el.classList.add('active');
-        }
-        // set active based on URL
-        if(window.location.pathname && window.location.pathname.includes('/senas')){
-            setActive(signLink);
-        } else {
-            setActive(textBtn);
-        }
-        if(textBtn){
-            textBtn.addEventListener('click', ()=> setActive(textBtn));
-        }
-        if(signLink){
-            signLink.addEventListener('click', function(e){ setActive(signLink); });
-        }
-    })();
-</script>
+<!-- ========== SCRIPT: Funcionalidades comunes ========== -->
+<script src="{{ url_for('static', filename='js/modos_traducion.js') }}"></script>
 
 {% endblock %}
