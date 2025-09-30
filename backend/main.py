@@ -1,26 +1,25 @@
-﻿from flask import Flask
+from flask import Flask
 from backend.routes.auth.auth import auth_bp
 from backend.routes.routes import main_bp
 
-
-import sys, os
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-
-
 def create_app():
-    app = Flask(__name__, 
-        static_folder="../frontend/static", 
-        template_folder="../frontend/templates")
-    
+    app = Flask(
+        __name__,
+        static_folder="../frontend/static",
+        template_folder="../frontend/templates"
+    )
+
     # Clave secreta para sesiones
     app.secret_key = 'tu_clave_secreta_super_segura_2025'
-    
+
     # Registrar blueprints
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
-    
+
     return app
 
 app = create_app()
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=3306)
+    app.run(debug=True, host='0.0.0.0', port=5000)
+
