@@ -6,21 +6,24 @@
 
 <!-- ========== HOME PRINCIPAL ========== -->
 <section class="home">
-    <div class="home-grid">
+    <!-- ========== ENCABEZADO PRINCIPAL ========== -->
+    <div class="home-header">
+        <div class="home-content">
+            <h1 class="home-title">
+                Conectando al mundo a través del lenguaje de señas
+            </h1>
 
-        <!-- ========== CONTENIDO IZQUIERDO ========== -->
-        <div class="home-left">
-            <div class="home-content">
-                <h1 class="home-title">
-                    Conectando al mundo a través del lenguaje de señas
-                </h1>
+            <p class="home-text">
+                Tecnología avanzada que hace accesible la comunicación para todos. Traduce, aprende y conecta sin
+                barreras.
+            </p>
+        </div>
+    </div>
 
-                <p class="home-text">
-                    Tecnología avanzada que hace accesible la comunicación para todos. Traduce, aprende y conecta sin
-                    barreras.
-                </p>
-            </div>
-
+    <!-- ========== CONTENIDO PRINCIPAL ========== -->
+    <div class="home-main">
+        <!-- ========== VIDEO Y BOTONES ========== -->
+        <div class="home-media-section">
             <div class="home-media">
                 <video muted loop playsinline class="home-video" title="Demostración de traducción en tiempo real"
                     loading="lazy" controls>
@@ -29,7 +32,7 @@
                 </video>
             </div>
 
-            <h2 class="home-title">Seleccione el modo</h2>
+            <h2 class="mode-title">Seleccione el modo</h2>
 
             <div class="home-actions">
                 <a href="{{ url_for('main.senas') }}" class="btn btn--primary">Señas a texto</a>
@@ -37,13 +40,13 @@
             </div>
         </div>
 
-        <!-- ========== CONTENIDO DERECHO: Panel de opciones ========== -->
-        <aside class="right-panel">
+        <!-- ========== PANEL DE OPCIONES ========== -->
+        <aside class="options-panel">
             <div class="options">
                 <!-- Card: señas a texto -->
                 <div class="option-card">
                     <div class="option-head">
-                        <h2 class="option-title">SEÑAS A TEXTO</h2>
+                        <h3 class="option-title">SEÑAS A TEXTO</h3>
                     </div>
                     <div class="option-list">
                         <div class="option-item">
@@ -68,7 +71,7 @@
                 <!-- Card: texto a señas -->
                 <div class="option-card">
                     <div class="option-head">
-                        <h2 class="option-title">TEXTO A SEÑAS</h2>
+                        <h3 class="option-title">TEXTO A SEÑAS</h3>
                     </div>
                     <div class="option-list">
                         <div class="option-item">
@@ -89,10 +92,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </aside>
-
     </div>
 </section>
 
