@@ -2,6 +2,10 @@
 from routes.auth.auth import auth_bp
 from routes.routes import main_bp
 
+import sys, os
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
+
 def create_app():
     app = Flask(__name__, 
         static_folder="../frontend/static", 
