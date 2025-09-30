@@ -9,7 +9,7 @@
     align-items: center;
     width: 100%;
     padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, var(--color-001) 0%, var(--color-002) 100%);
+    background: linear-gradient(135deg, var(--color-002) 0%, var(--color-001) 100%);
     box-shadow: 0 4px 20px rgba(44, 105, 117, 0.25);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--color-013);
@@ -650,7 +650,6 @@
 
 /* =========== UTILIDADES =========== */
 
-/* Optimizaciones de imágenes y videos */
 img {
     max-width: 100%;
     height: auto;
@@ -662,7 +661,6 @@ video {
     height: auto;
 }
 
-/* Prevenir Layout Shift */
 .nav-logo,
 .social-link {
     contain: layout style;
