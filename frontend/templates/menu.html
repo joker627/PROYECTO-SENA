@@ -8,7 +8,8 @@
 
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="preconnect" href="{{ url_for('static', filename='') }}" crossorigin>
-    <link rel="preload" href="{{ url_for('static', filename='img/icon/logo.webp') }}" as="image" type="image/webp" fetchpriority="high">
+    <link rel="preload" href="{{ url_for('static', filename='img/icon/logo.webp') }}" as="image" type="image/webp"
+        fetchpriority="high">
     <link rel="preload" href="{{ url_for('static', filename='css/main/main.css') }}" as="style">
     <link rel="prefetch" href="{{ url_for('static', filename='css/pages/index.css') }}" as="style">
     <link rel="icon" href="{{ url_for('static', filename='img/icon/logo.webp') }}" type="image/webp" sizes="32x32">
@@ -55,12 +56,15 @@
                 <a href="{{ url_for('auth.login') }}" class="nav-link nav-hide-mobile">Iniciar Sesión</a>
                 <a href="{{ url_for('auth.register') }}" class="nav-link nav-hide-mobile">Registrarse</a>
                 {% else %}
-                
+
                 <div class="nav-user-section">
                     <div class="nav-dropdown nav-hide-mobile">
                         <button class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                             <div class="nav-avatar">
-                                {{ user.nombre[:2]|upper if user.nombre else 'US' }}
+                                <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
+                                    alt="Foto de {{ user.nombre if user else 'Usuario' }}" class="nav-avatar-img">
+                                <span class="nav-avatar-fallback">{{ user.nombre[:2]|upper if user.nombre else 'US'
+                                    }}</span>
                             </div>
                             <span class="nav-username">{{ user.nombre }}</span>
                             <svg class="nav-dropdown-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -71,7 +75,10 @@
                         <div class="nav-dropdown-menu">
                             <div class="nav-dropdown-header">
                                 <div class="nav-dropdown-avatar">
-                                    {{ user.nombre[:2]|upper if user.nombre else 'US' }}
+                                    <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
+                                        alt="Foto de {{ user.nombre if user else 'Usuario' }}" class="nav-avatar-img">
+                                    <span class="nav-avatar-fallback">{{ user.nombre[:2]|upper if user.nombre else 'US'
+                                        }}</span>
                                 </div>
                                 <div class="nav-dropdown-info">
                                     <span class="nav-dropdown-name">{{ user.nombre }}</span>
@@ -112,7 +119,10 @@
                     {% if user %}
                     <div class="nav-mobile-user-info">
                         <div class="nav-mobile-avatar">
-                            {{ user.nombre[:2]|upper if user.nombre else 'US' }}
+                            <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
+                                alt="Foto de {{ user.nombre if user else 'Usuario' }}" class="nav-avatar-img">
+                            <span class="nav-avatar-fallback">{{ user.nombre[:2]|upper if user.nombre else 'US'
+                                }}</span>
                         </div>
                         <span class="nav-mobile-name">{{ user.nombre }}</span>
                     </div>
@@ -201,11 +211,13 @@
             <!-- Sección de Marca y Newsletter -->
             <div class="footer-brand">
                 <div class="footer-logo">
-                    <img src="{{ url_for('static', filename='img/icon/logo.webp') }}" alt="Sign Technology Logo" width="32" height="32" loading="lazy" />
+                    <img src="{{ url_for('static', filename='img/icon/logo.webp') }}" alt="Sign Technology Logo"
+                        width="32" height="32" loading="lazy" />
                     <h3>Sign Technology</h3>
                 </div>
-                <p class="footer-description">Plataforma líder en traducción de lenguaje de señas en tiempo real. Conectando mundos a través de la tecnología inclusiva.</p>
-                
+                <p class="footer-description">Plataforma líder en traducción de lenguaje de señas en tiempo real.
+                    Conectando mundos a través de la tecnología inclusiva.</p>
+
                 <div class="newsletter-section">
                     <h4>Mantente Actualizado</h4>
                     <p>Recibe las últimas noticias y actualizaciones de nuestro software.</p>
@@ -215,7 +227,8 @@
                                 placeholder="Tu correo electrónico" aria-label="Correo electrónico para suscripción" />
                             <button type="submit" class="newsletter-btn">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M8 1L15 8L8 15M15 8H1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 1L15 8L8 15M15 8H1" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 Suscribirse
                             </button>
@@ -237,7 +250,7 @@
                         <a href="#" class="footer-link">Actualizaciones</a>
                     </nav>
                 </div>
-                
+
                 <div class="footer-column">
                     <h4>Empresa</h4>
                     <nav class="footer-nav">
@@ -248,7 +261,7 @@
                         <a href="#" class="footer-link">Prensa</a>
                     </nav>
                 </div>
-                
+
                 <div class="footer-column">
                     <h4>Soporte</h4>
                     <nav class="footer-nav">
@@ -259,7 +272,7 @@
                         <a href="#" class="footer-link">Reportar Bug</a>
                     </nav>
                 </div>
-                
+
                 <div class="footer-column">
                     <h4>Legal</h4>
                     <nav class="footer-nav">
@@ -278,43 +291,56 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2.5 3h11a1 1 0 011 1v8a1 1 0 01-1 1h-11a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/>
-                            <path d="m2.5 4 6.5 4.5L15.5 4" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M2.5 3h11a1 1 0 011 1v8a1 1 0 01-1 1h-11a1 1 0 01-1-1V4a1 1 0 011-1z"
+                                stroke="currentColor" stroke-width="1.5" />
+                            <path d="m2.5 4 6.5 4.5L15.5 4" stroke="currentColor" stroke-width="1.5" />
                         </svg>
                         <a href="mailto:signtechnology@gmail.com" class="contact-link">signtechnology@gmail.com</a>
                     </div>
                     <div class="contact-item">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M15.5 11.13v2.37a1.5 1.5 0 01-1.64 1.5A14.82 14.82 0 011.5 2.64 1.5 1.5 0 013 1h2.38a1.5 1.5 0 011.5 1.28c.09.8.26 1.58.49 2.32a1.5 1.5 0 01-.34 1.58L5.94 7.27a12 12 0 005.79 5.79l1.09-1.09a1.5 1.5 0 011.58-.34c.74.23 1.52.4 2.32.49a1.5 1.5 0 011.28 1.5z" stroke="currentColor" stroke-width="1.5"/>
+                            <path
+                                d="M15.5 11.13v2.37a1.5 1.5 0 01-1.64 1.5A14.82 14.82 0 011.5 2.64 1.5 1.5 0 013 1h2.38a1.5 1.5 0 011.5 1.28c.09.8.26 1.58.49 2.32a1.5 1.5 0 01-.34 1.58L5.94 7.27a12 12 0 005.79 5.79l1.09-1.09a1.5 1.5 0 011.58-.34c.74.23 1.52.4 2.32.49a1.5 1.5 0 011.28 1.5z"
+                                stroke="currentColor" stroke-width="1.5" />
                         </svg>
                         <span class="contact-link">+57 300 123 4567</span>
                     </div>
                 </div>
-                
+
                 <div class="social-section">
                     <h5>Síguenos</h5>
                     <div class="footer-social" aria-label="Redes sociales">
-                        <a class="social-link" href="https://twitter.com/signtech" aria-label="Twitter" title="Twitter" target="_blank" rel="noopener">
-                            <img src="{{ url_for('static', filename='img/social/twitter.svg') }}" alt="Twitter" width="20" height="20" loading="lazy">
+                        <a class="social-link" href="https://twitter.com/signtech" aria-label="Twitter" title="Twitter"
+                            target="_blank" rel="noopener">
+                            <img src="{{ url_for('static', filename='img/social/twitter.svg') }}" alt="Twitter"
+                                width="20" height="20" loading="lazy">
                         </a>
-                        <a href="https://www.instagram.com/signtechnology" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener" class="social-link">
-                            <img src="{{ url_for('static', filename='img/social/instagram.svg') }}" alt="Instagram" width="20" height="20" loading="lazy">
+                        <a href="https://www.instagram.com/signtechnology" aria-label="Instagram" title="Instagram"
+                            target="_blank" rel="noopener" class="social-link">
+                            <img src="{{ url_for('static', filename='img/social/instagram.svg') }}" alt="Instagram"
+                                width="20" height="20" loading="lazy">
                         </a>
-                        <a href="https://www.facebook.com/signtechnology" aria-label="Facebook" title="Facebook" target="_blank" rel="noopener" class="social-link">
-                            <img src="{{ url_for('static', filename='img/social/facebook.svg') }}" alt="Facebook" width="20" height="20" loading="lazy">
+                        <a href="https://www.facebook.com/signtechnology" aria-label="Facebook" title="Facebook"
+                            target="_blank" rel="noopener" class="social-link">
+                            <img src="{{ url_for('static', filename='img/social/facebook.svg') }}" alt="Facebook"
+                                width="20" height="20" loading="lazy">
                         </a>
-                        <a class="social-link" href="https://www.linkedin.com/company/signtechnology" aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
-                            <img src="{{ url_for('static', filename='img/social/linkedin.svg') }}" alt="LinkedIn" width="20" height="20" loading="lazy">
+                        <a class="social-link" href="https://www.linkedin.com/company/signtechnology"
+                            aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
+                            <img src="{{ url_for('static', filename='img/social/linkedin.svg') }}" alt="LinkedIn"
+                                width="20" height="20" loading="lazy">
                         </a>
-                        <a class="social-link" href="https://github.com/signtechnology" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-                            <img src="{{ url_for('static', filename='img/social/github.svg') }}" alt="GitHub" width="20" height="20" loading="lazy">
+                        <a class="social-link" href="https://github.com/signtechnology" aria-label="GitHub"
+                            title="GitHub" target="_blank" rel="noopener">
+                            <img src="{{ url_for('static', filename='img/social/github.svg') }}" alt="GitHub" width="20"
+                                height="20" loading="lazy">
                         </a>
                     </div>
                 </div>
             </div>
 
         </div>
-        
+
         <!-- Pie de página final -->
         <div class="footer-bottom">
             <div class="footer-bottom-content">
@@ -336,6 +362,25 @@
     <!-- ========== SCRIPTS ========== -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="{{ url_for('static', filename='js/modos_traducion.js') }}"></script>
+
+    <script>
+        // Manejo mejorado de avatares
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.nav-avatar-img').forEach(img => {
+                const fallback = img.nextElementSibling;
+
+                img.onerror = function () {
+                    this.style.display = 'none';
+                    if (fallback) fallback.style.opacity = '1';
+                };
+
+                img.onload = function () {
+                    this.style.opacity = '1';
+                    if (fallback) fallback.style.opacity = '0';
+                };
+            });
+        });
+    </script>
 
 </body>
 

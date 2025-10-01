@@ -1,17 +1,15 @@
-/* Styles for texto.html - mirror of senas page but for text input */
+/* Página de texto a señas */
 
 @import '../utils/global.css';
 
 .texto-page {
-  /* reuse variables from project */
   background: var(--color-004);
 }
 
-/* reuse senas container rules */
+/* Reutilizar estilos de señas */
 .senas-page {
     background-color: var(--color-003);
     min-height: 100vh;
-    /* leave space for fixed nav */
     padding: 1rem;
     padding-top: calc(1rem + 4.5rem);
     width: 100%;

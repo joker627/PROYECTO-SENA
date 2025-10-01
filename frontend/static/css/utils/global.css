@@ -1,6 +1,5 @@
-/* =========== VARIABLES GLOBALES =========== */
+/* Variables globales */
 :root {
-    /* Colores principales */
     --color-001: #2c6975;
     --color-002: #4a8e7c;
     --color-003: #cde0c9;
@@ -28,7 +27,7 @@
     --color-025: rgba(255, 255, 255, 0.1);
 }
 
-/* =========== RESET GLOBAL =========== */
+/* Reset global */
 * {
     margin: 0;
     padding: 0;
@@ -51,7 +50,6 @@ h6 {
     color: var(--color-008);
 }
 
-/* Variables CSS y reset global */
 body {
     background-color: var(--color-006);
     color: var(--color-006);
@@ -60,7 +58,7 @@ body {
     flex-direction: column;
 }
 
-/* Mejoras responsive globales */
+/* Layout principal */
 main {
     flex: 1;
     width: 100%;
@@ -68,7 +66,7 @@ main {
     overflow-x: hidden;
 }
 
-/* Utilidades responsive */
+/* Responsive */
 @media (max-width: 768px) {
     .container {
         padding-left: 1rem;
@@ -83,7 +81,7 @@ main {
     }
 }
 
-/* Mejoras para imágenes responsive */
+/* Media responsive */
 img {
     max-width: 100%;
     height: auto;
