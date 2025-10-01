@@ -1,0 +1,168 @@
+{% extends 'menu.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/legal.css') }}">
+<style>
+.error-container {
+    text-align: center;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px 20px;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: bold;
+    color: #e74c3c;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.error-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin: 20px 0;
+}
+
+.error-message {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    margin: 20px 0 30px 0;
+    line-height: 1.6;
+}
+
+.error-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.error-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.error-btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.error-btn-primary:hover {
+    background-color: #2980b9;
+    color: white;
+    text-decoration: none;
+}
+
+.error-btn-secondary {
+    background-color: transparent;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+}
+
+.error-btn-secondary:hover {
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+}
+
+.error-illustration {
+    margin: 30px 0;
+    font-size: 4rem;
+    opacity: 0.7;
+}
+
+.error-suggestions {
+    background: #ffebee;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 30px 0;
+    text-align: left;
+    border-left: 4px solid #e74c3c;
+}
+
+.error-suggestions h3 {
+    color: #c62828;
+    margin-bottom: 15px;
+}
+
+.error-suggestions ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.error-suggestions li {
+    margin: 8px 0;
+    color: #c62828;
+}
+
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 6rem;
+    }
+    
+    .error-title {
+        font-size: 1.5rem;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .error-btn {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="error-container">
+        <h1 class="error-code">400</h1>
+        <h2 class="error-title">Solicitud Incorrecta</h2>
+        
+        <div class="error-illustration">
+            ❌📝
+        </div>
+        
+        <p class="error-message">
+            La solicitud que enviaste contiene información incorrecta o está malformada. 
+            Por favor, verifica los datos e intenta nuevamente.
+        </p>
+        
+        <div class="error-actions">
+            <a href="{{ url_for('main.inicio') }}" class="error-btn error-btn-primary">
+                🏠 Volver al Inicio
+            </a>
+            <a href="javascript:history.back()" class="error-btn error-btn-secondary">
+                ← Página Anterior
+            </a>
+        </div>
+        
+        <div class="error-suggestions">
+            <h3>✅ Verifica lo siguiente:</h3>
+            <ul>
+                <li>Completa todos los campos requeridos en el formulario</li>
+                <li>Asegúrate de que el formato de email sea válido</li>
+                <li>Verifica que las contraseñas coincidan</li>
+                <li>Comprueba que los archivos subidos tengan el formato correcto</li>
+                <li>Intenta <a href="javascript:location.reload()">recargar la página</a> y llenar el formulario nuevamente</li>
+            </ul>
+        </div>
+        
+        <div class="error-contact">
+            <p>
+                Si continúas teniendo problemas, contacta al soporte técnico del 
+                <strong>SENA</strong> para obtener ayuda.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

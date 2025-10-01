@@ -1,8 +1,7 @@
-import os
-
-DB_HOST = os.environ.get("DB_HOST")
-DB_USER = os.environ.get("DB_USER")
-DB_PASSWORD = os.environ.get("DB_PASSWORD")
-DB_NAME = os.environ.get("DB_NAME")
-DB_CHARSET = "utf8mb4"
-DB_CURSORCLASS = "DictCursor"
+# Database configuration
+DB_HOST = 'localhost'
+DB_USER = 'manuelx6'
+DB_PASSWORD = 'Manueldev@.55'
+DB_NAME = 'sign_technology'
+DB_CHARSET = 'utf8mb4'
+DB_CURSORCLASS = 'DictCursor'
