@@ -1,5 +1,4 @@
-from backend.config.db import get_db_connection
-
+from config.db import get_db_connection
 
 # Funciones para interactuar con la tabla de usuarios
 def get_user_by_email(correo):
