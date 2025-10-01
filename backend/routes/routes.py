@@ -24,17 +24,14 @@ def menu():
     return render_template('menu.html')
 
 # Rutas para páginas legales
-@main_bp.route('/legal')
-def legal():
-    return render_template('legal/index.html')
 
 @main_bp.route('/terminos')
 def terminos():
-    return render_template('legal/terminos.html')
+    return render_template('legal/terminos_y_condiciones.html')
 
 @main_bp.route('/privacidad')
 def privacidad():
-    return render_template('legal/privacidad.html')
+    return render_template('legal/politica_y_privacidad.html')
 
 @main_bp.route('/cookies')
 def cookies():
