@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 /* ========== ESTILOS COMUNES PARA AUTH (LOGIN/REGISTER) ========== */
 
 /* Layout base */
+=======
+/* Estilos de autenticación */
+>>>>>>> main
 .auth-page {
     background-color: var(--color-002);
     height: 100%;
@@ -51,7 +55,10 @@
     box-shadow: 0 2px 12px var(--color-012);
 }
 
+<<<<<<< HEAD
 /* Títulos */
+=======
+>>>>>>> main
 .auth-title {
     margin-top: 0;
     margin-bottom: 1rem;
@@ -62,7 +69,10 @@
     text-align: center;
 }
 
+<<<<<<< HEAD
 /* Formularios */
+=======
+>>>>>>> main
 .auth-form {
     width: 100%;
     max-width: 400px;
@@ -88,7 +98,45 @@
     min-width: 0;
 }
 
+<<<<<<< HEAD
 /* Grupos de iconos */
+=======
+.auth-select {
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-003);
+    font-size: 1rem;
+    background: var(--color-004);
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 16px;
+    padding-right: 3rem;
+    color: var(--color-006);
+}
+
+.auth-select:focus {
+    outline: none;
+    border-color: var(--color-001);
+    box-shadow: 0 0 0 2px rgba(44, 105, 117, 0.2);
+}
+
+.auth-select option {
+    background: var(--color-004);
+    color: var(--color-006);
+    padding: 0.5rem;
+}
+
+.auth-select option:hover,
+.auth-select option:focus {
+    background: var(--color-003);
+}
+
+>>>>>>> main
 .auth-icon-group {
     display: flex;
     align-items: center;
@@ -383,6 +431,16 @@
         font-size: 0.95rem;
     }
 
+<<<<<<< HEAD
+=======
+    .auth-select {
+        padding: 0.875rem;
+        padding-right: 2.5rem;
+        font-size: 0.95rem;
+        background-size: 14px;
+    }
+
+>>>>>>> main
     .auth-form button {
         padding: 0.875rem 1rem;
         font-size: 0.95rem;
