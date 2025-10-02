@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-/* ========== ESTILOS COMUNES PARA AUTH (LOGIN/REGISTER) ========== */
-
-/* Layout base */
-=======
 /* Estilos de autenticación */
->>>>>>> main
 .auth-page {
     background-color: var(--color-002);
     height: 100%;
@@ -55,10 +49,6 @@
     box-shadow: 0 2px 12px var(--color-012);
 }
 
-<<<<<<< HEAD
-/* Títulos */
-=======
->>>>>>> main
 .auth-title {
     margin-top: 0;
     margin-bottom: 1rem;
@@ -69,10 +59,6 @@
     text-align: center;
 }
 
-<<<<<<< HEAD
-/* Formularios */
-=======
->>>>>>> main
 .auth-form {
     width: 100%;
     max-width: 400px;
@@ -98,9 +84,6 @@
     min-width: 0;
 }
 
-<<<<<<< HEAD
-/* Grupos de iconos */
-=======
 .auth-select {
     padding: 1rem;
     border-radius: 8px;
@@ -136,7 +119,6 @@
     background: var(--color-003);
 }
 
->>>>>>> main
 .auth-icon-group {
     display: flex;
     align-items: center;
@@ -431,8 +413,6 @@
         font-size: 0.95rem;
     }
 
-<<<<<<< HEAD
-=======
     .auth-select {
         padding: 0.875rem;
         padding-right: 2.5rem;
@@ -440,7 +420,6 @@
         background-size: 14px;
     }
 
->>>>>>> main
     .auth-form button {
         padding: 0.875rem 1rem;
         font-size: 0.95rem;

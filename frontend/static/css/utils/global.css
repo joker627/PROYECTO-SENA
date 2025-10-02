@@ -58,11 +58,7 @@ body {
     flex-direction: column;
 }
 
-<<<<<<< HEAD
-/* Mejoras responsive globales */
-=======
 /* Layout principal */
->>>>>>> main
 main {
     flex: 1;
     width: 100%;
@@ -70,11 +66,7 @@ main {
     overflow-x: hidden;
 }
 
-<<<<<<< HEAD
-/* Utilidades responsive */
-=======
 /* Responsive */
->>>>>>> main
 @media (max-width: 768px) {
     .container {
         padding-left: 1rem;
@@ -89,11 +81,7 @@ main {
     }
 }
 
-<<<<<<< HEAD
-/* Mejoras para imágenes responsive */
-=======
 /* Media responsive */
->>>>>>> main
 img {
     max-width: 100%;
     height: auto;

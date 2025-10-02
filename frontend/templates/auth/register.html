@@ -53,26 +53,6 @@
 
                 <div class="auth-icon-group">
                     <img src="{{ url_for('static', filename='img/icon/settings.svg') }}" alt="" class="auth-icon">
-<<<<<<< HEAD
-                    <div class="auth-radio-block">
-                        <label class="auth-label">¿Eres una persona con discapacidad auditiva?</label>
-                        <div class="auth-radio-group">
-                            {% for rol in roles %}
-                            {% if rol.nombre_rol == 'discapacitado' %}
-                            <label class="auth-radio-option">
-                                <input type="radio" name="rol" value="{{ rol.id_rol }}" required>
-                                <span class="auth-radio-text">Sí</span>
-                            </label>
-                            {% elif rol.nombre_rol == 'oyente' %}
-                            <label class="auth-radio-option">
-                                <input type="radio" name="rol" value="{{ rol.id_rol }}" required>
-                                <span class="auth-radio-text">No</span>
-                            </label>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-=======
                     <select name="rol" class="auth-select" required>
                         <option value="" disabled selected>¿Eres una persona con discapacidad auditiva?</option>
                         {% for rol in roles %}
@@ -83,7 +63,6 @@
                         {% endif %}
                         {% endfor %}
                     </select>
->>>>>>> main
                 </div>
 
                 <p class="auth-text">

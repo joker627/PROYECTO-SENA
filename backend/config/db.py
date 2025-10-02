@@ -1,6 +1,6 @@
 ﻿# backend/config/db.py
 import pymysql
-from .conexion import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_CHARSET, DB_CURSORCLASS
+from .conexion import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_CHARSET
 
 def get_db_connection():
 	return pymysql.connect(
