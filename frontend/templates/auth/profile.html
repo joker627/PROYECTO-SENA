@@ -21,7 +21,8 @@
         <h2 class="profile-title">Información personal</h2>
         <form class="profile-form" method="POST" action="#">
             <div class="profile-img-section">
-                <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp" alt="Foto de perfil" class="profile-img">
+                <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
+                    alt="Foto de perfil" class="profile-img">
                 <div class="profile-img-actions">
                     <button type="button" class="btn btn--primary">Subir imagen</button>
                     <button type="button" class="btn btn--danger">Eliminar</button>
@@ -37,14 +38,48 @@
                     <button type="button" class="btn btn--primary">Verificar</button>
                 </div>
 
-                <label for="contrasena">Contraseña</label>
-                <input type="password" id="contrasena" name="contrasena" placeholder="Cambiar Contraseña" class="input">
-            </div>
-            <div class="profile-actions">
-                <button type="button" class="btn btn--secondary">Cancelar</button>
-                <button type="submit" class="btn btn--primary">Guardar Cambios</button>
             </div>
         </form>
+
+        <!-- Sección de Cambio de Contraseña -->
+        <div class="profile-security-section">
+            <h3 class="profile-subtitle">Cambiar Contraseña</h3>
+            <p class="profile-security-desc">Actualiza tu contraseña para mantener tu cuenta segura</p>
+
+            <form class="password-change-form" method="POST" action="{{ url_for('auth.change_password') }}">
+                <div class="password-fields">
+                    <label for="current_password">Contraseña Actual</label>
+                    <input type="password" id="current_password" name="current_password"
+                        placeholder="Ingresa tu contraseña actual" class="input" required>
+
+                    <label for="new_password">Nueva Contraseña</label>
+                    <input type="password" id="new_password" name="new_password"
+                        placeholder="Ingresa tu nueva contraseña" class="input" required minlength="6">
+
+                    <label for="confirm_password">Confirmar Nueva Contraseña</label>
+                    <input type="password" id="confirm_password" name="confirm_password"
+                        placeholder="Confirma tu nueva contraseña" class="input" required minlength="6">
+                </div>
+
+                <div class="password-requirements">
+                    <p>La contraseña debe tener:</p>
+                    <ul>
+                        <li>Al menos 6 caracteres</li>
+                        <li>Una letra mayúscula</li>
+                        <li>Una letra minúscula</li>
+                        <li>Un número</li>
+                    </ul>
+                </div>
+
+                <div class="password-actions">
+                    <button type="button" class="btn btn--secondary" onclick="clearPasswordForm()">Cancelar</button>
+                    <button type="submit" class="btn btn--primary">Cambiar Contraseña</button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
+
+</div>
 </div>
 {% endblock %}

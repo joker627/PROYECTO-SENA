@@ -1,7 +1,6 @@
 ﻿from flask import Flask, session
 from routes.auth.auth import auth_bp
 from routes.routes import main_bp
-from error_handlers import register_error_handlers
 
 def create_app():
     app = Flask(__name__, 
@@ -20,8 +19,6 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     
-    # Registrar manejadores de errores
-    register_error_handlers(app)
     
     return app
 

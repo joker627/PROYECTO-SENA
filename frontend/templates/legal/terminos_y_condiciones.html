@@ -1,49 +1,118 @@
 {% extends 'menu.html' %}
- class="content">
-        
-{% block head %}Terminos y Condiciones{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/legal.css') }}">
+<title>Términos y Condiciones - Sign Technology</title>
+{% endblock %}
 
 {% block content %}
-  
-
-    <div class="container">
-       
-
-        <div    <h1>TÉRMINOS Y CONDICIONES DE USO</h1>
+<div class="legal-page-content">
+    <div class="legal-container">
+        <h1 class="legal-title">Términos y Condiciones</h1>
+        
+        <div class="legal-sections">
+            <details class="legal-section" open>
+                <summary class="legal-section-summary">
+                    <p class="legal-section-title">Aceptación de Términos</p>
+                    <div class="legal-section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                        </svg>
+                    </div>
+                </summary>
+                <div class="legal-section-content">
+                    <p>Al registrarse y utilizar el sistema de traducción de señas de Sign Technology, el usuario acepta de manera voluntaria y consciente estos Términos y Condiciones, así como la Política de Privacidad asociada.</p>
+                </div>
+            </details>
             
-            <div class="highlight">
-                <p><strong>¡Gracias por usar Sign Technology!</strong></p>
-            </div>
-
-            <h2><span class="section-number">1</span>Aceptación de Términos</h2>
-            <p>Al registrarse y utilizar el sistema de traducción de señas de Sign Technology, el usuario acepta de manera voluntaria y consciente estos Términos y Condiciones, así como la Política de Privacidad asociada.</p>
-
-            <h2><span class="section-number">2</span>Propósito del Software</h2>
-            <p>Sign Technology es un sistema diseñado para facilitar la comunicación mediante la traducción de lenguaje de señas, proporcionando una herramienta tecnológica innovadora para mejorar la accesibilidad.</p>
-
-            <h2><span class="section-number">3</span>Consentimiento para el uso de datos anonimizados</h2>
-            <p>El usuario autoriza a Sign Technology a almacenar y utilizar de manera anónima los datos de movimiento (landmarks) generados durante el uso del sistema. Estos datos se utilizarán exclusivamente para el perfeccionamiento del software, incluyendo procesos de mejora, ajuste de errores y entrenamiento del sistema.</p>
-
-            <h2><span class="section-number">4</span>¿Qué son los landmarks?</h2>
-            <p>Los landmarks son representaciones numéricas generadas por el sistema que identifican puntos clave del cuerpo, rostro y manos capturados mediante cámara. No son fotografías ni grabaciones, y <strong>no contienen información personal o biométrica reconocible</strong>. Su única finalidad es técnica: servir como base para interpretar los movimientos y señas realizados por el usuario.</p>
-
-            <h2><span class="section-number">5</span>Almacenamiento obligatorio de datos</h2>
-            <p>El almacenamiento de los landmarks es una condición esencial para el funcionamiento del sistema. No es posible utilizar el software sin autorizar este proceso.</p>
-            <p>Los datos se registran de manera totalmente anónima, sin asociarse al nombre del usuario ni a ningún dato que permita su identificación directa.</p>
-
-            <h2><span class="section-number">6</span>Eliminación de cuentas y conservación de datos</h2>
-            <p>El usuario puede solicitar la eliminación de su cuenta y sus datos personales del sistema en cualquier momento. Sin embargo, los datos de landmarks generados durante el uso del software no serán eliminados, ya que forman parte de un registro anónimo utilizado para mejorar la herramienta y garantizar su funcionamiento a largo plazo.</p>
-
-            <h2><span class="section-number">7</span>Modificaciones y actualizaciones</h2>
-            <p>Sign Technology podrá modificar estos Términos y Condiciones según lo requiera la evolución del proyecto. En caso de cambios sustanciales, se informará al usuario dentro de la aplicación antes de su aplicación.</p>
-
-            <div class="consent-box">
-                <h2 style="border: none; margin-top: 0; color: #27ae60;">Confirmación de consentimiento</h2>
-                <p>Durante el proceso de registro, el usuario deberá aceptar expresamente los Términos y Condiciones marcando la siguiente casilla:</p>
-                <p class="consent-text">"He leído y acepto los Términos y Condiciones de uso, incluyendo el uso obligatorio de mis datos de movimiento (landmarks) de forma anónima para fines de mejora del sistema."</p>
+            <details class="legal-section">
+                <summary class="legal-section-summary">
+                    <p class="legal-section-title">Propósito del Software</p>
+                    <div class="legal-section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                        </svg>
+                    </div>
+                </summary>
+                <div class="legal-section-content">
+                    <p>Sign Technology es un sistema diseñado para facilitar la comunicación mediante la traducción de lenguaje de señas, proporcionando una herramienta tecnológica innovadora para mejorar la accesibilidad.</p>
+                </div>
+            </details>
+            
+            <details class="legal-section">
+                <summary class="legal-section-summary">
+                    <p class="legal-section-title">Uso de Datos Anonimizados</p>
+                    <div class="legal-section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                        </svg>
+                    </div>
+                </summary>
+                <div class="legal-section-content">
+                    <p>El usuario autoriza a Sign Technology a almacenar y utilizar de manera anónima los datos de movimiento (landmarks) generados durante el uso del sistema. Estos datos se utilizarán exclusivamente para el perfeccionamiento del software.</p>
+                </div>
+            </details>
+        </div>
+        
+        <div class="legal-video-container">
+            <video class="legal-video" controls poster="/static/img/general/terms-poster.jpg">
+                <source src="/static/video/demo3.mp4" type="video/mp4">
+                <source src="/static/video/demo2.mp4" type="video/mp4">
+                Tu navegador no soporta el elemento de video.
+            </video>
+        </div>
+        
+        <div class="legal-sections">
+            <details class="legal-section">
+                <summary class="legal-section-summary">
+                    <p class="legal-section-title">¿Qué son los Landmarks?</p>
+                    <div class="legal-section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                        </svg>
+                    </div>
+                </summary>
+                <div class="legal-section-content">
+                    <p>Los landmarks son representaciones numéricas generadas por el sistema que identifican puntos clave del cuerpo, rostro y manos capturados mediante cámara. <strong>No son fotografías ni grabaciones</strong>, y no contienen información personal o biométrica reconocible.</p>
+                </div>
+            </details>
+            
+            <details class="legal-section" open>
+                <summary class="legal-section-summary">
+                    <p class="legal-section-title">Almacenamiento de Datos</p>
+                    <div class="legal-section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                        </svg>
+                    </div>
+                </summary>
+                <div class="legal-section-content">
+                    <p>El almacenamiento de los landmarks es una condición esencial para el funcionamiento del sistema. Los datos se registran de manera totalmente anónima, sin asociarse al nombre del usuario ni a ningún dato que permita su identificación directa.</p>
+                </div>
+            </details>
+            
+            <details class="legal-section">
+                <summary class="legal-section-summary">
+                    <p class="legal-section-title">Eliminación de Cuentas</p>
+                    <div class="legal-section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                            <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                        </svg>
+                    </div>
+                </summary>
+                <div class="legal-section-content">
+                    <p>El usuario puede solicitar la eliminación de su cuenta y sus datos personales en cualquier momento. Sin embargo, los datos de landmarks no serán eliminados, ya que forman parte de un registro anónimo utilizado para mejorar la herramienta.</p>
+                </div>
+            </details>
+        </div>
+        
+        <div class="legal-info-box">
+            <h3>Confirmación de Consentimiento</h3>
+            <p>Durante el proceso de registro, el usuario deberá aceptar expresamente los Términos y Condiciones marcando la siguiente casilla:</p>
+            <div class="legal-consent-box">
+                <p class="legal-consent-text">"He leído y acepto los Términos y Condiciones de uso, incluyendo el uso obligatorio de mis datos de movimiento (landmarks) de forma anónima para fines de mejora del sistema."</p>
             </div>
         </div>
-
     </div>
-
-  {% endblock %}
+</div>
+{% endblock %}

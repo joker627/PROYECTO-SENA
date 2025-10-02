@@ -5,10 +5,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-<<<<<<< HEAD
-/* ========== ENCABEZADO PRINCIPAL ========== */
-=======
->>>>>>> main
 .home-header {
   text-align: center;
   padding: 2rem 1.25rem 2.5rem;
@@ -47,11 +43,7 @@
   font-size: 1.4rem !important;
 }
 
-<<<<<<< HEAD
-/* ========== CONTENIDO PRINCIPAL ========== */
-=======
 /* Contenido principal */
->>>>>>> main
 .home-main {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -62,11 +54,7 @@
   align-items: start;
 }
 
-<<<<<<< HEAD
-/* ========== SECCIÓN DE VIDEO ========== */
-=======
 /* Sección de video */
->>>>>>> main
 .home-media-section {
   display: flex;
   flex-direction: column;
@@ -139,11 +127,7 @@
   display: block;
 }
 
-<<<<<<< HEAD
-/* ========== PANEL DE OPCIONES ========== */
-=======
 /* Panel de opciones */
->>>>>>> main
 .options-panel {
   display: flex;
   justify-content: center;
