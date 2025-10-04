@@ -1,4 +1,4 @@
-{% extends "menu.html" %}
+{% extends "base/layout.html" %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/utils/auth.css') }}">
@@ -34,19 +34,21 @@
         <div class="auth-right">
             <form method="POST" action="{{ url_for('auth.login') }}" class="auth-form">
 
-                <h2 class="auth-title">Iniciar sesión</h2>
+                <h2 class="auth-title auth-form-full">Iniciar sesión</h2>
 
-                <div class="auth-icon-group">
-                    <img src="{{ url_for('static', filename='img/icon/user.svg') }}" alt="" class="auth-icon">
-                    <input type="email" name="correo" placeholder="Email" required>
+                <div class="auth-form-grid">
+                    <div class="auth-icon-group">
+                        <img src="{{ url_for('static', filename='img/ui/user.svg') }}" alt="" class="auth-icon">
+                        <input type="email" name="correo" placeholder="Correo electrónico" required>
+                    </div>
+
+                    <div class="auth-icon-group">
+                        <img src="{{ url_for('static', filename='img/ui/password.svg') }}" alt="" class="auth-icon">
+                        <input type="password" name="contrasena" placeholder="Contraseña" required>
+                    </div>
                 </div>
 
-                <div class="auth-icon-group">
-                    <img src="{{ url_for('static', filename='img/icon/password.svg') }}" alt="" class="auth-icon">
-                    <input type="password" name="contrasena" placeholder="Contraseña" required>
-                </div>
-
-                <div class="remember-me">
+                <div class="remember-me auth-form-full">
                     <div class="remember-left">
                         <input type="checkbox" id="remember_me" name="remember_me">
                         <label for="remember_me">Recordarme</label>
@@ -56,15 +58,15 @@
                     </div>
                 </div>
 
-                <p class="auth-text">
+                <p class="auth-text auth-form-full">
                     No tienes una cuenta? <a href="{{ url_for('auth.register') }}">Regístrate</a>
                 </p>
 
-                <button type="submit" class="btn">Entrar</button>
+                <button type="submit" class="btn auth-form-full">Entrar</button>
 
-                <span class="auth-divider">o</span>
+                <span class="auth-divider auth-form-full">o</span>
 
-                <div class="auth-social">
+                <div class="auth-social auth-form-full">
                     <button type="button" class="social-btn google">
                         <img src="{{ url_for('static', filename='img/social/google.svg') }}" alt="Google logo">
                         Iniciar sesión con Google

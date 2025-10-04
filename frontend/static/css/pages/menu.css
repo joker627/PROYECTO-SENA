@@ -10,7 +10,6 @@
     padding: 0.75rem 1.5rem;
     background: linear-gradient(135deg, var(--color-002), var(--color-001));
     box-shadow: 0 4px 20px rgba(44, 105, 117, 0.25);
-    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--color-013);
     z-index: 1000;
 }
@@ -25,6 +24,10 @@
     margin: 0;
     color: var(--color-005);
     font: 700 clamp(0.95rem, 1.2vw + 0.6rem, 1.15rem)/1 inherit;
+    background: linear-gradient(135deg, var(--color-005), var(--color-013));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     letter-spacing: 0.4px;
 }
 
@@ -98,7 +101,8 @@
 }
 
 /* Imágenes de avatar */
-.nav-avatar-img {
+/* Avatar con foto de perfil */
+.nav-avatar-img-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -107,7 +111,28 @@
     top: 0;
     left: 0;
     border: 2px solid var(--color-005);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
     box-sizing: border-box;
+    z-index: 1;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-avatar-img.photo:hover,
+.nav-avatar-img-photo:hover {
+    border-color: var(--color-013);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 0 0 2px rgba(68, 155, 168, 0.3);
+}
+
+/* Avatar con icono (por defecto) */
+.nav-avatar-img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.9;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
 
 .nav-avatar-fallback {
@@ -147,10 +172,7 @@
     padding: 0.5rem 0.75rem;
     border-radius: 8px;
     transition: background-color 0.2s ease;
-    gap: 8px;
     min-height: 44px;
-    display: flex;
-    align-items: center;
 }
 
 .nav-dropdown-toggle:hover {
@@ -180,7 +202,9 @@
 }
 
 .nav-dropdown-arrow {
-    color: var(--color-005);
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
     transition: transform 0.3s ease;
 }
 
@@ -192,7 +216,6 @@
     top: calc(100% + 10px);
     right: 0;
     background: var(--color-005);
-    backdrop-filter: blur(20px);
     min-width: 240px;
     box-shadow: 0 10px 40px rgba(44, 105, 117, 0.2);
     border-radius: 12px;
@@ -263,10 +286,18 @@
     color: var(--color-015);
 }
 
-.nav-dropdown-item svg {
+.nav-dropdown-item img,
+.nav-dropdown-icon {
     width: 16px;
     height: 16px;
     opacity: 0.7;
+}
+
+.nav-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.8;
+    flex-shrink: 0;
 }
 
 /* Hamburguesa y móvil */
@@ -288,22 +319,7 @@
     transition: transform 0.25s ease, opacity 0.2s ease;
 }
 
-.nav-mobile-user {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
 
-.nav-mobile-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-}
 
 .nav-mobile-avatar {
     width: 48px;
@@ -322,13 +338,32 @@
     flex-shrink: 0;
 }
 
-.nav-mobile-avatar .nav-avatar-img {
+/* Avatar con foto de perfil */
+.nav-mobile-avatar .nav-avatar-img.photo,
+.nav-mobile-avatar .nav-avatar-img-photo {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    position: absolute;
     top: 0;
     left: 0;
-    border: 2px solid var(--color-005);
+    border: 3px solid var(--color-005);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.15);
     box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Avatar con icono (por defecto) */
+.nav-mobile-avatar .nav-avatar-img {
+    width: 24px;
+    height: 24px;
+    opacity: 0.9;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
 
 .nav-mobile-avatar .nav-avatar-fallback {
@@ -373,7 +408,6 @@
 
 .footer-logo img {
     border-radius: 8px;
-    filter: brightness(1.1);
 }
 
 .footer-logo h3 {
@@ -425,7 +459,6 @@
     background: var(--color-025);
     color: var(--color-005);
     font-size: 0.9rem;
-    backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 }
 
@@ -573,7 +606,6 @@
     border-radius: 12px;
     color: var(--color-024);
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
     border: 1px solid var(--color-025);
 }
 
@@ -670,6 +702,11 @@ img, video {
     .nav-dropdown-toggle:hover .nav-avatar {
         border-color: var(--color-013);
     }
+}
+
+/* Ocultar elementos móviles en desktop */
+.nav-mobile-only { 
+    display: none; 
 }
 
 /* Responsive */
@@ -813,12 +850,31 @@ img, video {
         flex-shrink: 0;
     }
     
+    /* Avatar móvil con icono (por defecto) */
     .nav-mobile-user-info .nav-mobile-avatar .nav-avatar-img {
+        width: 20px;
+        height: 20px;
+        opacity: 0.9;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+    
+    /* Avatar móvil con foto de perfil */
+    .nav-mobile-user-info .nav-mobile-avatar .nav-avatar-img.photo,
+    .nav-mobile-user-info .nav-mobile-avatar .nav-avatar-img-photo {
         width: 100%;
         height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        position: absolute;
         top: 0;
         left: 0;
-        border-radius: 50%;
+        border: 2px solid var(--color-005);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        box-sizing: border-box;
         border: 2px solid var(--color-005);
         box-sizing: border-box;
     }
@@ -828,14 +884,7 @@ img, video {
         font: 600 1rem/1 inherit;
     }
     
-    .nav-mobile-user { display: none; }
-    
-    .nav-mobile-avatar {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 0.5rem;
-        box-shadow: 0 6px 20px rgba(127, 195, 179, 0.4);
-    }
+
     
     .nav-mobile-name {
         font: 600 1.1rem/1 inherit;
@@ -895,7 +944,7 @@ img, video {
 
 @media (max-width: 640px) {
     .nav-mobile-user {
-        display: flex !important;
+        display: flex;
         flex-direction: column;
         gap: 0.5rem;
     }

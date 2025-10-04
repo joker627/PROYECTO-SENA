@@ -60,7 +60,7 @@ def register():
 @auth_bp.route('/profile')
 def profile():
     user = session.get('user')
-    return render_template('auth/profile.html', user=user)
+    return render_template('auth/profile/index.html', user=user)
 
 
 # Ruta para cambiar contraseña

@@ -1,4 +1,4 @@
-﻿{% extends 'menu.html' %}
+﻿{% extends 'base/layout.html' %}
 
 {% block head %}{% endblock %}
 
@@ -103,7 +103,7 @@
 
         <article class="feature">
             <div class="feature-icon">
-                <img src="{{ url_for('static', filename='img/icon/1.svg') }}" alt="Traducción en tiempo real"
+                <img src="{{ url_for('static', filename='img/features/lightning.svg') }}" alt="Traducción en tiempo real"
                     class="feature-img" width="64" height="64" loading="lazy" />
             </div>
             <div class="feature-content">
@@ -114,7 +114,7 @@
 
         <article class="feature">
             <div class="feature-icon">
-                <img src="{{ url_for('static', filename='img/icon/2.svg') }}" alt="Adaptación de contenido"
+                <img src="{{ url_for('static', filename='img/features/globe.svg') }}" alt="Adaptación de contenido"
                     class="feature-img" width="64" height="64" loading="lazy" />
             </div>
             <div class="feature-content">
@@ -125,7 +125,7 @@
 
         <article class="feature">
             <div class="feature-icon">
-                <img src="{{ url_for('static', filename='img/icon/3.svg') }}" alt="Accesibilidad mejorada"
+                <img src="{{ url_for('static', filename='img/features/clock.svg') }}" alt="Accesibilidad mejorada"
                     class="feature-img" width="64" height="64" loading="lazy" />
             </div>
             <div class="feature-content">
