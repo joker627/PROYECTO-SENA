@@ -8,12 +8,13 @@ def create_app():
         template_folder="../frontend/templates")
     
     # Clave secreta para sesiones
-    app.secret_key = 'tu_clave_secreta_super_segura_2025'
+    app.secret_key = 'manuel'
     
     # Context processor para hacer 'user' disponible en todos los templates
     @app.context_processor
     def inject_user():
         return dict(user=session.get('user'))
+    
     
     # Registrar blueprints
     app.register_blueprint(main_bp)

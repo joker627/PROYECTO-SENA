@@ -1,4 +1,4 @@
-{% extends "menu.html" %}
+{% extends "base/layout.html" %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/utils/auth.css') }}">
@@ -34,42 +34,47 @@
         <div class="auth-right">
             <form method="POST" action="{{ url_for('auth.register') }}" class="auth-form">
 
-                <h2 class="auth-title">Registrarse</h2>
+                <h2 class="auth-title auth-form-full">Registrarse</h2>
 
-                <div class="auth-icon-group">
-                    <img src="{{ url_for('static', filename='img/icon/user.svg') }}" alt="" class="auth-icon">
-                    <input type="text" name="nombre" placeholder="Nombre" required>
+                <div class="auth-form-grid">
+                    <div class="auth-icon-group">
+                        <img src="{{ url_for('static', filename='img/ui/user.svg') }}" alt="" class="auth-icon">
+                        <input type="text" name="nombre" placeholder="Nombre completo" required>
+                    </div>
+
+                    <div class="auth-icon-group">
+                        <img src="{{ url_for('static', filename='img/ui/email.svg') }}" alt="" class="auth-icon">
+                        <input type="email" name="correo" placeholder="Correo electrónico" required>
+                    </div>
+
+                    <div class="auth-icon-group">
+                        <img src="{{ url_for('static', filename='img/ui/password.svg') }}" alt="" class="auth-icon">
+                        <input type="password" name="contrasena" placeholder="Contraseña" required>
+                    </div>
+
+                    <div class="auth-icon-group">
+                        <img src="{{ url_for('static', filename='img/ui/settings.svg') }}" alt="" class="auth-icon">
+                        <div class="auth-select-wrapper">
+                            <select name="rol" class="auth-select" required>
+                                <option value="" disabled selected>¿Discapacidad auditiva?</option>
+                            {% for rol in roles %}
+                            {% if rol.nombre_rol == 'discapacitado' %}
+                            <option value="{{ rol.id_rol }}">Sí</option>
+                            {% elif rol.nombre_rol == 'oyente' %}
+                            <option value="{{ rol.id_rol }}">No</option>
+                            {% endif %}
+                            {% endfor %}
+                            </select>
+                            <img src="{{ url_for('static', filename='img/actions/dropdown.svg') }}" alt="" class="auth-select-icon">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="auth-icon-group">
-                    <img src="{{ url_for('static', filename='img/icon/email.svg') }}" alt="" class="auth-icon">
-                    <input type="email" name="correo" placeholder="Correo electrónico" required>
-                </div>
-
-                <div class="auth-icon-group">
-                    <img src="{{ url_for('static', filename='img/icon/password.svg') }}" alt="" class="auth-icon">
-                    <input type="password" name="contrasena" placeholder="Contraseña" required>
-                </div>
-
-                <div class="auth-icon-group">
-                    <img src="{{ url_for('static', filename='img/icon/settings.svg') }}" alt="" class="auth-icon">
-                    <select name="rol" class="auth-select" required>
-                        <option value="" disabled selected>¿Eres una persona con discapacidad auditiva?</option>
-                        {% for rol in roles %}
-                        {% if rol.nombre_rol == 'discapacitado' %}
-                        <option value="{{ rol.id_rol }}">Sí</option>
-                        {% elif rol.nombre_rol == 'oyente' %}
-                        <option value="{{ rol.id_rol }}">No</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <p class="auth-text">
+                <p class="auth-text auth-form-full">
                     Ya tienes una cuenta? <a href="{{ url_for('auth.login') }}">Iniciar sesión</a>
                 </p>
 
-                <button type="submit" class="btn">Registrarse</button>
+                <button type="submit" class="btn auth-form-full">Registrarse</button>
 
                 <span class="auth-divider">o</span>
 

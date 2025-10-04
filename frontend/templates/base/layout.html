@@ -8,12 +8,12 @@
 
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="preconnect" href="{{ url_for('static', filename='') }}" crossorigin>
-    <link rel="preload" href="{{ url_for('static', filename='img/icon/logo.webp') }}" as="image" type="image/webp"
+    <link rel="preload" href="{{ url_for('static', filename='img/brand/logo2.webp') }}" as="image" type="image/webp"
         fetchpriority="high">
     <link rel="preload" href="{{ url_for('static', filename='css/main/main.css') }}" as="style">
     <link rel="prefetch" href="{{ url_for('static', filename='css/pages/index.css') }}" as="style">
-    <link rel="icon" href="{{ url_for('static', filename='img/icon/logo2.webp') }}" type="image/webp" sizes="32x32">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icon/logo2.webp') }}" sizes="180x180">
+    <link rel="icon" href="{{ url_for('static', filename='img/brand/logo2.webp') }}" type="image/webp" sizes="32x32">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/brand/logo2.webp') }}" sizes="180x180">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main/main.css') }}" fetchpriority="high">
     <meta name="resource-hints" content="prefetch-videos">
     <title>Sign Technology</title>
@@ -37,8 +37,8 @@
     <header>
         <nav class="nav">
             <div class="nav-logo">
-                <img src="{{ url_for('static', filename='img/icon/logo2.webp') }}" alt="Sign Technology Logo" width="30"
-                    height="30" decoding="async" fetchpriority="high" loading="eager" />
+                <img src="{{ url_for('static', filename='img/brand/logo2.webp') }}" alt="Sign Technology Logo"
+                    width="30" height="30" decoding="async" fetchpriority="high" loading="eager" />
                 <h1>
                     <a href="{{ url_for('main.inicio') }}">sign technology</a>
                 </h1>
@@ -57,26 +57,26 @@
                 <a href="{{ url_for('auth.register') }}" class="nav-link nav-hide-mobile">Registrarse</a>
                 {% else %}
 
-                <div class="nav-user-section">
-                    <div class="nav-dropdown nav-hide-mobile">
+                <div class="nav-user-section nav-hide-mobile">
+                    <div class="nav-dropdown">
                         <button class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                             <div class="nav-avatar">
+
                                 <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
-                                    alt="Foto de {{ user.nombre if user else 'Usuario' }}" class="nav-avatar-img">
+                                    alt="" class="nav-avatar-img-photo">
                                 <span class="nav-avatar-fallback">{{ user.nombre[:2]|upper if user.nombre else 'US'
                                     }}</span>
                             </div>
                             <span class="nav-username">{{ user.nombre }}</span>
-                            <svg class="nav-dropdown-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                            <img src="{{ url_for('static', filename='img/actions/dropdown.svg') }}" alt=""
+                                class="nav-dropdown-arrow">
                         </button>
                         <div class="nav-dropdown-menu">
                             <div class="nav-dropdown-header">
                                 <div class="nav-dropdown-avatar">
+
                                     <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
-                                        alt="Foto de {{ user.nombre if user else 'Usuario' }}" class="nav-avatar-img">
+                                        alt="" class="nav-avatar-img-photo">
                                     <span class="nav-avatar-fallback">{{ user.nombre[:2]|upper if user.nombre else 'US'
                                         }}</span>
                                 </div>
@@ -88,25 +88,19 @@
                             </div>
                             <div class="nav-dropdown-divider"></div>
                             <a href="{{ url_for('auth.profile') }}" class="nav-dropdown-item">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path
-                                        d="M8 8a3 3 0 100-6 3 3 0 000 6zM8 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                                        fill="currentColor" />
-                                </svg>
+                                <img src="{{ url_for('static', filename='img/ui/user.svg') }}" alt=""
+                                    class="nav-dropdown-icon">
                                 Mi perfil
                             </a>
                             <a href="#" class="nav-dropdown-item">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M8 1a7 7 0 100 14A7 7 0 008 1zM7 11V6h2v5H7zm0-6V3h2v2H7z"
-                                        fill="currentColor" />
-                                </svg>
+                                <img src="{{ url_for('static', filename='img/ui/settings.svg') }}" alt=""
+                                    class="nav-dropdown-icon">
                                 Configuración
                             </a>
                             <div class="nav-dropdown-divider"></div>
                             <a href="{{ url_for('auth.logout') }}" class="nav-dropdown-item danger">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M6 2h4v1H6V2zM4 4v9a1 1 0 001 1h6a1 1 0 001-1V4H4z" fill="currentColor" />
-                                </svg>
+                                <img src="{{ url_for('static', filename='img/actions/logout.svg') }}" alt=""
+                                    class="nav-dropdown-icon">
                                 Cerrar sesión
                             </a>
                         </div>
@@ -115,12 +109,13 @@
                 {% endif %}
 
                 <!-- Mobile Menu -->
-                <div class="nav-mobile-only" style="display: none;">
+                <div class="nav-mobile-only">
                     {% if user %}
                     <div class="nav-mobile-user-info">
                         <div class="nav-mobile-avatar">
+
                             <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
-                                alt="Foto de {{ user.nombre if user else 'Usuario' }}" class="nav-avatar-img">
+                                alt="" class="nav-avatar-img-photo">
                             <span class="nav-avatar-fallback">{{ user.nombre[:2]|upper if user.nombre else 'US'
                                 }}</span>
                         </div>
@@ -133,11 +128,11 @@
                         <div class="nav-section">
                             <h3 class="nav-section-title">Principal</h3>
                             <a href="{{ url_for('main.inicio') }}" class="nav-link">
-                                <span>🏠</span>
+                                <img src="{{ url_for('static', filename='img/ui/home.svg') }}" alt="" class="nav-icon">
                                 Inicio
                             </a>
                             <a href="#" class="nav-link">
-                                <span>ℹ️</span>
+                                <img src="{{ url_for('static', filename='img/ui/info.svg') }}" alt="" class="nav-icon">
                                 Sobre Nosotros
                             </a>
                         </div>
@@ -146,11 +141,12 @@
                         <div class="nav-section">
                             <h3 class="nav-section-title">Mi Cuenta</h3>
                             <a href="{{ url_for('auth.profile') }}" class="nav-link">
-                                <span>👤</span>
+                                <img src="{{ url_for('static', filename='img/ui/user.svg') }}" alt="" class="nav-icon">
                                 Mi Perfil
                             </a>
                             <a href="#" class="nav-link">
-                                <span>⚙️</span>
+                                <img src="{{ url_for('static', filename='img/ui/settings.svg') }}" alt=""
+                                    class="nav-icon">
                                 Configuración
                             </a>
                         </div>
@@ -158,15 +154,18 @@
                         <div class="nav-section">
                             <h3 class="nav-section-title">Herramientas</h3>
                             <a href="#" class="nav-link">
-                                <span>🎥</span>
+                                <img src="{{ url_for('static', filename='img/actions/video.svg') }}" alt=""
+                                    class="nav-icon">
                                 Videollamada
                             </a>
                             <a href="#" class="nav-link">
-                                <span>💬</span>
+                                <img src="{{ url_for('static', filename='img/actions/chat.svg') }}" alt=""
+                                    class="nav-icon">
                                 Chat
                             </a>
                             <a href="#" class="nav-link">
-                                <span>📝</span>
+                                <img src="{{ url_for('static', filename='img/actions/translator.svg') }}" alt=""
+                                    class="nav-icon">
                                 Traductor
                             </a>
                         </div>
@@ -175,7 +174,8 @@
 
                         <div class="nav-section">
                             <a href="{{ url_for('auth.logout') }}" class="nav-link danger">
-                                <span>🚪</span>
+                                <img src="{{ url_for('static', filename='img/actions/logout.svg') }}" alt=""
+                                    class="nav-icon">
                                 Cerrar Sesión
                             </a>
                         </div>
@@ -183,11 +183,12 @@
                         <div class="nav-section">
                             <h3 class="nav-section-title">Cuenta</h3>
                             <a href="{{ url_for('auth.login') }}" class="nav-link">
-                                <span>🔐</span>
+                                <img src="{{ url_for('static', filename='img/ui/login.svg') }}" alt="" class="nav-icon">
                                 Iniciar Sesión
                             </a>
                             <a href="{{ url_for('auth.register') }}" class="nav-link">
-                                <span>📝</span>
+                                <img src="{{ url_for('static', filename='img/ui/register.svg') }}" alt=""
+                                    class="nav-icon">
                                 Registrarse
                             </a>
                         </div>
@@ -211,7 +212,7 @@
             <!-- Sección de Marca y Newsletter -->
             <div class="footer-brand">
                 <div class="footer-logo">
-                    <img src="{{ url_for('static', filename='img/icon/logo2.webp') }}" alt="Sign Technology Logo"
+                    <img src="{{ url_for('static', filename='img/brand/logo2.webp') }}" alt="Sign Technology Logo"
                         width="32" height="32" loading="lazy" />
                     <h3>Sign Technology</h3>
                 </div>
@@ -226,10 +227,8 @@
                             <input id="newsletter-email" name="email" type="email" required class="newsletter-input"
                                 placeholder="Tu correo electrónico" aria-label="Correo electrónico para suscripción" />
                             <button type="submit" class="newsletter-btn">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M8 1L15 8L8 15M15 8H1" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
+                                <img src="{{ url_for('static', filename='img/actions/send.svg') }}" alt="" width="16"
+                                    height="16">
                                 Suscribirse
                             </button>
                         </div>
@@ -278,9 +277,9 @@
                     <nav class="footer-nav">
                         <a href="{{ url_for('main.terminos') }}" class="footer-link">Términos de Uso</a>
                         <a href="{{ url_for('main.privacidad') }}" class="footer-link">Política de Privacidad</a>
-                        <a href="{{ url_for('main.cookies') }}" class="footer-link">Cookies</a>
-                        <a href="{{ url_for('main.licencias') }}" class="footer-link">Licencias</a>
-                        <a href="{{ url_for('main.accesibilidad') }}" class="footer-link">Accesibilidad</a>
+                        <a href="" class="footer-link">Cookies</a>
+                        <a href="" class="footer-link">Licencias</a>
+                        <a href="" class="footer-link">Accesibilidad</a>
                     </nav>
                 </div>
             </div>
@@ -290,19 +289,12 @@
                 <h4>Conecta con Nosotros</h4>
                 <div class="contact-info">
                     <div class="contact-item">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M2.5 3h11a1 1 0 011 1v8a1 1 0 01-1 1h-11a1 1 0 01-1-1V4a1 1 0 011-1z"
-                                stroke="currentColor" stroke-width="1.5" />
-                            <path d="m2.5 4 6.5 4.5L15.5 4" stroke="currentColor" stroke-width="1.5" />
-                        </svg>
+                        <img src="{{ url_for('static', filename='img/ui/email-outline.svg') }}" alt="" width="16"
+                            height="16">
                         <a href="mailto:signtechnology@gmail.com" class="contact-link">signtechnology@gmail.com</a>
                     </div>
                     <div class="contact-item">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path
-                                d="M15.5 11.13v2.37a1.5 1.5 0 01-1.64 1.5A14.82 14.82 0 011.5 2.64 1.5 1.5 0 013 1h2.38a1.5 1.5 0 011.5 1.28c.09.8.26 1.58.49 2.32a1.5 1.5 0 01-.34 1.58L5.94 7.27a12 12 0 005.79 5.79l1.09-1.09a1.5 1.5 0 011.58-.34c.74.23 1.52.4 2.32.49a1.5 1.5 0 011.28 1.5z"
-                                stroke="currentColor" stroke-width="1.5" />
-                        </svg>
+                        <img src="{{ url_for('static', filename='img/ui/phone.svg') }}" alt="" width="16" height="16">
                         <span class="contact-link">+57 300 123 4567</span>
                     </div>
                 </div>
@@ -362,25 +354,6 @@
     <!-- ========== SCRIPTS ========== -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="{{ url_for('static', filename='js/modos_traducion.js') }}"></script>
-
-    <script>
-        // Manejo mejorado de avatares
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.nav-avatar-img').forEach(img => {
-                const fallback = img.nextElementSibling;
-
-                img.onerror = function () {
-                    this.style.display = 'none';
-                    if (fallback) fallback.style.opacity = '1';
-                };
-
-                img.onload = function () {
-                    this.style.opacity = '1';
-                    if (fallback) fallback.style.opacity = '0';
-                };
-            });
-        });
-    </script>
 
 </body>
 
