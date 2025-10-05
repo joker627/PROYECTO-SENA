@@ -87,7 +87,7 @@
                                 </div>
                             </div>
                             <div class="nav-dropdown-divider"></div>
-                            <a href="{{ url_for('auth.profile') }}" class="nav-dropdown-item">
+                            <a href="{{ url_for('profile.index') }}" class="nav-dropdown-item">
                                 <img src="{{ url_for('static', filename='img/ui/user.svg') }}" alt=""
                                     class="nav-dropdown-icon">
                                 Mi perfil
@@ -121,7 +121,6 @@
                         </div>
                         <span class="nav-mobile-name">{{ user.nombre }}</span>
                     </div>
-                    <div class="nav-divider"></div>
                     {% endif %}
 
                     <div class="nav-content-area">
@@ -140,7 +139,7 @@
                         {% if user %}
                         <div class="nav-section">
                             <h3 class="nav-section-title">Mi Cuenta</h3>
-                            <a href="{{ url_for('auth.profile') }}" class="nav-link">
+                            <a href="{{ url_for('profile.index') }}" class="nav-link">
                                 <img src="{{ url_for('static', filename='img/ui/user.svg') }}" alt="" class="nav-icon">
                                 Mi Perfil
                             </a>

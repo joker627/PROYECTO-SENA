@@ -45,13 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Cerrar menú al desplazarse
-    window.addEventListener('scroll', function() {
-        if (navLinks.classList.contains('active')) {
-            toggleMenu();
-        }
-    });
-    // Ocultar notificaciones flash automáticamente
+
     setTimeout(function() {
         document.querySelectorAll('.flash-message').forEach(function(msg) {
             msg.style.transition = 'opacity 0.5s';

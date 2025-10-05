@@ -104,3 +104,60 @@ def verify_current_password(id_usuario, contrasena_actual):
     except Exception as e:
         print(f"Error: {e}")
         return False
+
+
+# Obtener usuario por ID
+def get_user_by_id(id_usuario):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute('SELECT * FROM usuario WHERE id_usuario = %s', (id_usuario,))
+                return cursor.fetchone()
+    except Exception as e:
+        print(f"Error al obtener usuario por ID: {e}")
+        return None
+
+
+# Actualizar nombre de usuario
+def update_user_username(id_usuario, new_username):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    'UPDATE usuario SET nombre = %s WHERE id_usuario = %s',
+                    (new_username, id_usuario)
+                )
+                conn.commit()
+                return cursor.rowcount > 0
+    except Exception as e:
+        print(f"Error al actualizar username: {e}")
+        return False
+
+
+# Actualizar correo electrónico
+def update_user_email(id_usuario, new_email):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    'UPDATE usuario SET correo = %s WHERE id_usuario = %s',
+                    (new_email, id_usuario)
+                )
+                conn.commit()
+                return cursor.rowcount > 0
+    except Exception as e:
+        print(f"Error al actualizar email: {e}")
+        return False
+
+
+# Eliminar cuenta de usuario
+def delete_user_account(id_usuario):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute('DELETE FROM usuario WHERE id_usuario = %s', (id_usuario,))
+                conn.commit()
+                return cursor.rowcount > 0
+    except Exception as e:
+        print(f"Error al eliminar usuario: {e}")
+        return False

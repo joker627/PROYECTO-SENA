@@ -6,80 +6,202 @@
 
 <div class="profile-slider-container grid-container">
     <aside class="profile-sidebar">
-        <h3>Mi Perfil</h3>
-        <p class="profile-sub">Gestiona tu cuenta y preferencias</p>
+        <!-- Información del usuario -->
+        <div class="user-info">
+            <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
+                 alt="Foto de perfil" class="user-avatar">
+            <div class="user-details">
+                <h3 class="user-name">{{ user.nombre if user else 'Usuario' }}</h3>
+                <p class="user-email">{{ user.correo if user else 'correo@ejemplo.com' }}</p>
+            </div>
+        </div>
+        
+        <!-- Menú de opciones -->
         <nav class="profile-nav">
             <ul>
-                <li class="active"><span>Información personal</span></li>
-                <li><span>Accesibilidad</span></li>
-                <li><span>Historial</span></li>
-                <li><span>Seguridad</span></li>
+                <li class="nav-item active" data-section="username">
+                    <i class="icon-user"></i>
+                    <span>Cambiar nombre de usuario</span>
+                </li>
+                <li class="nav-item" data-section="email">
+                    <i class="icon-email"></i>
+                    <span>Cambiar correo</span>
+                </li>
+                <li class="nav-item" data-section="password">
+                    <i class="icon-password"></i>
+                    <span>Cambiar contraseña</span>
+                    <small>Restablecer mi contraseña</small>
+                </li>
+                <li class="nav-item danger" data-section="delete">
+                    <i class="icon-trash"></i>
+                    <span>Borrar cuenta</span>
+                    <small>Eliminar cuenta definitivamente</small>
+                </li>
+                <li class="nav-item logout" onclick="logout()">
+                    <i class="icon-logout"></i>
+                    <span>Cerrar sesión</span>
+                </li>
             </ul>
         </nav>
     </aside>
+    
     <div class="profile-main main">
-        <h2 class="profile-title">Información personal</h2>
-        <form class="profile-form" method="POST" action="#">
-            <div class="profile-img-section">
-                <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
-                    alt="Foto de perfil" class="profile-img">
-                <div class="profile-img-actions">
-                    <button type="button" class="btn btn--primary">Subir imagen</button>
-                    <button type="button" class="btn btn--danger">Eliminar</button>
+        <!-- Mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Sección Cambiar nombre de usuario -->
+        <div class="profile-section active" id="section-username">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="icon-user-large"></i>
+                </div>
+                <div class="section-info">
+                    <h2>Perfil</h2>
+                    <p>Cambiar nombre de usuario</p>
+                    <small>Actualiza tu nombre de usuario</small>
                 </div>
             </div>
-            <div class="profile-fields">
-                <label for="nombre">Nombre de Usuario</label>
-                <input type="text" id="nombre" name="nombre" value="{{ user['nombre'] }}" class="input" readonly>
-
-                <label for="correo">Correo Electrónico</label>
-                <div class="profile-email-group">
-                    <input type="email" id="correo" name="correo" value="{{ user['correo'] }}" class="input" readonly>
-                    <button type="button" class="btn btn--primary">Verificar</button>
+            
+                        <form class="profile-form" method="POST" action="{{ url_for('profile.update_username') }}">
+                <div class="form-group">
+                    <label for="new-username">Ingresa tu nuevo nombre de usuario</label>
+                    <input type="text" id="new-username" name="new_username" 
+                           placeholder="Nuevo nombre de usuario" class="form-input" required
+                           minlength="3" maxlength="50">
                 </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Confirmar cambio</button>
+                </div>
+            </form>
+        </div>
 
+        <!-- Sección Cambiar correo -->
+        <div class="profile-section" id="section-email">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="icon-email-large"></i>
+                </div>
+                <div class="section-info">
+                    <h2>Correo electrónico</h2>
+                    <p>Cambiar correo</p>
+                    <small>Actualiza tu dirección de correo electrónico</small>
+                </div>
             </div>
-        </form>
-
-        <!-- Sección de Cambio de Contraseña -->
-        <div class="profile-security-section">
-            <h3 class="profile-subtitle">Cambiar Contraseña</h3>
-            <p class="profile-security-desc">Actualiza tu contraseña para mantener tu cuenta segura</p>
-
-            <form class="password-change-form" method="POST" action="{{ url_for('auth.change_password') }}">
-                <div class="password-fields">
-                    <label for="current_password">Contraseña Actual</label>
-                    <input type="password" id="current_password" name="current_password"
-                        placeholder="Ingresa tu contraseña actual" class="input" required>
-
-                    <label for="new_password">Nueva Contraseña</label>
-                    <input type="password" id="new_password" name="new_password"
-                        placeholder="Ingresa tu nueva contraseña" class="input" required minlength="6">
-
-                    <label for="confirm_password">Confirmar Nueva Contraseña</label>
-                    <input type="password" id="confirm_password" name="confirm_password"
-                        placeholder="Confirma tu nueva contraseña" class="input" required minlength="6">
+            
+                        <form class="profile-form" method="POST" action="{{ url_for('profile.update_email') }}">
+                <div class="form-group">
+                    <label for="current-email">Correo actual</label>
+                    <input type="email" id="current-email" value="{{ user.correo if user else '' }}" 
+                           class="form-input" readonly>
                 </div>
+                <div class="form-group">
+                    <label for="new-email">Nuevo correo electrónico</label>
+                    <input type="email" id="new-email" name="new_email" 
+                           placeholder="nuevo@correo.com" class="form-input" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Confirmar cambio</button>
+                </div>
+            </form>
+        </div>
 
+        <!-- Sección Cambiar contraseña -->
+        <div class="profile-section" id="section-password">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="icon-password-large"></i>
+                </div>
+                <div class="section-info">
+                    <h2>Seguridad</h2>
+                    <p>Cambiar contraseña</p>
+                    <small>Restablecer mi contraseña</small>
+                </div>
+            </div>
+            
+                        <form class="profile-form" method="POST" action="{{ url_for('profile.change_password') }}">
+                <div class="form-group">
+                    <label for="current-password">Contraseña actual</label>
+                    <input type="password" id="current-password" name="current_password" 
+                           placeholder="Contraseña actual" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Nueva contraseña</label>
+                    <input type="password" id="new-password" name="new_password" 
+                           placeholder="Nueva contraseña" class="form-input" required
+                           minlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar nueva contraseña</label>
+                    <input type="password" id="confirm-password" name="confirm_password" 
+                           placeholder="Confirmar contraseña" class="form-input" required>
+                </div>
                 <div class="password-requirements">
-                    <p>La contraseña debe tener:</p>
+                    <p>La contraseña debe contener:</p>
                     <ul>
-                        <li>Al menos 6 caracteres</li>
+                        <li>Al menos 8 caracteres</li>
                         <li>Una letra mayúscula</li>
                         <li>Una letra minúscula</li>
                         <li>Un número</li>
+                        <li>Un carácter especial</li>
                     </ul>
                 </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+                </div>
+            </form>
+        </div>
 
-                <div class="password-actions">
-                    <button type="button" class="btn btn--secondary" onclick="clearPasswordForm()">Cancelar</button>
-                    <button type="submit" class="btn btn--primary">Cambiar Contraseña</button>
+        <!-- Sección Eliminar cuenta -->
+        <div class="profile-section" id="section-delete">
+            <div class="section-header">
+                <div class="section-icon danger">
+                    <i class="icon-trash-large"></i>
+                </div>
+                <div class="section-info">
+                    <h2>Zona peligrosa</h2>
+                    <p>Borrar cuenta</p>
+                    <small>Eliminar cuenta definitivamente</small>
+                </div>
+            </div>
+            
+            <div class="danger-warning">
+                <h3>⚠️ Advertencia</h3>
+                <p>Esta acción no se puede deshacer. Al eliminar tu cuenta:</p>
+                <ul>
+                    <li>Se perderán todos tus datos permanentemente</li>
+                    <li>No podrás recuperar tu historial de traducciones</li>
+                    <li>Tu cuenta será eliminada de todos nuestros sistemas</li>
+                </ul>
+            </div>
+            
+            <form class="profile-form" method="POST" action="{{ url_for('profile.delete_account') }}"
+                  onsubmit="return confirm('¿Estás ABSOLUTAMENTE seguro? Esta acción NO se puede deshacer.')">
+                <div class="form-group">
+                    <label for="confirm-delete">Escribe "ELIMINAR" para confirmar</label>
+                    <input type="text" id="confirm-delete" name="confirm_delete" 
+                           placeholder="ELIMINAR" class="form-input" required
+                           pattern="ELIMINAR" title="Debes escribir exactamente: ELIMINAR">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">
+                        Eliminar cuenta permanentemente
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-</div>
-</div>
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+
 {% endblock %}
