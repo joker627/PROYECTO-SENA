@@ -8,7 +8,13 @@ Este proyecto sigue el patrón **MVC (Model-View-Controller)** con **Flask** com
 PROYECTO-SENA/
 ├── 🗄️ backend/           # Lógica del servidor
 ├── 🎨 frontend/          # Interfaz de usuario
-├── 📋 requirements.txt   # Dependencias Python
+├── � docs/              # Documentación completa del proyecto
+│   ├── CONCEPTOS_PROGRAMACION.md      # Explicación de clases, @staticmethod, etc.
+│   ├── EJEMPLOS_COMUNICACION.md       # Ejemplos prácticos paso a paso
+│   ├── DIAGRAMA_ARQUITECTURA.md       # Diagramas y flujos del sistema
+│   ├── DOCUMENTACION_ESTRUCTURA.md    # Este archivo
+│   └── GUIA_DESARROLLO.md             # Guía rápida para desarrolladores
+├── �📋 requirements.txt   # Dependencias Python
 ├── 📜 README.md         # Documentación principal
 └── ⚖️ LICENSE          # Licencia del proyecto
 ```
@@ -22,22 +28,26 @@ PROYECTO-SENA/
 ```
 backend/
 ├── 🚀 main.py                    # Punto de entrada de la aplicación
-├── ⚙️ config/                    # Configuración de la base de datos
+├── ⚙️ config/                    # Configuración del sistema
 │   ├── conexion.py               # Configuración de conexión MySQL
-│   └── db.py                     # Inicialización de la base de datos
+│   ├── db.py                     # Inicialización de la base de datos
+│   └── settings.py               # Configuración SMTP y variables globales
 ├── 🎮 controllers/               # Lógica de negocio (Controladores)
 │   ├── __init__.py
 │   ├── auth_controller.py        # Controller de autenticación
-│   └── profile_controller.py     # Controller de perfil de usuario
+│   ├── profile_controller.py     # Controller de perfil de usuario
+│   └── newsletter_controller.py  # Controller de newsletter
 ├── 🗃️ models/                   # Modelos de datos (Acceso a BD)
-│   └── user_model.py             # Modelo de usuario y roles
+│   ├── user_model.py             # Modelo de usuario y roles
+│   └── newsletter_model.py       # Modelo de newsletter (implícito)
 ├── 🛤️ routes/                   # Definición de rutas (Router)
 │   ├── auth/
 │   │   └── auth.py               # Rutas de autenticación
 │   ├── profile_routes.py         # Rutas del perfil de usuario
-│   └── routes.py                 # Rutas principales
+│   └── routes.py                 # Rutas principales y newsletter
 ├── 🔧 services/                  # Servicios especializados
-│   └── translator_service.py     # Servicio de traducción
+│   ├── translator_service.py     # Servicio de traducción
+│   └── email_service.py          # Servicio de email SMTP (Gmail)
 └── 🛠️ utils/                    # Utilidades y helpers
     ├── utils.py                  # Utilidades generales
     └── video_utils.py            # Utilidades de video
@@ -53,13 +63,16 @@ def create_app():
         static_folder="../frontend/static", 
         template_folder="../frontend/templates")
     
-    # Configuración de sesiones
+    # Configuración de sesiones y SMTP
     app.secret_key = 'manuel'
     
     # Registro de blueprints
-    app.register_blueprint(main_bp)      # Rutas principales
+    app.register_blueprint(main_bp)      # Rutas principales y newsletter
     app.register_blueprint(auth_bp)      # Rutas de autenticación  
     app.register_blueprint(profile_bp)   # Rutas de perfil
+    
+    # Configuración de email en producción
+    # (SMTP Gmail configurado en config/settings.py)
     
     return app
 ```
@@ -77,8 +90,14 @@ def create_app():
 - 👤 `get_user_profile()` - Obtener datos del perfil
 - ✏️ `update_username()` - Actualizar nombre de usuario
 - 📧 `update_email()` - Actualizar correo electrónico
-- 🔒 `change_password()` - Cambiar contraseña
-- 🗑️ `delete_account()` - Eliminar cuenta de usuario
+- 🔒 `change_password()` - Cambiar contraseña (con notificación email)
+- 🗑️ `delete_account()` - Eliminar cuenta de usuario (con confirmación email)
+
+**NewsletterController** (`controllers/newsletter_controller.py`)
+- ➕ `subscribe()` - Suscribir email al newsletter
+- 📧 `confirm_subscription()` - Confirmar suscripción por email
+- ❌ `unsubscribe()` - Cancelar suscripción
+- 📋 `get_subscribers()` - Obtener lista de suscriptores
 
 #### 3. **🗃️ Models** - Acceso a Datos
 
@@ -91,6 +110,13 @@ def create_app():
 - 🔐 `verify_current_password()` - Verificar contraseña
 - 🔄 `change_user_password()` - Cambiar contraseña
 - 🗑️ `delete_user_account()` - Eliminar cuenta
+
+**Newsletter Model** (funciones integradas)
+- ➕ `add_subscriber()` - Agregar nuevo suscriptor
+- 📧 `email_exists()` - Verificar si email ya está suscrito
+- ✅ `confirm_subscription()` - Confirmar suscripción
+- ❌ `unsubscribe_email()` - Cancelar suscripción
+- 📋 `get_all_subscribers()` - Obtener todos los suscriptores
 - 👥 `get_all_roles()` - Obtener roles disponibles
 
 #### 4. **🛤️ Routes** - Definición de Endpoints
@@ -107,14 +133,16 @@ def create_app():
 /profile/                    [GET]  - Página de perfil
 /profile/update-username     [POST] - Actualizar usuario
 /profile/update-email        [POST] - Actualizar email
-/profile/change-password     [POST] - Cambiar contraseña
+/profile/change-password     [POST] - Cambiar contraseña (con email notif.)
+/profile/delete-account      [POST] - Eliminar cuenta (con email confirm.)
 /profile/delete-account      [POST] - Eliminar cuenta
 ```
 
 **Main Routes** (`routes/routes.py`)
 ```python
-/           [GET] - Página de inicio
-/dashboard  [GET] - Panel de usuario
+/               [GET]  - Página de inicio
+/dashboard      [GET]  - Panel de usuario
+/newsletter     [POST] - Suscripción a newsletter (con confirmación email)
 ```
 
 ---
@@ -216,6 +244,25 @@ graph TD
 1. **🛡️ Verificación de sesión** → `require_login()`
 2. **📄 Carga de datos** → `ProfileController.get_user_profile()`
 3. **📝 Formularios de actualización** → Diferentes endpoints por acción
+4. **📧 Notificaciones por email** → `EmailService.send_*()` (Gmail SMTP)
+
+### 📧 Sistema de Email (SMTP)
+
+#### Configuración
+- **Servidor SMTP:** Gmail (smtp.gmail.com:587)
+- **Autenticación:** App Password de Gmail
+- **TLS/SSL:** Habilitado para seguridad
+
+#### Tipos de Email
+1. **👋 Email de Bienvenida** → Al registrar nueva cuenta
+2. **🔑 Cambio de Contraseña** → Al cambiar password
+3. **🗑️ Confirmación de Eliminación** → Al eliminar cuenta
+4. **📧 Confirmación Newsletter** → Al suscribirse al newsletter
+
+#### Flujo de Envío
+```
+Acción Usuario → Controller → EmailService.send_*() → Gmail SMTP → Email Entregado
+```
 4. **✅ Validaciones** → En controller y modelo
 5. **💾 Persistencia** → Base de datos MySQL
 6. **💬 Feedback** → Mensajes flash al usuario
@@ -243,6 +290,15 @@ nombre_rol (VARCHAR)
 descripcion (TEXT)
 ```
 
+**📧 newsletter_emails**
+```sql
+id (INT, PK, AUTO_INCREMENT)
+email (VARCHAR, UNIQUE)
+fecha_suscripcion (TIMESTAMP)
+confirmado (BOOLEAN)
+token_confirmacion (VARCHAR)
+```
+
 ---
 
 ## 🚀 Tecnologías Utilizadas
@@ -254,6 +310,8 @@ descripcion (TEXT)
 - **🔌 PyMySQL** - Conector de base de datos
 - **🔐 bcrypt** - Hashing de contraseñas
 - **📋 Jinja2** - Motor de plantillas
+- **📧 SMTP (Gmail)** - Servicio de email
+- **🔑 smtplib** - Cliente SMTP nativo de Python
 
 ### 🎨 Frontend
 - **🌐 HTML5** - Estructura

@@ -221,7 +221,7 @@
                 <div class="newsletter-section">
                     <h4>Mantente Actualizado</h4>
                     <p>Recibe las últimas noticias y actualizaciones de nuestro software.</p>
-                    <form class="newsletter-form" action="" method="post" aria-label="Suscribirse al newsletter">
+                    <form class="newsletter-form" action="{{ url_for('main.newsletter_subscribe') }}" method="post" aria-label="Suscribirse al newsletter">
                         <div class="newsletter-input-group">
                             <input id="newsletter-email" name="email" type="email" required class="newsletter-input"
                                 placeholder="Tu correo electrónico" aria-label="Correo electrónico para suscripción" />

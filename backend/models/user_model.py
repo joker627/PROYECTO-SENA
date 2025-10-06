@@ -2,14 +2,14 @@ from config.db import get_db_connection
 from utils.utils import hash_password, verify_password
 
 
-# Funciones para interactuar con la tabla de usuarios
+# Buscar usuario por email
 def get_user_by_email(correo):
     with get_db_connection() as conn:
         with conn.cursor() as cursor: 
             cursor.execute('SELECT * FROM usuario WHERE correo=%s', (correo,))
             return cursor.fetchone()
 
-# Función para obtener todos los roles
+# Obtener todos los roles del sistema
 def get_all_roles():
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
@@ -17,20 +17,17 @@ def get_all_roles():
             return cursor.fetchall()
 
 
-# Validar usuario por email y contraseña
+# Validar login y actualizar último acceso
 def validate_user(correo, contrasena):
     try:
-        # Buscar usuario por email
         user = get_user_by_email(correo)
         
         if not user:
             return None
         
-        # Verificar contraseña
         pwd_ok = verify_password(contrasena, user['contrasena'])
         
         if pwd_ok:
-            # Actualizar último acceso en la base de datos
             with get_db_connection() as conn:
                 with conn.cursor() as cursor:
                     cursor.execute(
@@ -46,10 +43,9 @@ def validate_user(correo, contrasena):
         return None
 
 
-# Registrar nuevo usuario
+# Crear nuevo usuario en la BD
 def register_user(nombre, correo, contrasena, id_rol):
     try:
-        # Convertir contraseña a formato seguro antes de guardar
         safe_pwd = hash_password(contrasena)
         
         with get_db_connection() as conn:
@@ -67,10 +63,9 @@ def register_user(nombre, correo, contrasena, id_rol):
         return False
 
 
-# Cambiar contraseña de usuario
+# Cambiar contraseña del usuario
 def change_user_password(id_usuario, nueva_contrasena):
     try:
-        # Convertir nueva contraseña a formato seguro
         safe_new_pwd = hash_password(nueva_contrasena)
         
         with get_db_connection() as conn:
@@ -88,7 +83,7 @@ def change_user_password(id_usuario, nueva_contrasena):
         return False
 
 
-# Verificar contraseña actual antes de cambiarla
+# Verificar contraseña actual del usuario
 def verify_current_password(id_usuario, contrasena_actual):
     try:
         with get_db_connection() as conn:
@@ -106,7 +101,7 @@ def verify_current_password(id_usuario, contrasena_actual):
         return False
 
 
-# Obtener usuario por ID
+# Buscar usuario por ID
 def get_user_by_id(id_usuario):
     try:
         with get_db_connection() as conn:
@@ -118,7 +113,7 @@ def get_user_by_id(id_usuario):
         return None
 
 
-# Actualizar nombre de usuario
+# Cambiar nombre del usuario
 def update_user_username(id_usuario, new_username):
     try:
         with get_db_connection() as conn:
@@ -134,7 +129,7 @@ def update_user_username(id_usuario, new_username):
         return False
 
 
-# Actualizar correo electrónico
+# Cambiar email del usuario
 def update_user_email(id_usuario, new_email):
     try:
         with get_db_connection() as conn:
@@ -150,7 +145,7 @@ def update_user_email(id_usuario, new_email):
         return False
 
 
-# Eliminar cuenta de usuario
+# Eliminar usuario de la BD
 def delete_user_account(id_usuario):
     try:
         with get_db_connection() as conn:

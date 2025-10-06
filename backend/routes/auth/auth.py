@@ -6,8 +6,7 @@ from models.user_model import get_all_roles
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-
-# login route
+# Ruta de login
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -23,14 +22,14 @@ def login():
     
     return render_template('auth/login.html', user=AuthController.get_current_user())
 
-# logout route
+# Ruta de logout
 @auth_bp.route('/logout')
 def logout():
     success, message = AuthController.logout_user()
     flash(message, 'info')
     return redirect(url_for('auth.login'))
 
-# register route
+# Ruta de registro
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     roles = get_all_roles()

@@ -1,30 +1,45 @@
-from flask import Blueprint, render_template
+# Rutas principales de la aplicación
 
-# Se crea el blueprint principal para las rutas
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from controllers.newsletter_controller import NewsletterController
+
 main_bp = Blueprint('main', __name__)
 
-# Ruta de inicio, renderiza la página principal
+# Página de inicio
 @main_bp.route('/')
 def inicio():
     return render_template('pages/home.html')
 
-# Ruta para la página de señas
+# Página de traducción señas a texto
 @main_bp.route('/senas')
 def senas():
     return render_template('features/translator/sign-to-text.html')
 
-# Ruta para la página de texto
+# Página de traducción texto a señas
 @main_bp.route('/texto')
 def texto():
     return render_template('features/translator/text-to-sign.html')
 
-# Ruta para la página del menú
+# Página del menú
 @main_bp.route('/menu')
 def menu():
     return render_template('base/layout.html')
 
-# Rutas para páginas legales
+# Suscripción al newsletter
+@main_bp.route('/newsletter/subscribe', methods=['POST'])
+def newsletter_subscribe():
+    email = request.form.get('email')
+    success, message = NewsletterController.subscribe_user(email)
+    
+    if success:
+        flash(message, 'success')
+    else:
+        flash(message, 'danger')
+        
+    # Redirigir a la página anterior o inicio
+    return redirect(request.referrer or url_for('main.inicio'))
 
+# Páginas legales
 @main_bp.route('/terminos')
 def terminos():
     return render_template('legal/terms-conditions.html')

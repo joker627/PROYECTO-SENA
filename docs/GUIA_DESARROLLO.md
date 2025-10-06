@@ -29,9 +29,13 @@ cd backend && python main.py
 ```
 backend/
 ├── 🚀 main.py              # ⭐ Punto de entrada
+├── ⚙️ config/settings.py   # ⭐ Configuración SMTP/Email
 ├── 🎮 controllers/         # ⭐ Lógica de negocio
 │   ├── auth_controller.py
-│   └── profile_controller.py
+│   ├── profile_controller.py
+│   └── newsletter_controller.py
+├── 🔧 services/            # ⭐ Servicios especializados
+│   └── email_service.py    # SMTP Gmail
 ├── 🛤️ routes/              # ⭐ Endpoints
 │   ├── auth/auth.py
 │   ├── profile_routes.py
@@ -148,8 +152,33 @@ class MiController:
         # 3. Llamada al modelo
         success = MiModel.guardar_datos(resultado)
         
-        # 4. Respuesta
+        # 4. Envío de email (si necesario)
+        if success:
+            EmailService.send_notification(parametros)
+        
+        # 5. Respuesta
         return success, "Mensaje de éxito/error"
+```
+
+### 📧 Email Service Pattern
+```python
+# En services/email_service.py
+class EmailService:
+    @staticmethod
+    def send_welcome_email(user_email, user_name):
+        try:
+            # Configurar SMTP
+            server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+            server.starttls()
+            server.login(SMTP_USERNAME, SMTP_PASSWORD)
+            
+            # Enviar email
+            server.send_message(msg)
+            server.quit()
+            return True
+        except Exception as e:
+            print(f"Error enviando email: {e}")
+            return False
 ```
 
 ### 🛤️ Route Pattern
@@ -287,6 +316,13 @@ SELECT u.*, r.nombre_rol
 FROM usuarios u 
 JOIN roles r ON u.id_rol = r.id_rol 
 WHERE u.id_usuario = %s;
+
+-- Newsletter: Agregar suscriptor
+INSERT INTO newsletter_emails (email, fecha_suscripcion, confirmado) 
+VALUES (%s, NOW(), FALSE);
+
+-- Newsletter: Verificar suscripción
+SELECT COUNT(*) FROM newsletter_emails WHERE email = %s;
 ```
 
 ---
@@ -322,6 +358,18 @@ return render_template('auth/login.html')
 # Verificar credenciales de BD
 ```
 
+#### 4. SMTP Email Errors
+```python
+# ❌ Error: [Errno 535] Username and Password not accepted
+# Verificar config/settings.py
+# Verificar App Password de Gmail (no contraseña normal)
+# Verificar que 2FA esté habilitado en Gmail
+
+# ❌ Error: [Errno 587] Server not available
+# Verificar conexión a internet
+# Verificar firewall/proxy settings
+```
+
 ### 📊 Debug Mode
 ```python
 # En main.py para desarrollo
@@ -338,9 +386,11 @@ app.run(debug=False)
 ### 📋 Pre-Deploy
 - [ ] 🔐 Cambiar `app.secret_key`
 - [ ] 🗄️ Configurar BD de producción
-- [ ] 🔍 Revisar todos los `debug=False`
+- [ ] � Configurar SMTP settings (Gmail App Password)
+- [ ] �🔍 Revisar todos los `debug=False`
 - [ ] 📦 Generar `requirements.txt` actualizado
 - [ ] 🧪 Ejecutar todos los tests
+- [ ] ✉️ Probar envío de emails en producción
 - [ ] 🔒 Verificar configuraciones de seguridad
 
 ### 🌐 Production Settings
@@ -350,6 +400,11 @@ import os
 
 class ProductionConfig:
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    # SMTP Configuration
+    SMTP_SERVER = 'smtp.gmail.com'
+    SMTP_PORT = 587
+    SMTP_USERNAME = os.environ.get('GMAIL_USERNAME')
+    SMTP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD')  # App Password, no normal password
     DATABASE_URI = os.environ.get('DATABASE_URL')
     DEBUG = False
     TESTING = False
@@ -363,14 +418,39 @@ class ProductionConfig:
 - 🌶️ [Flask Docs](https://flask.palletsprojects.com/)
 - 🗄️ [PyMySQL Docs](https://pymysql.readthedocs.io/)
 - 🔐 [bcrypt Docs](https://pypi.org/project/bcrypt/)
+- 📧 [smtplib Docs](https://docs.python.org/3/library/smtplib.html)
+- 🔑 [Gmail App Passwords](https://support.google.com/accounts/answer/185833)
 
 ### 🛠️ Herramientas de Desarrollo
 - 🔍 **Debug**: Flask debug mode + browser dev tools
 - 🗄️ **DB Manager**: phpMyAdmin, MySQL Workbench
+- 📧 **Email Testing**: Gmail SMTP + logs
 - 🧪 **Testing**: pytest (para futuras pruebas)
 - 📊 **Performance**: Flask profiler
 
 ---
 
+---
+
+## 🆕 Nuevas Funcionalidades Implementadas
+
+### 📧 Sistema de Email SMTP
+- **✅ Configurado:** Gmail SMTP con autenticación segura
+- **✅ Funcional:** Envío real de emails en producción
+- **✅ Integrado:** Welcome, password change, account deletion, newsletter
+
+### 📬 Newsletter System
+- **✅ Suscripción:** Form de suscripción con validación
+- **✅ Confirmación:** Email automático de confirmación
+- **✅ Base de datos:** Tabla newsletter_emails implementada
+- **✅ Gestión:** Funciones de subscribe/unsubscribe
+
+### 🧹 Code Cleanup
+- **✅ Eliminado:** Comentarios y código de desarrollo
+- **✅ Optimizado:** Funciones de email production-ready
+- **✅ Limpiado:** Imports y dependencias innecesarias
+
+---
+
 *⚡ Esta guía te permite desarrollar eficientemente en el PROYECTO SENA*
-*📅 Actualizado: Octubre 2025*
+*📅 Actualizado: Diciembre 2024 - Versión con Sistema Email SMTP*

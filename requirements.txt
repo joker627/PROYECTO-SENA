@@ -1,3 +1,6 @@
-﻿Flask
-Flask-Compress
-PyMySQL
+﻿Flask>=2.3.0
+Flask-Compress>=1.13
+PyMySQL>=1.0.2
+email-validator>=2.0.0
+bcrypt>=4.0.1
+smtplib-ssl>=1.0.0

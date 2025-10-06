@@ -1,21 +1,20 @@
-﻿from flask import Flask, session
+﻿from flask import Flask
 from routes.auth.auth import auth_bp
 from routes.routes import main_bp
 from routes.profile_routes import profile_bp
+from controllers.auth_controller import AuthController
 
 def create_app():
     app = Flask(__name__, 
         static_folder="../frontend/static", 
         template_folder="../frontend/templates")
     
-    # Clave secreta para sesiones
     app.secret_key = 'manuel'
     
-    # Context processor para hacer 'user' disponible en todos los templates
+    # Context processor global
     @app.context_processor
     def inject_user():
-        return dict(user=session.get('user'))
-    
+        return dict(user=AuthController.get_current_user())
     
     # Registrar blueprints
     app.register_blueprint(main_bp)

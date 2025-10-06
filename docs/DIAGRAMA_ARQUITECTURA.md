@@ -10,7 +10,8 @@
 │  • login.html           │  • Grid  │  • profile.js           │
 │  • register.html        │  • Flex  │  • script.js            │
 │  • profile/index.html   │  • Resp. │  • modos_traduccion.js  │
-│  • layout.html          │         │                         │
+│  • layout.html          │  • Email │                         │
+│  • newsletter templates │  • Glob. │                         │
 └─────────────────────────────────────────────────────────────┘
                                 ↕️ HTTP Requests
 ┌─────────────────────────────────────────────────────────────┐
@@ -20,6 +21,7 @@
 │              • Configuración de la app                     │
 │              • Registro de Blueprints                      │
 │              • Gestión de sesiones                         │
+│              • Configuración SMTP                          │
 └─────────────────────────────────────────────────────────────┘
                                 ↕️
 ┌─────────────────────────────────────────────────────────────┐
@@ -28,31 +30,47 @@
 │  📁 auth/           │  📁 profile_routes.py │  📁 routes.py  │
 │  • /auth/login      │  • /profile/          │  • /          │
 │  • /auth/logout     │  • /profile/update-*  │  • /dashboard │
-│  • /auth/register   │  • /profile/change-*  │               │
+│  • /auth/register   │  • /profile/change-*  │  • /newsletter│
 │                     │  • /profile/delete-*  │               │
 └─────────────────────────────────────────────────────────────┘
                                 ↕️ Calls
 ┌─────────────────────────────────────────────────────────────┐
 │                  🎮 CONTROLLERS (Business Logic)           │
 ├─────────────────────────────────────────────────────────────┤
-│        AuthController        │       ProfileController       │
-│    ┌─────────────────────┐   │   ┌─────────────────────────┐ │
-│    │ • login_user()      │   │   │ • get_user_profile()   │ │
-│    │ • logout_user()     │   │   │ • update_username()    │ │
-│    │ • register_new_user│   │   │ • update_email()       │ │
-│    │ • require_login()   │   │   │ • change_password()    │ │
-│    │ • get_current_user()│   │   │ • delete_account()     │ │
-│    └─────────────────────┘   │   └─────────────────────────┘ │
+│   AuthController   │   ProfileController   │ NewsletterCtrl │
+│  ┌───────────────┐ │ ┌───────────────────┐ │ ┌─────────────┐ │
+│  │ • login_user()│ │ │ • get_user_prof. │ │ │ • subscribe │ │
+│  │ • logout_user│ │ │ • update_usernam │ │ │ • confirm   │ │
+│  │ • register   │ │ │ • update_email() │ │ │ • unsubscri │ │
+│  │ • require_log│ │ │ • change_passw. │ │ │             │ │
+│  │ • get_current│ │ │ • delete_account │ │ │             │ │
+│  └───────────────┘ │ └───────────────────┘ │ └─────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+                                ↕️
+┌─────────────────────────────────────────────────────────────┐
+│                    📧 SERVICES LAYER                       │
+├─────────────────────────────────────────────────────────────┤
+│  EmailService (SMTP)   │  TranslatorService  │  VideoUtils  │
+│  ┌─────────────────┐   │  ┌─────────────────┐ │ ┌──────────┐ │
+│  │ • send_welcome  │   │  │ • translate_txt │ │ │ • process│ │
+│  │ • send_passw_ch │   │  │ • text_to_sign  │ │ │ • convert│ │
+│  │ • send_deletion │   │  │ • sign_to_text  │ │ │          │ │
+│  │ • send_newslett │   │  │                 │ │ │          │ │
+│  │ (Gmail SMTP)    │   │  │                 │ │ │          │ │
+│  └─────────────────┘   │  └─────────────────┘ │ └──────────┘ │
 └─────────────────────────────────────────────────────────────┘
                                 ↕️ Data Operations
 ┌─────────────────────────────────────────────────────────────┐
 │                   🗃️ MODELS (Data Access Layer)            │
 ├─────────────────────────────────────────────────────────────┤
-│                      user_model.py                         │
-│  ┌─────────────────────────────────────────────────────────┐ │
-│  │ • get_user_by_email()     • update_user_username()     │ │
-│  │ • get_user_by_id()        • update_user_email()        │ │
-│  │ • create_user()           • verify_current_password()  │ │
+│      user_model.py     │         newsletter_model.py       │
+│  ┌───────────────────┐ │  ┌───────────────────────────────┐ │
+│  │ • get_user_by_em. │ │  │ • add_subscriber()           │ │
+│  │ • get_user_by_id()│ │  │ • email_exists()             │ │
+│  │ • create_user()   │ │  │ • confirm_subscription()     │ │
+│  │ • update_usernam. │ │  │ • unsubscribe_email()        │ │
+│  │ • update_email()  │ │  │ • get_all_subscribers()      │ │
+│  │ • verify_password │ │  │                               │ │
 │  │ • get_all_roles()         • change_user_password()     │ │
 │  │ • delete_user_account()   • (Hash/Verify passwords)    │ │
 │  └─────────────────────────────────────────────────────────┘ │
@@ -61,15 +79,15 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                    🗄️ DATABASE (MySQL)                      │
 ├─────────────────────────────────────────────────────────────┤
-│     👥 usuarios                    🎭 roles                │
-│  ┌─────────────────────┐      ┌─────────────────────────┐   │
-│  │ id_usuario (PK)     │      │ id_rol (PK)            │   │
-│  │ nombre              │◄────┐│ nombre_rol             │   │
-│  │ correo (UNIQUE)     │     ├│ descripcion            │   │
-│  │ contrasena (HASHED) │     ││                        │   │
-│  │ fecha_registro      │     ││                        │   │
-│  │ id_rol (FK) ────────┼─────┘│                        │   │
-│  └─────────────────────┘      └─────────────────────────┘   │
+│   👥 usuarios         🎭 roles         📧 newsletter_emails│
+│ ┌─────────────────┐ ┌─────────────┐ ┌────────────────────┐  │
+│ │ id_usuario (PK) │ │ id_rol (PK) │ │ id (PK)           │  │
+│ │ nombre          │◄┐│ nombre_rol  │ │ email (UNIQUE)    │  │
+│ │ correo (UNIQUE) │ ├│ descripcion │ │ fecha_suscripcion │  │
+│ │ contrasena (HAS)│ ││             │ │ confirmado (BOOL) │  │
+│ │ fecha_registro  │ ││             │ │ token_confirmacion│  │
+│ │ id_rol (FK) ────┼─┘│             │ │                   │  │
+│ └─────────────────┘  └─────────────┘ └────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 
 ## 🔄 Flujo de Datos Detallado
@@ -98,7 +116,31 @@ Formulario → /profile/change-password → ProfileController.change_password()
     ↓
 Validaciones → verify_current_password() → change_user_password()
     ↓
-bcrypt.hash() → MySQL UPDATE → Session Update → Response
+bcrypt.hash() → MySQL UPDATE → EmailService.send_password_change() → Gmail SMTP
+    ↓
+Session Update → Response
+```
+
+### 4. 📧 Suscripción a Newsletter
+```
+Formulario → /newsletter → NewsletterController.subscribe()
+    ↓
+Validación email → newsletter_model.add_subscriber() → MySQL INSERT
+    ↓
+EmailService.send_newsletter_confirmation() → Gmail SMTP → Email enviado
+    ↓
+Response → Flash Message → Redirect
+```
+
+### 5. 📤 Registro de Usuario
+```
+register.html → /auth/register → AuthController.register_new_user()
+    ↓
+Validaciones → UserModel.create_user() → MySQL INSERT
+    ↓
+EmailService.send_welcome_email() → Gmail SMTP → Email bienvenida
+    ↓
+Session → Flash Message → Redirect → Login
 ```
 
 ## 🏗️ Principios de Arquitectura Aplicados
