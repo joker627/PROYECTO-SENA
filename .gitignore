@@ -80,4 +80,9 @@ desktop.ini
 .cache
 .ipynb_checkpoints/
 .ipynb_checkpoints
+
+# ========================================
+# Archivos específicos del proyecto
+# ========================================
 /backend/config/conexion.py
+/docs/

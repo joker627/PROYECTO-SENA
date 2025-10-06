@@ -1,4 +1,5 @@
 # backend/routes/profile_routes.py
+# Rutas relacionadas con el perfil de usuario
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from controllers.auth_controller import AuthController
@@ -7,30 +8,22 @@ from controllers.profile_controller import ProfileController
 
 profile_bp = Blueprint('profile', __name__, url_prefix='/profile')
 
-
-def require_login():
+# Página de perfil
+@profile_bp.route('/')
+def index():
     if not AuthController.require_login():
         flash('Debes iniciar sesión para acceder al perfil', 'danger')
         return redirect(url_for('auth.login'))
-    return None
-
-
-@profile_bp.route('/')
-def index():
-    redirect_response = require_login()
-    if redirect_response:
-        return redirect_response
     
     user = ProfileController.get_user_profile()
     return render_template('auth/profile/index.html', user=user)
 
-
+# Cambiar nombre del usuario
 @profile_bp.route('/update-username', methods=['POST'])
 def update_username():
-    """Actualizar nombre de usuario"""
-    redirect_response = require_login()
-    if redirect_response:
-        return redirect_response
+    if not AuthController.require_login():
+        flash('Debes iniciar sesión para acceder al perfil', 'danger')
+        return redirect(url_for('auth.login'))
     
     new_username = request.form.get('new_username', '')
     success, message = ProfileController.update_username(new_username)
@@ -38,13 +31,12 @@ def update_username():
     flash(message, 'success' if success else 'danger')
     return redirect(url_for('profile.index'))
 
-
+# Cambiar email
 @profile_bp.route('/update-email', methods=['POST'])
 def update_email():
-    """Actualizar correo electrónico"""
-    redirect_response = require_login()
-    if redirect_response:
-        return redirect_response
+    if not AuthController.require_login():
+        flash('Debes iniciar sesión para acceder al perfil', 'danger')
+        return redirect(url_for('auth.login'))
     
     new_email = request.form.get('new_email', '')
     success, message = ProfileController.update_email(new_email)
@@ -52,13 +44,12 @@ def update_email():
     flash(message, 'success' if success else 'danger')
     return redirect(url_for('profile.index'))
 
-
+# Cambiar contraseña
 @profile_bp.route('/change-password', methods=['POST'])
 def change_password():
-    """Cambiar contraseña"""
-    redirect_response = require_login()
-    if redirect_response:
-        return redirect_response
+    if not AuthController.require_login():
+        flash('Debes iniciar sesión para acceder al perfil', 'danger')
+        return redirect(url_for('auth.login'))
     
     current_password = request.form.get('current_password', '')
     new_password = request.form.get('new_password', '')
@@ -71,13 +62,12 @@ def change_password():
     flash(message, 'success' if success else 'danger')
     return redirect(url_for('profile.index'))
 
-
+# Eliminar cuenta
 @profile_bp.route('/delete-account', methods=['POST'])
 def delete_account():
-    """Eliminar cuenta"""
-    redirect_response = require_login()
-    if redirect_response:
-        return redirect_response
+    if not AuthController.require_login():
+        flash('Debes iniciar sesión para acceder al perfil', 'danger')
+        return redirect(url_for('auth.login'))
     
     confirm_text = request.form.get('confirm_delete', '')
     success, message = ProfileController.delete_account(confirm_text)

@@ -1,34 +1,14 @@
-﻿# 🤟 PROYECTO SENA - Intérprete de Lenguaje de Señas Colombianas
+﻿﻿# PROYECTO-SENA-
 
 <!--h1 without bottom border-->
 <div id="user-content-toc">
   <ul align="center">
-    <summary><h1 style="display: inline-block"> 🤟 Intérprete de Lenguaje de Señas Colombianas (LSC) </h1></summary>
+    <summary><h1 style="display: inline-block"> Intérprete de Lenguaje de Señas Colombianas (LSC) </h1></summary>
   </ul>
 </div>
 
 <a href=""><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
-
-## 🎯 Misión del Proyecto
-*"Desarrollar un software que intérprete lenguaje de señas colombiana, para facilitar la comunicación con la comunidad con discapacidad auditiva en Colombia, promoviendo su inclusión social en el campo laboral o académico."*
-
-## 🏗️ Arquitectura & Tecnologías
-
-### 💻 Stack Tecnológico
-- **🐍 Backend**: Python 3.x + Flask (MVC Architecture)
-- **🎨 Frontend**: HTML5 + CSS3 (Grid/Flexbox) + JavaScript (Minimal)
-- **🗄️ Database**: MySQL 8.0+ con PyMySQL
-- **🔐 Seguridad**: bcrypt para hashing de contraseñas
-- **📋 Templates**: Jinja2 para renderizado dinámico
-
-### 📚 Documentación Completa
-
-| 📖 Documento | 📝 Descripción | 🔗 Enlace |
-|--------------|----------------|-----------|
-| **🏗️ Arquitectura** | Estructura completa del sistema, diagramas y flujos | [`DOCUMENTACION_ESTRUCTURA.md`](./DOCUMENTACION_ESTRUCTURA.md) |
-| **📊 Diagramas** | Diagramas visuales de arquitectura y flujo de datos | [`DIAGRAMA_ARQUITECTURA.md`](./DIAGRAMA_ARQUITECTURA.md) |
-| **🚀 Guía de Desarrollo** | Setup, patrones de código y mejores prácticas | [`GUIA_DESARROLLO.md`](./GUIA_DESARROLLO.md) |
-| **📋 Dependencias** | Lista completa de librerías Python | [`requirements.txt`](./requirements.txt) |
+"Desarrollar un software que intérprete lenguaje de señas colombiana, para facilitar la comunicación con la comunidad con discapacidad auditiva en Colombia, promoviendo su inclusión social en el campo laboral o académico."
 
 <a href=""><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
 
@@ -37,63 +17,6 @@ Este es un proyecto de software desarrollado con fines educativos, de investigac
 Su propósito es aportar valor como herramienta abierta y colaborativa, **sin fines comerciales**.
 
 <a href=""><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
-
-## 🚀 Quick Start
-
-### ⚡ Instalación Rápida
-```bash
-# 1. Clonar el repositorio
-git clone [repository-url]
-cd PROYECTO-SENA
-
-# 2. Instalar dependencias
-pip install -r requirements.txt
-
-# 3. Configurar base de datos (editar backend/config/conexion.py)
-
-# 4. Ejecutar la aplicación
-cd backend
-python main.py
-```
-
-### 🌐 Acceso
-- **🏠 Aplicación**: `http://localhost:5000`
-- **🔐 Login**: `http://localhost:5000/auth/login`
-- **👤 Perfil**: `http://localhost:5000/profile`
-
-## 🎯 Funcionalidades Principales
-
-### ✨ Sistema de Usuario
-- 🔐 **Autenticación segura** con bcrypt
-- 👤 **Gestión de perfil** completa
-- 🔄 **Cambio de contraseña** con validaciones
-- 📧 **Actualización de datos** personales
-
-### 🤟 Traducción de Señas (En Desarrollo)
-- 📹 **Video a Texto** - Interpretación de señas colombianas
-- 📝 **Texto a Video** - Generación de señas
-- 🎯 **Reconocimiento en tiempo real**
-
-## 🏗️ Arquitectura del Sistema
-
-```
-🌐 Frontend (Templates + CSS + JS)
-         ↕️
-🛤️ Routes (Flask Blueprints)
-         ↕️  
-🎮 Controllers (Business Logic)
-         ↕️
-🗃️ Models (Database Access)
-         ↕️
-🗄️ MySQL Database
-```
-
-### 📁 Estructura Organizada
-- **`backend/controllers/`** - Lógica de negocio centralizada
-- **`backend/routes/`** - Endpoints organizados por funcionalidad  
-- **`backend/models/`** - Acceso a base de datos
-- **`frontend/templates/`** - Interfaces HTML con Jinja2
-- **`frontend/static/`** - CSS, JavaScript e imágenes
 
 ## 🚀 Objetivo
 Brindar una base tecnológica abierta para el aprendizaje y la innovación, garantizando que cualquier persona pueda **usar, estudiar y mejorar** este software, pero **sin obtener lucro directo** ni apropiarse indebidamente del trabajo.
@@ -164,4 +87,3 @@ Toda contribución será de carácter **abierto, gratuito y no lucrativo**.
 
 </div>
 <p align="center"><b>📅 Año: 2025</b></p> 
-
