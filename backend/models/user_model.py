@@ -1,5 +1,8 @@
 from config.db import get_db_connection
 from utils.utils import hash_password, verify_password
+import uuid
+
+from datetime import datetime
 
 
 # Buscar usuario por email
@@ -155,4 +158,84 @@ def delete_user_account(id_usuario):
                 return cursor.rowcount > 0
     except Exception as e:
         print(f"Error al eliminar usuario: {e}")
+        return False
+
+
+# ===== FUNCIONES PARA SESIONES ANÓNIMAS =====
+
+# Crear una nueva sesión anónima
+def create_anonymous_session():
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                # Insertar nueva sesión (id_sesion_anonima es AUTO_INCREMENT)
+                cursor.execute(
+                    'INSERT INTO sesion_anonima (fecha_inicio, fecha_ultimo_acceso) VALUES (NOW(), NOW())'
+                )
+                # Obtener el ID generado automáticamente
+                session_id = cursor.lastrowid
+                conn.commit()
+                
+        return session_id
+        
+    except Exception as e:
+        print(f"Error creando sesión anónima: {e}")
+        return None
+
+
+# Buscar sesión anónima por ID
+def get_anonymous_session(session_id):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute('SELECT * FROM sesion_anonima WHERE id_sesion_anonima = %s', (session_id,))
+                return cursor.fetchone()
+    except Exception as e:
+        print(f"Error al obtener sesión anónima: {e}")
+        return None
+
+
+# Actualizar último acceso de sesión anónima
+def update_anonymous_session_access(session_id):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    'UPDATE sesion_anonima SET fecha_ultimo_acceso = NOW() WHERE id_sesion_anonima = %s',
+                    (session_id,)
+                )
+                conn.commit()
+                return cursor.rowcount > 0
+    except Exception as e:
+        print(f"Error actualizando sesión anónima: {e}")
+        return False
+
+
+# Eliminar sesiones anónimas expiradas (más de X días)
+def cleanup_expired_anonymous_sessions(days_old=30):
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    'DELETE FROM sesion_anonima WHERE fecha_ultimo_acceso < DATE_SUB(NOW(), INTERVAL %s DAY)',
+                    (days_old,)
+                )
+                conn.commit()
+                return cursor.rowcount
+    except Exception as e:
+        print(f"Error limpiando sesiones anónimas: {e}")
+        return 0
+
+
+# Validar si una sesión anónima existe y está activa
+def validate_anonymous_session(session_id):
+    try:
+        session = get_anonymous_session(session_id)
+        if session:
+            # Actualizar último acceso si la sesión existe
+            update_anonymous_session_access(session_id)
+            return True
+        return False
+    except Exception as e:
+        print(f"Error validando sesión anónima: {e}")
         return False

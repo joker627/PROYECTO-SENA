@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, 4000);
 
-    // Menú desplegable de usuario (ajustes/perfil)
+    // Menú   desplegable de navegación dropdown
     const dropdown = document.querySelector('.nav-dropdown');
     const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
     if (dropdown && dropdownToggle) {
@@ -73,40 +73,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // === FUNCIONES DE PERFIL ===
-    // Función para limpiar el formulario de contraseña
-    window.clearPasswordForm = function() {
-        document.getElementById('current_password').value = '';
-        document.getElementById('new_password').value = '';
-        document.getElementById('confirm_password').value = '';
-    };
-
-    // Validación de contraseñas en perfil
-    const passwordForm = document.querySelector('.password-change-form');
-    if (passwordForm) {
-        const newPassword = document.getElementById('new_password');
-        const confirmPassword = document.getElementById('confirm_password');
-
-        // Verificar que las contraseñas coincidan
-        function checkPasswordMatch() {
-            if (newPassword.value !== confirmPassword.value && confirmPassword.value !== '') {
-                confirmPassword.setCustomValidity('Las contraseñas no coinciden');
-            } else {
-                confirmPassword.setCustomValidity('');
-            }
-        }
-
-        newPassword.addEventListener('input', checkPasswordMatch);
-        confirmPassword.addEventListener('input', checkPasswordMatch);
-
-        // Prevenir envío si las contraseñas no coinciden
-        passwordForm.addEventListener('submit', function(e) {
-            if (newPassword.value !== confirmPassword.value) {
-                e.preventDefault();
-                alert('Las contraseñas no coinciden');
-            }
-        });
-    }
-
 });

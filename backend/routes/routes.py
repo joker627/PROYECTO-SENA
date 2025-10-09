@@ -48,6 +48,23 @@ def terminos():
 def privacidad():
     return render_template('legal/privacy-policy.html')
 
+# Endpoint para ver información de sesión (debug)
+@main_bp.route('/debug/session')
+def debug_session():
+    from flask import session, jsonify
+    from controllers.auth_controller import AuthController
+    
+    current_user = AuthController.get_current_user()
+    anonymous_session = AuthController.get_anonymous_session_info()
+    
+    return jsonify({
+        'authenticated': current_user is not None,
+        'user': current_user['nombre'] if current_user else None,
+        'anonymous_session_id': session.get('anonymous_session_id'),
+        'anonymous_session_data': anonymous_session,
+        'session_keys': list(session.keys())
+    })
+
 
 
 

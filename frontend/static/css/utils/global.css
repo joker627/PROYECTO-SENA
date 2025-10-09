@@ -1,5 +1,6 @@
-/* Variables globales */
+/* Variables globales de colores */
 :root {
+    /* Colores primarios */
     --color-001: #2c6975;
     --color-002: #4a8e7c;
     --color-003: #cde0c9;
@@ -11,7 +12,7 @@
     --color-009: #255b67;
     --color-010: #ff9f43;
     --color-011: #0b1220;
-    --color-012: rgba(255, 255, 255, 0.059);
+    --color-012: #ffffff0f;
     --color-013: #7fc3b3;
     --color-014: #0d4a56;
     --color-015: #dc3545;
@@ -20,12 +21,77 @@
     --color-018: #007bff;
     --color-019: #6c757d;
     --color-020: #e9ecef;
-    --color-021: rgba(26, 139, 158, 0.9);
-    --color-022: rgba(44, 105, 117, 0.8);
-    --color-023: rgba(13, 74, 86, 0.7);
-    --color-024: rgba(255, 255, 255, 0.9);
-    --color-025: rgba(255, 255, 255, 0.1);
+    --color-021: #1a8b9ee6;
+    --color-022: #2c6975cc;
+    --color-023: #0d4a56b3;
+    --color-024: #ffffffe6;
+    --color-025: #ffffff1a;
     --color-026: #000000;
+
+    /* Variables de transparencias comunes (para reducir repetición) */
+    --primary-alpha-002: rgba(44, 105, 117, 0.02);
+    --primary-alpha-008: rgba(44, 105, 117, 0.08);
+    --primary-alpha-010: rgba(44, 105, 117, 0.1);
+    --primary-alpha-015: rgba(44, 105, 117, 0.15);
+    --primary-alpha-020: rgba(44, 105, 117, 0.2);
+    --primary-alpha-080: rgba(44, 105, 117, 0.8);
+    
+    --secondary-alpha-008: rgba(74, 142, 124, 0.08);
+    --secondary-alpha-080: rgba(74, 142, 124, 0.8);
+    
+    --white-alpha-002: rgba(255, 255, 255, 0.02);
+    --white-alpha-005: rgba(255, 255, 255, 0.05);
+    --white-alpha-008: rgba(255, 255, 255, 0.08);
+    --white-alpha-010: rgba(255, 255, 255, 0.1);
+    --white-alpha-012: rgba(255, 255, 255, 0.12);
+    --white-alpha-015: rgba(255, 255, 255, 0.15);
+    --white-alpha-020: rgba(255, 255, 255, 0.2);
+    --white-alpha-030: rgba(255, 255, 255, 0.3);
+    --white-alpha-070: rgba(255, 255, 255, 0.7);
+    --white-alpha-080: rgba(255, 255, 255, 0.8);
+    --white-alpha-090: rgba(255, 255, 255, 0.9);
+    
+    --black-alpha-006: rgba(0, 0, 0, 0.06);
+    --black-alpha-008: rgba(0, 0, 0, 0.08);
+    --black-alpha-010: rgba(0, 0, 0, 0.1);
+    --black-alpha-012: rgba(0, 0, 0, 0.12);
+    --black-alpha-015: rgba(0, 0, 0, 0.15);
+    --black-alpha-018: rgba(0, 0, 0, 0.18);
+    --black-alpha-020: rgba(0, 0, 0, 0.2);
+    --black-alpha-070: rgba(0, 0, 0, 0.7);
+
+    /* Sombras globales */
+    --shadow-soft: 0 2px 8px var(--black-alpha-006);
+    --shadow-medium: 0 4px 16px var(--black-alpha-008);
+    --shadow-strong: 0 6px 24px var(--black-alpha-010);
+    --shadow-extra: 0 8px 32px var(--black-alpha-010);
+    --shadow-card: 0 2px 12px var(--color-012);
+    --shadow-card-hover: 0 6px 18px var(--black-alpha-012);
+    --shadow-card-active: 0 12px 30px var(--black-alpha-018);
+    --shadow-button: 0 12px 40px var(--black-alpha-015);
+    --shadow-text: 0 2px 4px var(--black-alpha-020);
+
+    /* Gradientes globales */
+    --gradient-primary: linear-gradient(135deg, var(--color-001), var(--color-002));
+    --gradient-secondary: linear-gradient(135deg, var(--color-004) 0%, var(--color-003) 100%);
+    --gradient-primary-alpha: linear-gradient(135deg, var(--primary-alpha-008), var(--secondary-alpha-008));
+    --gradient-primary-strong: linear-gradient(135deg, var(--primary-alpha-080) 0%, var(--secondary-alpha-080) 100%);
+    --gradient-white-line: linear-gradient(90deg, transparent, var(--white-alpha-030), transparent);
+    --gradient-white-subtle: linear-gradient(90deg, transparent, var(--white-alpha-020), transparent);
+
+    /* Bordes y radius globales */
+    --border-radius: 12px;
+    --border-radius-large: 16px;
+    --border-radius-small: 8px;
+    --border-primary: 1px solid var(--primary-alpha-020);
+    --border-primary-light: 1px solid var(--primary-alpha-015);
+    --border-white: 1px solid var(--white-alpha-010);
+    --border-white-medium: 1px solid var(--white-alpha-020);
+
+    /* Transiciones globales */
+    --transition-fast: all 0.2s ease;
+    --transition-medium: all 0.3s ease;
+    --transition-slow: all 0.4s ease;
 }
 
 /* Reset global */

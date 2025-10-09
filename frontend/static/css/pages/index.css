@@ -2,7 +2,7 @@
 .home {
   padding-top: 70px;
   background-color: var(--color-002);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-soft);
 }
 
 .home-header {
@@ -84,7 +84,7 @@
   border-radius: 10px;
   font-weight: 700;
   letter-spacing: 0.2px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-card-hover);
   transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
 }
 
@@ -101,7 +101,7 @@
 .home-actions .btn:hover {
   transform: translateY(-2px);
   background-color: var(--color-009);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--shadow-card-active);
 }
 
 /* Video */
@@ -113,7 +113,7 @@
   background: var(--color-002);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-button);
 }
 
 .home-video {
@@ -121,7 +121,7 @@
   aspect-ratio: 16/9;
   border: none;
   border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-button);
   background-color: transparent;
   object-fit: cover;
   display: block;
@@ -144,13 +144,13 @@
 
 .option-card {
   flex: 1;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--white-alpha-008);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: var(--border-white-medium);
   border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: var(--shadow-extra);
+  transition: var(--transition-medium);
   min-width: 0;
 }
 
@@ -162,7 +162,7 @@
   text-align: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid var(--white-alpha-010);
 }
 
 .option-title {
@@ -184,13 +184,13 @@
   align-items: center;
   gap: 1rem;
   padding: 0.8rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--white-alpha-005);
   border-radius: 12px;
   transition: all 0.3s ease;
 }
 
 .option-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--white-alpha-010);
   transform: translateX(5px);
 }
 
@@ -291,7 +291,7 @@
   font-size: 2rem;
   margin-bottom: 30px;
   color: var(--color-005);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: var(--shadow-text);
   letter-spacing: 1px;
 }
 
@@ -328,7 +328,7 @@
   line-height: 1;
   font-weight: 800;
   color: var(--color-01);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: var(--shadow-text);
   margin-bottom: 8px;
   display: block;
   letter-spacing: -0.5px;
@@ -440,21 +440,21 @@
     gap: 50px;
     padding: 0 20px 60px;
   }
-  
+
   .home-text {
     font-size: 1.32rem !important;
   }
-  
+
   .home-header {
     padding: 1.875rem 1.25rem 2rem;
   }
-  
+
   .options {
     flex-direction: row;
     max-width: 100%;
     gap: 20px;
   }
-  
+
   .option-card {
     flex: 1;
     min-width: 250px;
@@ -466,7 +466,7 @@
   .home-text {
     font-size: 1.3rem !important;
   }
-  
+
   .home-header {
     padding: 1.5rem 1rem 1.75rem;
   }
@@ -482,7 +482,7 @@
     padding: 0 15px 40px;
     gap: 40px;
   }
-  
+
   .home-header {
     padding: 1.25rem 1rem 1.5rem;
   }

@@ -15,8 +15,10 @@ class AuthController:
         
         user = validate_user(correo, contrasena)
         if user:
+            # Limpiar sesión anónima al hacer login
+            session.pop('anonymous_session_id', None)
             session['user'] = user
-            return True, '¡Bienvenido!'
+            return True, f"¡Bienvenido, {user['nombre']}!"
         else:
             return False, 'Correo o contraseña incorrectos'
     
@@ -24,6 +26,11 @@ class AuthController:
     @staticmethod
     def logout_user():
         session.pop('user', None)
+        # Al cerrar sesión, crear nueva sesión anónima
+        from models.user_model import create_anonymous_session
+        anonymous_session_id = create_anonymous_session()
+        if anonymous_session_id:
+            session['anonymous_session_id'] = anonymous_session_id
         return True, 'Has cerrado sesión'
     
     # Registrar nuevo usuario con validaciones
@@ -67,5 +74,14 @@ class AuthController:
     @staticmethod
     def get_current_user():
         return session.get('user')
+    
+    # Obtener información de la sesión anónima actual
+    @staticmethod
+    def get_anonymous_session_info():
+        from models.user_model import get_anonymous_session
+        anonymous_session_id = session.get('anonymous_session_id')
+        if anonymous_session_id:
+            return get_anonymous_session(anonymous_session_id)
+        return None
     
     

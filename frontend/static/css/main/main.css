@@ -1,7 +1,7 @@
 /* Importaciones CSS modulares */
 @import '../utils/global.css';
 @import '../utils/flash.css';
-@import '../utils/auth.css';
+@import '../pages/auth.css';
 @import '../pages/menu.css';
 @import '../pages/index.css';
 @import '../pages/senas.css';
