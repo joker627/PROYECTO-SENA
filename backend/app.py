@@ -3,6 +3,7 @@ from routes.auth.auth import auth_bp
 from routes.routes import main_bp
 from routes.profile_routes import profile_bp
 from controllers.auth_controller import AuthController
+import os
 
 def create_app():
     app = Flask(__name__, 
@@ -26,4 +27,5 @@ def create_app():
 
 app = create_app()
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
