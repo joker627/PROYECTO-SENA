@@ -3,9 +3,6 @@
     "command": "pip install -r requirements.txt"
   },
   "start": {
-    "command": "python app.py"
-  },
-  "env": {
-    "PORT": "5000"
+    "command": "gunicorn --bind 0.0.0.0:$PORT app:app"
   }
 }
