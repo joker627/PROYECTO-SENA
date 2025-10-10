@@ -1,15 +1,15 @@
 # ===== CONFIGURACIÓN DE LA BASE DE DATOS =====
 # Función para obtener conexión a la base de datos MySQL
 import pymysql
-from .conexion import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_CHARSET, DB_PORT
+from .conexion import MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT, MYSQLCHARSET
 
 def get_db_connection():
 	return pymysql.connect(
-		host=DB_HOST,
-		user=DB_USER,
-		password=DB_PASSWORD,
-		db=DB_NAME,
-		port=DB_PORT,
-		charset=DB_CHARSET,
+		host=MYSQLHOST,
+		user=MYSQLUSER,
+		password=MYSQLPASSWORD,
+		db=MYSQLDATABASE,
+		port=MYSQLPORT,
+		charset=MYSQLCHARSET,
 		cursorclass=pymysql.cursors.DictCursor
 	)
