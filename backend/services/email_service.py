@@ -39,8 +39,8 @@ class SMTPEmailService:
         return True, "Configuración OK"
     
     # Método base para enviar emails
-   @staticmethod
-def _send_email(to_email, to_name, subject, html_content, text_content=None):
+    @staticmethod  # ← BIEN: con indentación
+    def _validate_config():
     config_ok, config_msg = SMTPEmailService._validate_config()
     if not config_ok:
         return False, config_msg
