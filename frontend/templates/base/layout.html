@@ -7,13 +7,17 @@
     <meta name="description" content="Sign Technology: traductor de lenguaje de señas ↔ texto en tiempo real." />
 
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="preconnect" href="{{ url_for('static', filename='') }}" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="{{ url_for('static', filename='img/brand/logo.png') }}" as="image" type="image/webp"
         fetchpriority="high">
-    <link rel="preload" href="{{ url_for('static', filename='css/main/main.css') }}" as="style">
+    <!-- Cargar CSS de forma no bloqueante: preload + onload -> rel=stylesheet -->
+    <link rel="preload" href="{{ url_for('static', filename='css/main/main.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="prefetch" href="{{ url_for('static', filename='css/pages/index.css') }}" as="style">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/brand/logo.png') }}" sizes="180x180">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main/main.css') }}" fetchpriority="high">
+    <noscript>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main/main.css') }}">
+    </noscript>
     <meta name="resource-hints" content="prefetch-videos">
     <!-- Favicon -->
     <link rel="icon" href="{{ url_for('static', filename='img/brand/logo2.webp') }}" type="image/webp" sizes="32x32">
@@ -38,7 +42,7 @@
     <header>
         <nav class="nav">
             <div class="nav-logo">
-                <img src="{{ url_for('static', filename='img/brand/logo2.webp') }}" alt="Sign Technology Logo"
+                <img src="{{ url_for('static', filename='img/brand/logo2.webp') }}" alt="Logotipo de Sign Technology"
                     width="30" height="30" decoding="async" fetchpriority="high" loading="eager" />
                 <h1>
                     <a href="{{ url_for('main.inicio') }}">sign technology</a>
@@ -64,20 +68,20 @@
                             <div class="nav-avatar">
 
                                 <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
-                                    alt="" class="nav-avatar-img-photo">
+                                    alt="Foto de perfil" class="nav-avatar-img-photo" width="40" height="40" loading="lazy">
                                 <span class="nav-avatar-fallback">{{ user.nombre[:2]|upper if user.nombre else 'US'
                                     }}</span>
                             </div>
                             <span class="nav-username">{{ user.nombre }}</span>
-                            <img src="{{ url_for('static', filename='img/actions/dropdown.svg') }}" alt=""
-                                class="nav-dropdown-arrow">
+                            <img src="{{ url_for('static', filename='img/actions/dropdown.svg') }}" alt="Abrir menú desplegable"
+                                class="nav-dropdown-arrow" aria-hidden="true">
                         </button>
                         <div class="nav-dropdown-menu">
                             <div class="nav-dropdown-header">
                                 <div class="nav-dropdown-avatar">
 
                                     <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
-                                        alt="" class="nav-avatar-img-photo">
+                                        alt="Foto de perfil" class="nav-avatar-img-photo" width="40" height="40" loading="lazy">
                                     <span class="nav-avatar-fallback">{{ user.nombre[:2]|upper if user.nombre else 'US'
                                         }}</span>
                                 </div>
@@ -89,8 +93,8 @@
                             </div>
                             <div class="nav-dropdown-divider"></div>
                             <a href="{{ url_for('profile.index') }}" class="nav-dropdown-item">
-                                <img src="{{ url_for('static', filename='img/ui/user.svg') }}" alt=""
-                                    class="nav-dropdown-icon">
+                                <img src="{{ url_for('static', filename='img/ui/user.svg') }}" alt="Icono usuario"
+                                    class="nav-dropdown-icon" aria-hidden="true">
                                 Mi perfil
                             </a>
                             <a href="#" class="nav-dropdown-item">
@@ -100,8 +104,8 @@
                             </a>
                             <div class="nav-dropdown-divider"></div>
                             <a href="{{ url_for('auth.logout') }}" class="nav-dropdown-item danger">
-                                <img src="{{ url_for('static', filename='img/actions/logout.svg') }}" alt=""
-                                    class="nav-dropdown-icon">
+                                <img src="{{ url_for('static', filename='img/actions/logout.svg') }}" alt="Icono cerrar sesión"
+                                    class="nav-dropdown-icon" aria-hidden="true">
                                 Cerrar sesión
                             </a>
                         </div>
@@ -116,7 +120,7 @@
                         <div class="nav-mobile-avatar">
 
                             <img src="https://imgmedia.larepublica.pe/640x959/larepublica/original/2025/01/07/677d743f33031862432cca4d.webp"
-                                alt="" class="nav-avatar-img-photo">
+                                alt="Foto de perfil" class="nav-avatar-img-photo" width="40" height="40" loading="lazy">
                             <span class="nav-avatar-fallback">{{ user.nombre[:2]|upper if user.nombre else 'US'
                                 }}</span>
                         </div>
@@ -128,7 +132,7 @@
                         <div class="nav-section">
                             <h3 class="nav-section-title">Principal</h3>
                             <a href="{{ url_for('main.inicio') }}" class="nav-link">
-                                <img src="{{ url_for('static', filename='img/ui/home.svg') }}" alt="" class="nav-icon">
+                                <img src="{{ url_for('static', filename='img/ui/home.svg') }}" alt="Inicio" class="nav-icon" aria-hidden="true">
                                 Inicio
                             </a>
                             <a href="#" class="nav-link">
@@ -154,18 +158,15 @@
                         <div class="nav-section">
                             <h3 class="nav-section-title">Herramientas</h3>
                             <a href="#" class="nav-link">
-                                <img src="{{ url_for('static', filename='img/actions/video.svg') }}" alt=""
-                                    class="nav-icon">
+                                <img src="{{ url_for('static', filename='img/actions/video.svg') }}" alt="Videollamada" class="nav-icon" aria-hidden="true">
                                 Videollamada
                             </a>
                             <a href="#" class="nav-link">
-                                <img src="{{ url_for('static', filename='img/actions/chat.svg') }}" alt=""
-                                    class="nav-icon">
+                                <img src="{{ url_for('static', filename='img/actions/chat.svg') }}" alt="Chat" class="nav-icon" aria-hidden="true">
                                 Chat
                             </a>
                             <a href="#" class="nav-link">
-                                <img src="{{ url_for('static', filename='img/actions/translator.svg') }}" alt=""
-                                    class="nav-icon">
+                                <img src="{{ url_for('static', filename='img/actions/translator.svg') }}" alt="Traductor" class="nav-icon" aria-hidden="true">
                                 Traductor
                             </a>
                         </div>
@@ -212,7 +213,7 @@
             <!-- Sección de Marca y Newsletter -->
             <div class="footer-brand">
                 <div class="footer-logo">
-                    <img src="{{ url_for('static', filename='img/brand/logo2.webp') }}" alt="Sign Technology Logo"
+                    <img src="{{ url_for('static', filename='img/brand/logo2.webp') }}" alt="Logotipo de Sign Technology"
                         width="32" height="32" loading="lazy" />
                     <h3>Sign Technology</h3>
                 </div>
@@ -227,8 +228,8 @@
                             <input id="newsletter-email" name="email" type="email" required class="newsletter-input"
                                 placeholder="Tu correo electrónico" aria-label="Correo electrónico para suscripción" />
                             <button type="submit" class="newsletter-btn">
-                                <img src="{{ url_for('static', filename='img/actions/send.svg') }}" alt="" width="16"
-                                    height="16">
+                                <img src="{{ url_for('static', filename='img/actions/send.svg') }}" alt="Enviar" width="16"
+                                    height="16" aria-hidden="true">
                                 Suscribirse
                             </button>
                         </div>
@@ -289,8 +290,8 @@
                 <h4>Conecta con Nosotros</h4>
                 <div class="contact-info">
                     <div class="contact-item">
-                        <img src="{{ url_for('static', filename='img/ui/email-outline.svg') }}" alt="" width="16"
-                            height="16">
+                        <img src="{{ url_for('static', filename='img/ui/email-outline.svg') }}" alt="Email" width="16"
+                            height="16" aria-hidden="true">
                         <a href="mailto:signtechnology@gmail.com" class="contact-link">signtechnology@gmail.com</a>
                     </div>
                     <div class="contact-item">
@@ -305,27 +306,27 @@
                         <a class="social-link" href="https://twitter.com/signtech" aria-label="Twitter" title="Twitter"
                             target="_blank" rel="noopener">
                             <img src="{{ url_for('static', filename='img/social/twitter.svg') }}" alt="Twitter"
-                                width="20" height="20" loading="lazy">
+                                width="20" height="20" loading="lazy" aria-hidden="true">
                         </a>
                         <a href="https://www.instagram.com/signtechnology" aria-label="Instagram" title="Instagram"
                             target="_blank" rel="noopener" class="social-link">
                             <img src="{{ url_for('static', filename='img/social/instagram.svg') }}" alt="Instagram"
-                                width="20" height="20" loading="lazy">
+                                width="20" height="20" loading="lazy" aria-hidden="true">
                         </a>
                         <a href="https://www.facebook.com/signtechnology" aria-label="Facebook" title="Facebook"
                             target="_blank" rel="noopener" class="social-link">
                             <img src="{{ url_for('static', filename='img/social/facebook.svg') }}" alt="Facebook"
-                                width="20" height="20" loading="lazy">
+                                width="20" height="20" loading="lazy" aria-hidden="true">
                         </a>
                         <a class="social-link" href="https://www.linkedin.com/company/signtechnology"
                             aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
                             <img src="{{ url_for('static', filename='img/social/linkedin.svg') }}" alt="LinkedIn"
-                                width="20" height="20" loading="lazy">
+                                width="20" height="20" loading="lazy" aria-hidden="true">
                         </a>
                         <a class="social-link" href="https://github.com/signtechnology" aria-label="GitHub"
                             title="GitHub" target="_blank" rel="noopener">
                             <img src="{{ url_for('static', filename='img/social/github.svg') }}" alt="GitHub" width="20"
-                                height="20" loading="lazy">
+                                height="20" loading="lazy" aria-hidden="true">
                         </a>
                     </div>
                 </div>
@@ -352,8 +353,8 @@
     </footer>
 
     <!-- ========== SCRIPTS ========== -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/modos_traducion.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/modos_traducion.js') }}" defer></script>
 
 </body>
 
