@@ -91,7 +91,6 @@ class SMTPEmailService:
     # Email de bienvenida personalizado
     @staticmethod
     def send_welcome_email(user_name, user_email):
-        
         subject = "¡Bienvenido a PROYECTO-SENA!"
         
         html_content = f"""
