@@ -39,54 +39,64 @@ class SMTPEmailService:
         return True, "Configuración OK"
     
     # Método base para enviar emails
-    @staticmethod
-    def _send_email(to_email, to_name, subject, html_content, text_content=None):
-        config_ok, config_msg = SMTPEmailService._validate_config()
-        if not config_ok:
-            return False, config_msg
+   @staticmethod
+def _send_email(to_email, to_name, subject, html_content, text_content=None):
+    config_ok, config_msg = SMTPEmailService._validate_config()
+    if not config_ok:
+        return False, config_msg
+    
+    try:
+        # AGREGAR TIMEOUT - SOLUCIÓN AL PROBLEMA
+        import socket
+        socket.setdefaulttimeout(15)  # 15 segundos máximo
         
-        try:
-            msg = MIMEMultipart('alternative')
-            msg['Subject'] = subject
-            msg['From'] = formataddr((MAIL_DEFAULT_SENDER_NAME, MAIL_DEFAULT_SENDER))
-            msg['To'] = formataddr((to_name, to_email))
-            msg['Reply-To'] = MAIL_DEFAULT_SENDER
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = subject
+        msg['From'] = formataddr((MAIL_DEFAULT_SENDER_NAME, MAIL_DEFAULT_SENDER))
+        msg['To'] = formataddr((to_name, to_email))
+        msg['Reply-To'] = MAIL_DEFAULT_SENDER
+        
+        if text_content:
+            part1 = MIMEText(text_content, 'plain', 'utf-8')
+            msg.attach(part1)
+        
+        part2 = MIMEText(html_content, 'html', 'utf-8')
+        msg.attach(part2)
+        
+        # CONEXIÓN CON TIMEOUT
+        if SMTP_USE_TLS:
+            context = ssl.create_default_context()
+            server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=15)  # ← TIMEOUT 15s
+            server.starttls(context=context)
+        else:
+            server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, timeout=15)  # ← TIMEOUT 15s
+        
+        server.login(SMTP_USERNAME, SMTP_PASSWORD)
+        server.sendmail(MAIL_DEFAULT_SENDER, to_email, msg.as_string())
+        server.quit()
+        
+        return True, "¡Correo enviado exitosamente!"
+        
+    except socket.timeout:
+        error_msg = "Timeout: El servidor SMTP no respondió en 15 segundos"
+        print(f"SMTP Timeout para {to_email}")
+        return False, error_msg
+        
+    except smtplib.SMTPAuthenticationError:
+        error_msg = "Error de autenticación SMTP. Verifica username/password o usa contraseña de aplicación"
+        return False, error_msg
             
-            if text_content:
-                part1 = MIMEText(text_content, 'plain', 'utf-8')
-                msg.attach(part1)
-            
-            part2 = MIMEText(html_content, 'html', 'utf-8')
-            msg.attach(part2)
-            
-            if SMTP_USE_TLS:
-                context = ssl.create_default_context()
-                server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-                server.starttls(context=context)
-            else:
-                server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
-            
-            server.login(SMTP_USERNAME, SMTP_PASSWORD)
-            server.sendmail(MAIL_DEFAULT_SENDER, to_email, msg.as_string())
-            server.quit()
-            
-            return True, "¡Correo enviado exitosamente!"
-            
-        except smtplib.SMTPAuthenticationError:
-            error_msg = "Error de autenticación SMTP. Verifica username/password o usa contraseña de aplicación"
-            return False, error_msg
-            
-        except smtplib.SMTPRecipientsRefused:
-            error_msg = f"Dirección de correo rechazada: {to_email}"
-            return False, error_msg
-            
-        except smtplib.SMTPServerDisconnected:
-            error_msg = "Desconectado del servidor SMTP. Verifica configuración de servidor/puerto"
-            return False, error_msg
-            
-        except Exception as e:
-            error_msg = f"Error enviando correo: {str(e)}"
-            return False, error_msg
+    except smtplib.SMTPRecipientsRefused:
+        error_msg = f"Dirección de correo rechazada: {to_email}"
+        return False, error_msg
+        
+    except smtplib.SMTPServerDisconnected:
+        error_msg = "Desconectado del servidor SMTP. Verifica configuración de servidor/puerto"
+        return False, error_msg
+        
+    except Exception as e:
+        error_msg = f"Error enviando correo: {str(e)}"
+        return False, error_msg
     
     # Email de bienvenida personalizado
     @staticmethod
