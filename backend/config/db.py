@@ -1,16 +1,13 @@
 import pymysql
-from .conexion import MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT, MYSQLCHARSET
+import os
 
 def get_db_connection():
-    print(f"🔧 Debug - MYSQLHOST: {MYSQLHOST}")  # Ver qué valor tiene
-    print(f"🔧 Debug - MYSQLUSER: {MYSQLUSER}")
-    
     return pymysql.connect(
-        host=MYSQLHOST,
-        user=MYSQLUSER,
-        password=MYSQLPASSWORD,
-        db=MYSQLDATABASE,
-        port=MYSQLPORT,
-        charset=MYSQLCHARSET,
+        host=os.environ['DB_HOST'],
+        user=os.environ['DB_USER'],
+        password=os.environ['DB_PASSWORD'],
+        db=os.environ['DB_NAME'],
+        port=int(os.environ['DB_PORT']),
+        charset='utf8mb4',
         cursorclass=pymysql.cursors.DictCursor
     )
