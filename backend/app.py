@@ -4,6 +4,7 @@ from routes.routes import main_bp
 from routes.profile_routes import profile_bp
 from controllers.auth_controller import AuthController
 from models.user_model import create_anonymous_session, validate_anonymous_session
+import os
 
 def create_app():
     app = Flask(__name__, 
