@@ -1,13 +1,13 @@
 """
-# ===== CONFIGURACIÓN SMTP =====
-# Configuración SendGrid para PROYECTO-SENA
+# ===== CONFIGURACIÓN SMTP LOCAL =====
+# Configuración SendGrid para desarrollo local
 
 from .conexion_email import (
     SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, 
     SMTP_PASSWORD, MAIL_DEFAULT_SENDER, MAIL_DEFAULT_SENDER_NAME
 )
-
 """
+
 # ===== CONFIGURACIÓN SMTP DESPLIEGUE =====
 import os
 

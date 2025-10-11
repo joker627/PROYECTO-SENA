@@ -2,6 +2,7 @@
 # Envía emails de bienvenida, cambio de contraseña, etc.
 import smtplib
 import ssl
+import threading
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
@@ -55,9 +56,9 @@ class SMTPEmailService:
             part2 = MIMEText(html_content, 'html', 'utf-8')
             msg.attach(part2)
             
-            # SendGrid siempre usa TLS en puerto 587
+            # SendGrid siempre usa TLS en puerto 587 con timeout
             context = ssl.create_default_context()
-            server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+            server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10)
             server.starttls(context=context)
             
             server.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -478,9 +479,33 @@ class SMTPEmailService:
 # Servicio de email principal
 class EmailService:
     
-    # Email de bienvenida
+    # Helper para envío en segundo plano
+    @staticmethod
+    def _send_email_background(email_function, *args):
+        """Ejecuta una función de email en segundo plano"""
+        try:
+            result = email_function(*args)
+            print(f"✅ Email enviado en background: {result}")
+        except Exception as e:
+            print(f"❌ Error enviando email en background: {e}")
+    
+    # Email de bienvenida (INSTANTÁNEO - segundo plano)
     @staticmethod
     def send_welcome_email(user_name, user_email):
+        # Enviar en segundo plano usando threading
+        thread = threading.Thread(
+            target=EmailService._send_email_background,
+            args=(SMTPEmailService.send_welcome_email, user_name, user_email)
+        )
+        thread.daemon = True  # El thread se cierra cuando termine la app
+        thread.start()
+        
+        # Retornar inmediatamente como exitoso
+        return True, "Email de bienvenida programado para envío"
+    
+    # Email de bienvenida SÍNCRONO (para testing)
+    @staticmethod
+    def send_welcome_email_sync(user_name, user_email):
         try:
             result = SMTPEmailService.send_welcome_email(user_name, user_email)
             return result
