@@ -3,6 +3,9 @@
 import smtplib
 import ssl
 import threading
+import json
+import urllib.request
+import urllib.parse
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
@@ -56,9 +59,9 @@ class SMTPEmailService:
             part2 = MIMEText(html_content, 'html', 'utf-8')
             msg.attach(part2)
             
-            # SendGrid siempre usa TLS en puerto 587 con timeout
+            # SendGrid siempre usa TLS en puerto 587 con timeout extendido
             context = ssl.create_default_context()
-            server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10)
+            server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=30)
             server.starttls(context=context)
             
             server.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -77,6 +80,13 @@ class SMTPEmailService:
             
         except smtplib.SMTPServerDisconnected:
             error_msg = "Desconectado del servidor SMTP. Verifica configuración de servidor/puerto"
+            return False, error_msg
+            
+        except OSError as e:
+            if 'timed out' in str(e).lower():
+                error_msg = "Timeout de conexión SMTP. Red lenta o servidor ocupado"
+            else:
+                error_msg = f"Error de conexión SMTP: {str(e)}"
             return False, error_msg
             
         except Exception as e:
@@ -479,15 +489,30 @@ class SMTPEmailService:
 # Servicio de email principal
 class EmailService:
     
-    # Helper para envío en segundo plano
+    # Helper para envío en segundo plano con fallback
     @staticmethod
     def _send_email_background(email_function, *args):
-        """Ejecuta una función de email en segundo plano"""
+        """Ejecuta una función de email en segundo plano con HTTP fallback"""
         try:
+            # Intentar SMTP primero
             result = email_function(*args)
-            print(f"✅ Email enviado en background: {result}")
-        except Exception as e:
-            print(f"❌ Error enviando email en background: {e}")
+            print(f"✅ Email enviado en background (SMTP): {result}")
+            return result
+        except Exception as smtp_error:
+            print(f"⚠️ SMTP falló, intentando HTTP fallback: {smtp_error}")
+            
+            # Si SMTP falla, intentar HTTP API
+            if len(args) >= 2:
+                user_name, user_email = args[0], args[1]
+                try:
+                    fallback_result = EmailService._send_email_http_fallback(user_name, user_email)
+                    print(f"✅ Email enviado en background (HTTP): {fallback_result}")
+                    return fallback_result
+                except Exception as http_error:
+                    print(f"❌ HTTP fallback también falló: {http_error}")
+            
+            print(f"❌ Error enviando email en background (todos los métodos): {smtp_error}")
+            return False, f"Email failed: {str(smtp_error)}"
     
     # Email de bienvenida (INSTANTÁNEO - segundo plano)
     @staticmethod
@@ -502,6 +527,51 @@ class EmailService:
         
         # Retornar inmediatamente como exitoso
         return True, "Email de bienvenida programado para envío"
+    
+    # Método HTTP alternativo para SendGrid (fallback)
+    @staticmethod
+    def _send_email_http_fallback(user_name, user_email):
+        """Envía email usando HTTP API de SendGrid como fallback"""
+        try:
+            # Solo usar si tenemos API key de SendGrid
+            if not SMTP_PASSWORD or not SMTP_PASSWORD.startswith('SG.'):
+                return False, "No hay API key de SendGrid para HTTP fallback"
+            
+            # Preparar datos para SendGrid API
+            data = {
+                "personalizations": [{
+                    "to": [{"email": user_email, "name": user_name}],
+                    "subject": "¡Bienvenido a PROYECTO-SENA!"
+                }],
+                "from": {"email": MAIL_DEFAULT_SENDER, "name": MAIL_DEFAULT_SENDER_NAME},
+                "content": [{
+                    "type": "text/html",
+                    "value": f"""
+                    <h2>¡Bienvenido {user_name}!</h2>
+                    <p>Tu cuenta ha sido creada exitosamente.</p>
+                    <p>Gracias por registrarte en PROYECTO-SENA.</p>
+                    """
+                }]
+            }
+            
+            # Hacer request HTTP
+            req = urllib.request.Request(
+                'https://api.sendgrid.com/v3/mail/send',
+                data=json.dumps(data).encode('utf-8'),
+                headers={
+                    'Authorization': f'Bearer {SMTP_PASSWORD}',
+                    'Content-Type': 'application/json'
+                }
+            )
+            
+            with urllib.request.urlopen(req, timeout=15) as response:
+                if response.status == 202:
+                    return True, "Email enviado vía HTTP API"
+                else:
+                    return False, f"HTTP API falló: {response.status}"
+                    
+        except Exception as e:
+            return False, f"Error HTTP fallback: {str(e)}"
     
     # Email de bienvenida SÍNCRONO (para testing)
     @staticmethod
