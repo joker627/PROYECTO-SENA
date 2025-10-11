@@ -534,64 +534,118 @@ class EmailService:
             print(f"❌ Error enviando email en background (todos los métodos): {smtp_error}")
             return False, f"Email failed: {str(smtp_error)}"
     
-    # Email de bienvenida (INSTANTÁNEO - segundo plano)
+    # Helper optimizado para HTTP API en background
+    @staticmethod
+    def _send_email_http_background(user_name, user_email):
+        """Envía email usando HTTP API directamente en background (optimizado)"""
+        try:
+            print(f"🚀 Enviando email vía HTTP API para: {user_name} <{user_email}>")
+            
+            result = EmailService._send_email_http_fallback(user_name, user_email)
+            success, message = result
+            
+            if success:
+                print(f"✅ Email HTTP enviado exitosamente: {message}")
+            else:
+                print(f"❌ Error HTTP API: {message}")
+                
+            return result
+            
+        except Exception as e:
+            error_msg = f"❌ Error en HTTP background: {str(e)}"
+            print(error_msg)
+            return False, error_msg
+    
+    # Email de bienvenida (INSTANTÁNEO - HTTP API directo)
     @staticmethod
     def send_welcome_email(user_name, user_email):
-        # Enviar en segundo plano usando threading
+        # Usar HTTP API directamente (más rápido y confiable en Railway)
         thread = threading.Thread(
-            target=EmailService._send_email_background,
-            args=(SMTPEmailService.send_welcome_email, user_name, user_email)
+            target=EmailService._send_email_http_background,
+            args=(user_name, user_email)
         )
         thread.daemon = True  # El thread se cierra cuando termine la app
         thread.start()
         
         # Retornar inmediatamente como exitoso
-        return True, "Email de bienvenida programado para envío"
+        return True, "Email de bienvenida programado para envío vía HTTP API"
     
-    # Método HTTP alternativo para SendGrid (fallback)
+    # Método HTTP optimizado para SendGrid
     @staticmethod
     def _send_email_http_fallback(user_name, user_email):
-        """Envía email usando HTTP API de SendGrid como fallback"""
+        """Envía email usando HTTP API de SendGrid (método principal optimizado)"""
         try:
-            # Solo usar si tenemos API key de SendGrid
+            # Verificar API key de SendGrid
             if not SMTP_PASSWORD or not SMTP_PASSWORD.startswith('SG.'):
-                return False, "No hay API key de SendGrid para HTTP fallback"
+                return False, "No hay API key válida de SendGrid"
             
-            # Preparar datos para SendGrid API
+            # Preparar contenido HTML optimizado
+            html_content = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Bienvenido a PROYECTO-SENA</title>
+            </head>
+            <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 10px;">
+                    <h1>¡Bienvenido a PROYECTO-SENA!</h1>
+                    <h2>Hola {user_name}</h2>
+                </div>
+                
+                <div style="padding: 30px; background: #f8f9fa; margin-top: 20px; border-radius: 10px;">
+                    <p style="font-size: 16px; line-height: 1.6;">Tu cuenta ha sido <strong>creada exitosamente</strong>.</p>
+                    <p style="font-size: 16px; line-height: 1.6;">Ya puedes acceder a todas las funcionalidades de nuestra plataforma de traducción de lenguaje de señas.</p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <p style="font-size: 18px; color: #667eea;"><strong>¡Gracias por unirte a nosotros!</strong></p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; color: #666; font-size: 14px; margin-top: 30px;">
+                    <p>PROYECTO-SENA - Plataforma de Traducción de Lenguaje de Señas</p>
+                </div>
+            </body>
+            </html>
+            """
+            
+            # Datos optimizados para SendGrid API
             data = {
                 "personalizations": [{
                     "to": [{"email": user_email, "name": user_name}],
-                    "subject": "¡Bienvenido a PROYECTO-SENA!"
+                    "subject": "🎉 ¡Bienvenido a PROYECTO-SENA!"
                 }],
                 "from": {"email": MAIL_DEFAULT_SENDER, "name": MAIL_DEFAULT_SENDER_NAME},
                 "content": [{
                     "type": "text/html",
-                    "value": f"""
-                    <h2>¡Bienvenido {user_name}!</h2>
-                    <p>Tu cuenta ha sido creada exitosamente.</p>
-                    <p>Gracias por registrarte en PROYECTO-SENA.</p>
-                    """
-                }]
+                    "value": html_content
+                }],
+                "tracking_settings": {
+                    "click_tracking": {"enable": True},
+                    "open_tracking": {"enable": True}
+                }
             }
             
-            # Hacer request HTTP
+            # Request HTTP optimizado con timeout reducido
             req = urllib.request.Request(
                 'https://api.sendgrid.com/v3/mail/send',
                 data=json.dumps(data).encode('utf-8'),
                 headers={
                     'Authorization': f'Bearer {SMTP_PASSWORD}',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'PROYECTO-SENA/1.0'
                 }
             )
             
-            with urllib.request.urlopen(req, timeout=15) as response:
+            # Timeout reducido para velocidad (5 segundos es suficiente para HTTP)
+            with urllib.request.urlopen(req, timeout=5) as response:
                 if response.status == 202:
-                    return True, "Email enviado vía HTTP API"
+                    return True, "✅ Email enviado exitosamente vía HTTP API"
                 else:
-                    return False, f"HTTP API falló: {response.status}"
+                    return False, f"HTTP API error: status {response.status}"
                     
         except Exception as e:
-            return False, f"Error HTTP fallback: {str(e)}"
+            return False, f"Error HTTP API: {str(e)}"
     
     # Email de bienvenida SÍNCRONO (para testing)
     @staticmethod
