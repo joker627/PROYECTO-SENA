@@ -55,11 +55,16 @@ class AuthController:
         try:
             success = register_user(nombre, correo, contrasena, id_rol)
             if success:
-                email_sent, email_msg = EmailService.send_welcome_email(nombre, correo)
-                if email_sent:
-                    return True, 'Usuario registrado con éxito. ¡Revisa tu correo!'
-                else:
-                    return True, 'Usuario registrado con éxito'
+                # Intentar enviar email de bienvenida, pero no fallar el registro si hay problemas
+                try:
+                    email_sent, email_msg = EmailService.send_welcome_email(nombre, correo)
+                    if email_sent:
+                        return True, 'Usuario registrado con éxito. ¡Revisa tu correo!'
+                    else:
+                        return True, f'Usuario registrado con éxito. Email: {email_msg}'
+                except Exception as email_error:
+                    # Si falla el email, el registro sigue siendo exitoso
+                    return True, f'Usuario registrado con éxito. (Email no enviado: {str(email_error)})'
             else:
                 return False, 'Error al registrar usuario'
         except Exception as e:
