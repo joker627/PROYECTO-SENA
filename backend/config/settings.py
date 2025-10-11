@@ -1,12 +1,19 @@
-# Configuración SMTP
-SMTP_SERVER = 'smtp.gmail.com'
-SMTP_PORT = 587
-SMTP_USE_TLS = True
-SMTP_USERNAME = 'signtechnology.info@gmail.com'
-SMTP_PASSWORD = 'fyra ddru mcql prtj'
+"""
+# ===== CONFIGURACIÓN SMTP =====
+# Configuración SendGrid para PROYECTO-SENA
 
-# Remitente
-MAIL_DEFAULT_SENDER = SMTP_USERNAME
-MAIL_DEFAULT_SENDER_NAME = 'Manuel - Admin PROYECTO-SENA'
+from .conexion_email import (
+    SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, 
+    SMTP_PASSWORD, MAIL_DEFAULT_SENDER, MAIL_DEFAULT_SENDER_NAME
+)
 
-DEBUG = False
+"""
+# ===== CONFIGURACIÓN SMTP DESPLIEGUE =====
+import os
+
+SMTP_SERVER = os.environ['SMTP_SERVER']
+SMTP_PORT = int(os.environ['SMTP_PORT'])
+SMTP_USERNAME = 'apikey'
+SMTP_PASSWORD = os.environ['SENDGRID_API_KEY']
+MAIL_DEFAULT_SENDER = os.environ['MAIL_DEFAULT_SENDER']
+MAIL_DEFAULT_SENDER_NAME = os.environ['MAIL_DEFAULT_SENDER_NAME']

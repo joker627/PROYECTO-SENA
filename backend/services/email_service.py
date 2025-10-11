@@ -9,21 +9,17 @@ from datetime import datetime
 
 try:
     from config.settings import (
-        SMTP_SERVER, SMTP_PORT, SMTP_USE_TLS,
-        SMTP_USERNAME, SMTP_PASSWORD,
-        MAIL_DEFAULT_SENDER, MAIL_DEFAULT_SENDER_NAME,
-        DEBUG
+        SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD,
+        MAIL_DEFAULT_SENDER, MAIL_DEFAULT_SENDER_NAME
     )
 except ImportError:
     # Configuración por defecto
     SMTP_SERVER = 'smtp.gmail.com'
     SMTP_PORT = 587
-    SMTP_USE_TLS = True
     SMTP_USERNAME = None
     SMTP_PASSWORD = None
     MAIL_DEFAULT_SENDER = None
     MAIL_DEFAULT_SENDER_NAME = 'PROYECTO-SENA'
-    DEBUG = True
 
 class SMTPEmailService:
     # Servicio base de SMTP
@@ -59,12 +55,10 @@ class SMTPEmailService:
             part2 = MIMEText(html_content, 'html', 'utf-8')
             msg.attach(part2)
             
-            if SMTP_USE_TLS:
-                context = ssl.create_default_context()
-                server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-                server.starttls(context=context)
-            else:
-                server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
+            # SendGrid siempre usa TLS en puerto 587
+            context = ssl.create_default_context()
+            server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+            server.starttls(context=context)
             
             server.login(SMTP_USERNAME, SMTP_PASSWORD)
             server.sendmail(MAIL_DEFAULT_SENDER, to_email, msg.as_string())
@@ -487,35 +481,23 @@ class EmailService:
     # Email de bienvenida
     @staticmethod
     def send_welcome_email(user_name, user_email):
-        if DEBUG:
-            return True, "Correo de bienvenida simulado (modo desarrollo)"
-        else:
-            try:
-                result = SMTPEmailService.send_welcome_email(user_name, user_email)
-                return result
-            except Exception as e:
-                return False, f"Error enviando email: {e}"
+        try:
+            result = SMTPEmailService.send_welcome_email(user_name, user_email)
+            return result
+        except Exception as e:
+            return False, f"Error enviando email: {e}"
     
     # Notificación de cambio de contraseña
     @staticmethod
     def send_password_change_notification(user_name, user_email):
-        if DEBUG:
-            return True, "Notificación de contraseña simulada (modo desarrollo)"
-        else:
-            return SMTPEmailService.send_password_change_notification(user_name, user_email)
+        return SMTPEmailService.send_password_change_notification(user_name, user_email)
     
     # Notificación de cuenta eliminada
     @staticmethod
     def send_account_deleted_notification(user_name, user_email):
-        if DEBUG:
-            return True, "Notificación de eliminación simulada (modo desarrollo)"
-        else:
-            return SMTPEmailService.send_account_deleted_notification(user_name, user_email)
+        return SMTPEmailService.send_account_deleted_notification(user_name, user_email)
     
     # Confirmación de suscripción al newsletter
     @staticmethod
     def send_newsletter_confirmation(user_email):
-        if DEBUG:
-            return True, "Confirmación newsletter simulada (modo desarrollo)"
-        else:
-            return SMTPEmailService.send_newsletter_confirmation(user_email)
+        return SMTPEmailService.send_newsletter_confirmation(user_email)

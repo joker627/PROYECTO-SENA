@@ -1,7 +1,8 @@
-# ===== CONFIGURACIÓN DE LA BASE DE DATOS =====
+"""
+# ===== CONFIGURACIÓN DE LA BASE DE DATOS LOCAL =====
 # Función para obtener conexión a la base de datos MySQL
 
-"""
+
 import pymysql
 from .conexion import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_CHARSET, DB_PORT
 
