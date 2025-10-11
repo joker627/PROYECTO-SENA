@@ -496,12 +496,32 @@ class EmailService:
         try:
             # Intentar SMTP primero
             result = email_function(*args)
-            print(f"✅ Email enviado en background (SMTP): {result}")
-            return result
-        except Exception as smtp_error:
-            print(f"⚠️ SMTP falló, intentando HTTP fallback: {smtp_error}")
+            success, message = result
             
-            # Si SMTP falla, intentar HTTP API
+            if success:
+                print(f"✅ Email enviado en background (SMTP): {result}")
+                return result
+            else:
+                # SMTP retornó False - intentar HTTP fallback
+                print(f"⚠️ SMTP retornó False, intentando HTTP fallback: {message}")
+                
+                # Si SMTP falla, intentar HTTP API
+                if len(args) >= 2:
+                    user_name, user_email = args[0], args[1]
+                    try:
+                        fallback_result = EmailService._send_email_http_fallback(user_name, user_email)
+                        print(f"✅ Email enviado en background (HTTP): {fallback_result}")
+                        return fallback_result
+                    except Exception as http_error:
+                        print(f"❌ HTTP fallback también falló: {http_error}")
+                        return False, f"HTTP fallback failed: {str(http_error)}"
+                
+                return result  # Retornar el resultado SMTP original si no hay args suficientes
+                
+        except Exception as smtp_error:
+            print(f"⚠️ SMTP lanzó excepción, intentando HTTP fallback: {smtp_error}")
+            
+            # Si SMTP falla con excepción, intentar HTTP API
             if len(args) >= 2:
                 user_name, user_email = args[0], args[1]
                 try:
