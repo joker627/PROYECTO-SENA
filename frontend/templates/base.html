@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sign Technology{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Logo" class="brand-logo">
+                <span class="brand-text">Sign Technology</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="/desarrolladores" class="nav-link">Desarrolladores</a>
+                <a href="/sobre-nosotros" class="nav-link">Sobre nosotros</a>
+                <a href="/" class="nav-link">Página principal</a>
+                <a href="/admin.html" class="btn-admin">panel admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="content">
+        {% block content %}
+        <h1>Contenido de la página</h1>
+        <p>El menú superior replica exactamente el diseño de la imagen.</p>
+        {% endblock %}
+    </main>
+
+</body>
+</html>

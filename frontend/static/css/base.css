@@ -1,0 +1,168 @@
+:root {
+    --color-001: #ffffff;
+    --color-002: #000000;
+    --color-003: #333333;
+    --color-004: #666666;
+    --color-005: #f8f9fa;
+    --color-006: #e0e0e0;
+    --color-007: #007bff;
+    --color-008: #0056b3;
+    --color-purple: #8b5cf6;
+    --color-purple-hover: #7c3aed;
+    --color-green: #10b981;
+    --color-green-hover: #059669;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--color-001);
+    color: var(--color-002);
+    line-height: 1.5;
+}
+
+.navbar {
+    background-color: #f5f5f5;
+    border-bottom: 2px solid var(--color-006);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0.75rem 2rem;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-logo {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.brand-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-002);
+    letter-spacing: -0.3px;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: var(--color-002);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--color-004);
+}
+
+.btn-admin {
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-admin {
+    background-color: var(--color-green);
+    color: var(--color-001);
+}
+
+.btn-admin:hover {
+    background-color: var(--color-green-hover);
+    transform: translateY(-1px);
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-002);
+}
+
+.content p {
+    font-size: 1.1rem;
+    color: var(--color-004);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .brand-text {
+        font-size: 1.1rem;
+    }
+    
+    .brand-logo {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .nav-menu {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+    }
+    
+    .nav-link {
+        font-size: 0.9rem;
+    }
+    
+    .btn-login,
+    .btn-register {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .content {
+        padding: 1.5rem;
+    }
+    
+    .content h1 {
+        font-size: 2rem;
+    }
+}
