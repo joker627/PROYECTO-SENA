@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/slider.css') }}">
+
+<aside class="sidebar">
+    <!-- Botón para colapsar/expandir -->
+    <button class="sidebar-toggle" title="Colapsar menú">
+        <i class="fas fa-bars"></i>
+        <span class="toggle-text">MENÚ</span>
+    </button>
+
+    <ul class="menu">
+        <li class="menu-item">
+            <a href="{{ url_for('general_bp.inicio') }}">
+                <i class="fas fa-home"></i>
+                <span>Ir a Inicio</span>
+            </a>
+        </li>
+        <li class="menu-item {% if request.endpoint == 'admin_bp.dashboard' %}active{% endif %}">
+            <a href="{{ url_for('admin_bp.dashboard') }}">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="menu-item {% if request.endpoint == 'solicitudes_bp.solicitudes_page' %}active{% endif %}">
+            <a href="{{ url_for('solicitudes_bp.solicitudes_page') }}">
+                <i class="fas fa-user-plus"></i>
+                <span>Solicitudes</span>
+            </a>
+        </li>
+        <li class="menu-item {% if request.endpoint == 'reportes_bp.reportes_page' %}active{% endif %}">
+            <a href="{{ url_for('reportes_bp.reportes_page') }}">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reportes</span>
+                <span class="menu-badge{{ ' hidden' if reportes_count == 0 else '' }}" id="sliderReportesBadge">{{ reportes_count }}</span>
+            </a>
+        </li>
+        <li class="menu-item {% if request.endpoint == 'notifications_bp.notifications_page' %}active{% endif %}">
+            <a href="{{ url_for('notifications_bp.notifications_page') }}">
+                <i class="fas fa-bell"></i>
+                <span>Notificaciones</span>
+                <span class="menu-badge{{ ' hidden' if notification_count == 0 else '' }}" id="sliderNotificationBadge">{{ notification_count }}</span>
+            </a>
+        </li>
+        <li class="menu-item {% if request.endpoint == 'usuarios_bp.usuarios_page' %}active{% endif %}">
+            <a href="{{ url_for('usuarios_bp.usuarios_page') }}">
+                <i class="fas fa-users"></i>
+                <span>Usuarios</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="#">
+                <i class="fas fa-cog"></i>
+                <span>Configuración</span>
+            </a>
+        </li>
+        <li class="menu-item logout">
+            <a href="{{ url_for('login_bp.logout') }}">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Cerrar sesión</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+<!-- Script para actualizar badges -->
+<script src="{{ url_for('static', filename='js/update-badge.js') }}"></script>

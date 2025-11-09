@@ -1,0 +1,430 @@
+/* ===========================
+   TUTORIALES PAGE STYLES
+   =========================== */
+
+/* Importar variables globales */
+@import url('globals.css');
+
+/* Contenedor principal */
+.tutoriales-container {
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+/* Hero Section */
+.tutoriales-hero {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--accent) 100%);
+    padding: 120px 20px 80px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.tutoriales-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.tutoriales-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.tutoriales-hero p {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    opacity: 0.95;
+}
+
+/* Filtros */
+.tutoriales-filters {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 12px 28px;
+    background: white;
+    border: 2px solid var(--turquoise-200);
+    color: var(--teal-700);
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.filter-btn:hover {
+    background: var(--turquoise-50);
+    border-color: var(--turquoise-400);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
+    border-color: transparent;
+    color: white;
+}
+
+/* Grid de tutoriales */
+.tutoriales-content {
+    max-width: 1200px;
+    margin: 0 auto 80px;
+    padding: 0 20px;
+}
+
+.tutoriales-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* Card de tutorial */
+.tutorial-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.tutorial-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.tutorial-card .thumbnail {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, var(--turquoise-300) 0%, var(--teal-400) 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tutorial-card .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.tutorial-card:hover .thumbnail img {
+    transform: scale(1.05);
+}
+
+.tutorial-card .thumbnail .play-icon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--purple);
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.tutorial-card:hover .thumbnail .play-icon {
+    transform: scale(1.1);
+    background: white;
+}
+
+.tutorial-card .duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.tutorial-card .content {
+    padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tutorial-card .category {
+    display: inline-block;
+    padding: 5px 15px;
+    background: var(--turquoise-100);
+    color: var(--teal-700);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    width: fit-content;
+}
+
+.tutorial-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--teal-800);
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.tutorial-card p {
+    font-size: 0.95rem;
+    color: var(--teal-600);
+    line-height: 1.6;
+    margin-bottom: 15px;
+    flex: 1;
+}
+
+.tutorial-card .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 15px;
+    border-top: 1px solid var(--turquoise-100);
+    font-size: 0.85rem;
+    color: var(--teal-600);
+}
+
+.tutorial-card .meta .difficulty {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tutorial-card .meta .difficulty i {
+    color: var(--accent);
+}
+
+.tutorial-card .meta .views {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Difficulty badges */
+.difficulty.beginner {
+    color: var(--accent);
+}
+
+.difficulty.intermediate {
+    color: var(--purple);
+}
+
+.difficulty.advanced {
+    color: var(--red);
+}
+
+/* Sección de categorías destacadas */
+.categorias-destacadas {
+    background: linear-gradient(to bottom, var(--turquoise-25), var(--teal-25));
+    padding: 80px 20px;
+    margin-bottom: 80px;
+}
+
+.categorias-destacadas h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--teal-800);
+    margin-bottom: 50px;
+}
+
+.categorias-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.categoria-item {
+    background: white;
+    padding: 35px 25px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.categoria-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.categoria-item .icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.categoria-item:hover .icon {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.categoria-item .icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.categoria-item h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--teal-800);
+    margin-bottom: 8px;
+}
+
+.categoria-item .count {
+    font-size: 0.9rem;
+    color: var(--teal-600);
+}
+
+/* CTA Newsletter */
+.newsletter-section {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 60px 40px;
+    background: linear-gradient(135deg, var(--purple) 0%, var(--accent) 100%);
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+}
+
+.newsletter-section h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.newsletter-section p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.95;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.newsletter-form button {
+    padding: 15px 35px;
+    background: var(--teal-800);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.newsletter-form button:hover {
+    background: var(--teal-900);
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tutoriales-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .tutoriales-hero p {
+        font-size: 1.1rem;
+    }
+
+    .tutoriales-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .categorias-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .newsletter-form {
+        flex-direction: column;
+    }
+
+    .newsletter-form button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .tutoriales-hero {
+        padding: 100px 15px 60px;
+    }
+
+    .tutoriales-hero h1 {
+        font-size: 2rem;
+    }
+
+    .tutoriales-filters {
+        gap: 10px;
+    }
+
+    .filter-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .tutorial-card .content {
+        padding: 20px;
+    }
+
+    .newsletter-section {
+        padding: 40px 20px;
+        margin: 60px 20px;
+    }
+
+    .categorias-destacadas h2 {
+        font-size: 2rem;
+    }
+}

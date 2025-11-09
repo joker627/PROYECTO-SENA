@@ -1,35 +1,59 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/general/logo.webp') }}">
     <title>{% block title %}Sign Technology{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+    <!-- Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Global (debe cargarse primero) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/globals.css') }}">
+    
+    <!-- Sistema de notificaciones toast global -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}">
+    
+    <!-- CSS adicional de cada página -->
     {% block extra_css %}{% endblock %}
+    
+    {% block head %}{% endblock %}
 </head>
+
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Logo" class="brand-logo">
-                <span class="brand-text">Sign Technology</span>
+    <!-- Flash Messages (convertidos automáticamente a toasts) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages" style="display: none;">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
             </div>
-            
-            <div class="nav-menu">
-                <a href="/desarrolladores" class="nav-link">Desarrolladores</a>
-                <a href="/sobre-nosotros" class="nav-link">Sobre nosotros</a>
-                <a href="/" class="nav-link">Página principal</a>
-                <a href="/admin.html" class="btn-admin">panel admin</a>
-            </div>
-        </div>
-    </nav>
+        {% endif %}
+    {% endwith %}
 
-    <main class="content">
-        {% block content %}
-        <h1>Contenido de la página</h1>
-        <p>El menú superior replica exactamente el diseño de la imagen.</p>
-        {% endblock %}
-    </main>
+    <!-- Contenido principal -->
+    {% block content %}{% endblock %}
 
+    <!-- Sistema de notificaciones toast global -->
+    <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+
+    <!-- Utilidades de Performance (debounce, throttle, etc) -->
+    <script src="{{ url_for('static', filename='js/performance-utils.js') }}"></script>
+
+    <!-- Sistema de usuarios anónimos -->
+    <script src="{{ url_for('static', filename='js/usuario-anonimo.js') }}"></script>
+
+    <!-- Lazy Loading - Optimización de carga -->
+    <script src="{{ url_for('static', filename='js/lazy-load.js') }}"></script>
+
+    <!-- JavaScript adicional de cada página -->
+    {% block extra_js %}{% endblock %}
 </body>
+
 </html>
