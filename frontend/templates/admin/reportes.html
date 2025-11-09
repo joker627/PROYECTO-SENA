@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de Reportes - SignTechnology{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
+<script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Botón hamburguesa para móvil -->
+    <button class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Overlay para cerrar menú en móvil -->
+    <div class="dashboard-overlay"></div>
+
+    <!-- Incluir Sidebar -->
+    {% include 'components/slider.html' %}
+
+    <div class="main-content">
+    <div class="reportes-container">
+    <!-- Header -->
+    <div class="page-header">
+        <div class="header-content">
+            <h1><i class="fas fa-chart-bar"></i> Gestión de Reportes</h1>
+            <p class="subtitle">Administra y resuelve los reportes de error del sistema</p>
+        </div>
+        <div class="header-stats">
+            <div class="stat-item pendientes">
+                <span class="stat-number">{{ stats.pendientes }}</span>
+                <span class="stat-label">Pendientes</span>
+            </div>
+            <div class="stat-item revision">
+                <span class="stat-number">{{ stats.en_revision }}</span>
+                <span class="stat-label">En Revisión</span>
+            </div>
+            <div class="stat-item resueltos">
+                <span class="stat-number">{{ stats.resueltos }}</span>
+                <span class="stat-label">Resueltos</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flash messages ya incluidos en base.html, no duplicar -->
+
+    <!-- Acciones masivas -->
+    {% if stats.resueltos > 0 %}
+    <div class="bulk-actions">
+        <form action="{{ url_for('reportes_bp.eliminar_resueltos') }}" method="POST" 
+              onsubmit="return confirm('¿Estás seguro de eliminar todos los reportes resueltos ({{ stats.resueltos }})? Esta acción no se puede deshacer.')" class="form-inline">
+            <button type="submit" class="btn-delete-resolved">
+                <i class="fas fa-trash-alt"></i>
+                Eliminar todos los resueltos ({{ stats.resueltos }})
+            </button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- Filtros -->
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">
+            <i class="fas fa-list"></i> Todos ({{ stats.total }})
+        </button>
+        <button class="filter-btn" data-filter="pendiente">
+            <i class="fas fa-clock"></i> Pendientes ({{ stats.pendientes }})
+        </button>
+        <button class="filter-btn" data-filter="en revisión">
+            <i class="fas fa-eye"></i> En Revisión ({{ stats.en_revision }})
+        </button>
+        <button class="filter-btn" data-filter="resuelto">
+            <i class="fas fa-check-circle"></i> Resueltos ({{ stats.resueltos }})
+        </button>
+    </div>
+
+    <!-- Lista de Reportes -->
+    <div class="reportes-grid">
+        {% if reportes %}
+            {% for reporte in reportes %}
+            <div class="reporte-card" data-estado="{{ reporte.estado }}">
+                <div class="reporte-header">
+                    <div class="reporte-id">
+                        <i class="fas fa-hashtag"></i>
+                        <span>{{ reporte.id_reporte }}</span>
+                    </div>
+                    <span class="estado-badge {{ reporte.estado|replace(' ', '-') }}">
+                        {% if reporte.estado == 'pendiente' %}
+                            <i class="fas fa-clock"></i> Pendiente
+                        {% elif reporte.estado == 'en revisión' %}
+                            <i class="fas fa-eye"></i> En Revisión
+                        {% else %}
+                            <i class="fas fa-check-circle"></i> Resuelto
+                        {% endif %}
+                    </span>
+                </div>
+
+                <div class="reporte-body">
+                    <div class="reporte-user">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-secret"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Usuario Anónimo</span>
+                            <span class="user-email">UUID: {{ reporte.uuid_transaccion[:8] }}...</span>
+                        </div>
+                    </div>
+
+                    <div class="reporte-details">
+                        <div class="detail-item">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span class="detail-label">Tipo:</span>
+                            <span class="detail-value tipo-{{ reporte.tipo_error|replace(' ', '-') if reporte.tipo_error else 'generico' }}">
+                                {{ reporte.tipo_error or 'Error General' }}
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="detail-label">Reportado:</span>
+                            <span class="detail-value">{{ reporte.tiempo_transcurrido }}</span>
+                        </div>
+                        {% if reporte.id_traduccion %}
+                        <div class="detail-item">
+                            <i class="fas fa-language"></i>
+                            <span class="detail-label">Traducción ID:</span>
+                            <span class="detail-value">#{{ reporte.id_traduccion }}</span>
+                        </div>
+                        {% endif %}
+                        {% if reporte.origen %}
+                        <div class="detail-item">
+                            <i class="fas fa-info-circle"></i>
+                            <span class="detail-label">Origen:</span>
+                            <span class="detail-value">{{ reporte.origen }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="reporte-description">
+                        <p><strong>Descripción del error:</strong></p>
+                        <p>{{ reporte.descripcion or 'Sin descripción' }}</p>
+                    </div>
+
+                    {% if reporte.evidencia_url %}
+                    <div class="reporte-evidencia">
+                        <p><strong>Evidencia:</strong></p>
+                        <a href="{{ reporte.evidencia_url }}" target="_blank" class="btn-evidencia">
+                            <i class="fas fa-external-link-alt"></i> Ver evidencia
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    {% if reporte.fecha_resolucion %}
+                    <div class="resolucion-info">
+                        <i class="fas fa-check"></i>
+                        <span>Resuelto el {{ reporte.fecha_resolucion.strftime('%d/%m/%Y %H:%M') }}</span>
+                        {% if reporte.nombre_responsable %}
+                        <span> por {{ reporte.nombre_responsable }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="reporte-actions">
+                    {% if reporte.estado == 'pendiente' %}
+                        <form action="{{ url_for('reportes_bp.marcar_revision', id_reporte=reporte.id_reporte) }}" method="POST" class="form-inline">
+                            <button type="submit" class="btn btn-revision" title="Marcar como en revisión">
+                                <i class="fas fa-eye"></i> En Revisión
+                            </button>
+                        </form>
+                        <form action="{{ url_for('reportes_bp.resolver_reporte', id_reporte=reporte.id_reporte) }}" method="POST" class="form-inline">
+                            <button type="submit" class="btn btn-success" title="Marcar como resuelto">
+                                <i class="fas fa-check"></i> Resolver
+                            </button>
+                        </form>
+                    {% elif reporte.estado == 'en revisión' %}
+                        <form action="{{ url_for('reportes_bp.resolver_reporte', id_reporte=reporte.id_reporte) }}" method="POST" class="form-inline">
+                            <button type="submit" class="btn btn-success" title="Marcar como resuelto">
+                                <i class="fas fa-check"></i> Resolver
+                            </button>
+                        </form>
+                    {% endif %}
+                    
+                    <form action="{{ url_for('reportes_bp.eliminar_reporte', id_reporte=reporte.id_reporte) }}" method="POST" class="form-inline" onsubmit="return confirm('¿Estás seguro de eliminar este reporte?');">
+                        <button type="submit" class="btn btn-danger" title="Eliminar reporte">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h3>No hay reportes</h3>
+                <p>No se encontraron reportes de error en el sistema</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
+{% endblock %}

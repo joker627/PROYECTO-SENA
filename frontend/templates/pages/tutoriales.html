@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tutoriales.css') }}">
+{% endblock %}
+
+{% block content %}
+{% include 'components/navbar.html' %}
+
+<div class="tutoriales-container">
+    <!-- Hero Section -->
+    <section class="tutoriales-hero">
+        <h1>Tutoriales</h1>
+        <p>Aprende con nuestras guías paso a paso y recursos educativos</p>
+    </section>
+
+    <!-- Filtros -->
+    <div class="tutoriales-filters">
+        <button class="filter-btn active">Todos</button>
+        <button class="filter-btn">Principiante</button>
+        <button class="filter-btn">Intermedio</button>
+        <button class="filter-btn">Avanzado</button>
+    </div>
+
+    <!-- Grid de tutoriales -->
+    <div class="tutoriales-content">
+        <div class="tutoriales-grid">
+            <!-- Tutorial Card 1 -->
+            <div class="tutorial-card">
+                <div class="thumbnail">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <span class="duration">15:30</span>
+                </div>
+                <div class="content">
+                    <span class="category">Desarrollo Web</span>
+                    <h3>Introducción a HTML y CSS</h3>
+                    <p>Aprende los fundamentos del desarrollo web desde cero con HTML5 y CSS3.</p>
+                    <div class="meta">
+                        <div class="difficulty beginner">
+                            <i class="fas fa-signal"></i>
+                            <span>Principiante</span>
+                        </div>
+                        <div class="views">
+                            <i class="fas fa-eye"></i>
+                            <span>1.2k vistas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tutorial Card 2 -->
+            <div class="tutorial-card">
+                <div class="thumbnail">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <span class="duration">22:45</span>
+                </div>
+                <div class="content">
+                    <span class="category">JavaScript</span>
+                    <h3>JavaScript Moderno ES6+</h3>
+                    <p>Domina las características modernas de JavaScript y mejora tu código.</p>
+                    <div class="meta">
+                        <div class="difficulty intermediate">
+                            <i class="fas fa-signal"></i>
+                            <span>Intermedio</span>
+                        </div>
+                        <div class="views">
+                            <i class="fas fa-eye"></i>
+                            <span>850 vistas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tutorial Card 3 -->
+            <div class="tutorial-card">
+                <div class="thumbnail">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <span class="duration">18:20</span>
+                </div>
+                <div class="content">
+                    <span class="category">Python</span>
+                    <h3>Flask para principiantes</h3>
+                    <p>Crea tu primera aplicación web con Flask en Python paso a paso.</p>
+                    <div class="meta">
+                        <div class="difficulty beginner">
+                            <i class="fas fa-signal"></i>
+                            <span>Principiante</span>
+                        </div>
+                        <div class="views">
+                            <i class="fas fa-eye"></i>
+                            <span>2.1k vistas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tutorial Card 4 -->
+            <div class="tutorial-card">
+                <div class="thumbnail">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <span class="duration">25:10</span>
+                </div>
+                <div class="content">
+                    <span class="category">Base de Datos</span>
+                    <h3>MySQL desde Cero</h3>
+                    <p>Aprende a diseñar y gestionar bases de datos relacionales con MySQL.</p>
+                    <div class="meta">
+                        <div class="difficulty beginner">
+                            <i class="fas fa-signal"></i>
+                            <span>Principiante</span>
+                        </div>
+                        <div class="views">
+                            <i class="fas fa-eye"></i>
+                            <span>1.5k vistas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tutorial Card 5 -->
+            <div class="tutorial-card">
+                <div class="thumbnail">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <span class="duration">30:45</span>
+                </div>
+                <div class="content">
+                    <span class="category">Diseño</span>
+                    <h3>UI/UX Design Básico</h3>
+                    <p>Principios fundamentales de diseño de interfaces y experiencia de usuario.</p>
+                    <div class="meta">
+                        <div class="difficulty beginner">
+                            <i class="fas fa-signal"></i>
+                            <span>Principiante</span>
+                        </div>
+                        <div class="views">
+                            <i class="fas fa-eye"></i>
+                            <span>980 vistas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tutorial Card 6 -->
+            <div class="tutorial-card">
+                <div class="thumbnail">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <span class="duration">28:30</span>
+                </div>
+                <div class="content">
+                    <span class="category">Git</span>
+                    <h3>Control de Versiones con Git</h3>
+                    <p>Domina Git y GitHub para gestionar tus proyectos de forma profesional.</p>
+                    <div class="meta">
+                        <div class="difficulty intermediate">
+                            <i class="fas fa-signal"></i>
+                            <span>Intermedio</span>
+                        </div>
+                        <div class="views">
+                            <i class="fas fa-eye"></i>
+                            <span>1.8k vistas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categorías Destacadas -->
+    <section class="categorias-destacadas">
+        <h2>Explora por Categoría</h2>
+        <div class="categorias-grid">
+            <div class="categoria-item">
+                <div class="icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Desarrollo Web</h3>
+                <p class="count">24 tutoriales</p>
+            </div>
+
+            <div class="categoria-item">
+                <div class="icon">
+                    <i class="fab fa-python"></i>
+                </div>
+                <h3>Python</h3>
+                <p class="count">18 tutoriales</p>
+            </div>
+
+            <div class="categoria-item">
+                <div class="icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>Bases de Datos</h3>
+                <p class="count">12 tutoriales</p>
+            </div>
+
+            <div class="categoria-item">
+                <div class="icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3>Diseño</h3>
+                <p class="count">15 tutoriales</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+        <h2>¿Quieres más contenido?</h2>
+        <p>Suscríbete y recibe nuevos tutoriales cada semana</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Tu correo electrónico" required>
+            <button type="submit">Suscribirse</button>
+        </form>
+    </section>
+</div>
+
+{% include 'components/footer.html' %}
+{% endblock %}

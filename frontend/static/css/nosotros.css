@@ -1,0 +1,375 @@
+/* ===========================
+   NOSOTROS PAGE STYLES
+   =========================== */
+
+/* Importar variables globales */
+@import url('globals.css');
+
+/* Contenedor principal */
+.nosotros-container {
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+/* Hero Section */
+.nosotros-hero {
+    background: linear-gradient(135deg, var(--turquoise-800) 0%, var(--teal-700) 100%);
+    padding: 120px 20px 80px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.nosotros-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../img/general/pattern.svg') repeat;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.nosotros-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nosotros-hero p {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    opacity: 0.95;
+}
+
+/* Contenido principal */
+.nosotros-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 20px;
+}
+
+/* Sección Misión y Visión */
+.mision-vision {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+.info-card {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid var(--accent);
+}
+
+.info-card:nth-child(2) {
+    border-top-color: var(--purple);
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.info-card .icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.info-card .icon i {
+    font-size: 1.8rem;
+    color: white;
+}
+
+.info-card h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--teal-800);
+    margin-bottom: 15px;
+}
+
+.info-card p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--teal-600);
+}
+
+/* Sección Valores */
+.valores-section {
+    background: linear-gradient(to bottom, var(--turquoise-25), var(--teal-25));
+    padding: 80px 20px;
+    margin: 0 -20px;
+}
+
+.valores-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--teal-800);
+    margin-bottom: 50px;
+}
+
+.valores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.valor-item {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.valor-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.valor-item .icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--turquoise-500) 0%, var(--teal-600) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.valor-item .icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.valor-item h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--teal-800);
+    margin-bottom: 10px;
+}
+
+.valor-item p {
+    font-size: 0.95rem;
+    color: var(--teal-600);
+    line-height: 1.6;
+}
+
+/* Sección Equipo */
+.equipo-section {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 0 20px;
+}
+
+.equipo-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--teal-800);
+    margin-bottom: 50px;
+}
+
+.equipo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.team-member {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.team-member .photo {
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(135deg, var(--turquoise-200) 0%, var(--teal-300) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-member .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-member .photo .placeholder {
+    font-size: 4rem;
+    color: white;
+    font-weight: 700;
+}
+
+.team-member .info {
+    padding: 25px;
+    text-align: center;
+}
+
+.team-member .info h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--teal-800);
+    margin-bottom: 5px;
+}
+
+.team-member .info .role {
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.team-member .info p {
+    font-size: 0.9rem;
+    color: var(--teal-600);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.team-member .social-links {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.team-member .social-links a {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--turquoise-100);
+    color: var(--teal-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.team-member .social-links a:hover {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
+    padding: 80px 20px;
+    text-align: center;
+    color: white;
+    margin: 80px 0 0;
+}
+
+.cta-section h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.cta-section p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    opacity: 0.95;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 15px 40px;
+    background: white;
+    color: var(--purple);
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nosotros-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .nosotros-hero p {
+        font-size: 1.1rem;
+    }
+
+    .info-card h2,
+    .valores-section h2,
+    .equipo-section h2,
+    .cta-section h2 {
+        font-size: 2rem;
+    }
+
+    .mision-vision,
+    .valores-grid,
+    .equipo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-member .photo {
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nosotros-hero {
+        padding: 100px 15px 60px;
+    }
+
+    .nosotros-hero h1 {
+        font-size: 2rem;
+    }
+
+    .nosotros-content {
+        padding: 60px 15px;
+    }
+
+    .valores-section,
+    .cta-section {
+        padding: 60px 15px;
+    }
+}
