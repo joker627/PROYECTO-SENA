@@ -9,11 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initDashboardNotifications();
     initMobileMenu();
     initSidebarToggle();
-    initDashboardRefresh(); // Inicializar actualización del dashboard
-    applyChartHeights(); // Aplicar alturas del gráfico inicial
-    initPdfDownloadButton(); // Inicializar botón de descarga PDF
-    
-    // NO ejecutar updateNotificationBadge aquí - lo hace update-badge.js globalmente
+    initDashboardRefresh();
+    applyChartHeights();
+    initPdfDownloadButton();
     
     // Auto-actualizar dashboard cada 5 minutos
     setInterval(refreshDashboard, 300000);
