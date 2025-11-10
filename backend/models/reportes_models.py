@@ -14,7 +14,8 @@ def get_all_reportes():
             query = """
                 SELECT 
                     r.id_reporte,
-                    r.id_anonimo,
+                    r.nombre_reportante,
+                    r.correo_contacto,
                     r.tipo_error,
                     r.descripcion,
                     r.evidencia_url,
@@ -24,10 +25,9 @@ def get_all_reportes():
                     r.estado,
                     r.fecha_resolucion,
                     r.id_responsable,
-                    ua.uuid_transaccion,
+                    NULL as uuid_transaccion,
                     u.nombre as nombre_responsable
                 FROM reportes_error r
-                LEFT JOIN usuarios_anonimos ua ON r.id_anonimo = ua.id_anonimo
                 LEFT JOIN usuarios u ON r.id_responsable = u.id_usuario
                 ORDER BY 
                     CASE r.estado
@@ -61,7 +61,8 @@ def get_reporte_by_id(id_reporte):
             query = """
                 SELECT 
                     r.id_reporte,
-                    r.id_anonimo,
+                    r.nombre_reportante,
+                    r.correo_contacto,
                     r.tipo_error,
                     r.descripcion,
                     r.evidencia_url,
@@ -71,10 +72,9 @@ def get_reporte_by_id(id_reporte):
                     r.estado,
                     r.fecha_resolucion,
                     r.id_responsable,
-                    ua.uuid_transaccion,
+                    NULL as uuid_transaccion,
                     u.nombre as nombre_responsable
                 FROM reportes_error r
-                LEFT JOIN usuarios_anonimos ua ON r.id_anonimo = ua.id_anonimo
                 LEFT JOIN usuarios u ON r.id_responsable = u.id_usuario
                 WHERE r.id_reporte = %s
             """
@@ -101,7 +101,8 @@ def get_reportes_by_estado(estado):
             query = """
                 SELECT 
                     r.id_reporte,
-                    r.id_anonimo,
+                    r.nombre_reportante,
+                    r.correo_contacto,
                     r.tipo_error,
                     r.descripcion,
                     r.evidencia_url,
@@ -111,10 +112,9 @@ def get_reportes_by_estado(estado):
                     r.estado,
                     r.fecha_resolucion,
                     r.id_responsable,
-                    ua.uuid_transaccion,
+                    NULL as uuid_transaccion,
                     u.nombre as nombre_responsable
                 FROM reportes_error r
-                LEFT JOIN usuarios_anonimos ua ON r.id_anonimo = ua.id_anonimo
                 LEFT JOIN usuarios u ON r.id_responsable = u.id_usuario
                 WHERE r.estado = %s
                 ORDER BY r.fecha DESC
@@ -181,14 +181,30 @@ def get_reportes_paginated(page=1, per_page=10, estado=None):
     """
     connection = None
     try:
-        offset = max(0, (int(page) - 1)) * int(per_page)
+        # Normalizar y validar parámetros
+        try:
+            page_i = int(page)
+            if page_i < 1:
+                page_i = 1
+        except Exception:
+            page_i = 1
+
+        try:
+            per_page_i = int(per_page)
+            if per_page_i < 1:
+                per_page_i = 10
+        except Exception:
+            per_page_i = 10
+
+        offset = max(0, (page_i - 1)) * per_page_i
         connection = get_connection()
         with connection.cursor() as cursor:
             if estado:
-                query = f"""
+                query = """
                     SELECT 
                         r.id_reporte,
-                        r.id_anonimo,
+                        r.nombre_reportante,
+                        r.correo_contacto,
                         r.tipo_error,
                         r.descripcion,
                         r.evidencia_url,
@@ -198,21 +214,22 @@ def get_reportes_paginated(page=1, per_page=10, estado=None):
                         r.estado,
                         r.fecha_resolucion,
                         r.id_responsable,
-                        ua.uuid_transaccion,
+                        NULL as uuid_transaccion,
                         u.nombre as nombre_responsable
                     FROM reportes_error r
-                    LEFT JOIN usuarios_anonimos ua ON r.id_anonimo = ua.id_anonimo
                     LEFT JOIN usuarios u ON r.id_responsable = u.id_usuario
                     WHERE r.estado = %s
                     ORDER BY r.fecha DESC
                     LIMIT %s OFFSET %s
                 """
-                cursor.execute(query, (estado, per_page, offset))
+                params = (estado, per_page_i, offset)
+                cursor.execute(query, params)
             else:
-                query = f"""
+                query = """
                     SELECT 
                         r.id_reporte,
-                        r.id_anonimo,
+                        r.nombre_reportante,
+                        r.correo_contacto,
                         r.tipo_error,
                         r.descripcion,
                         r.evidencia_url,
@@ -222,23 +239,30 @@ def get_reportes_paginated(page=1, per_page=10, estado=None):
                         r.estado,
                         r.fecha_resolucion,
                         r.id_responsable,
-                        ua.uuid_transaccion,
+                        NULL as uuid_transaccion,
                         u.nombre as nombre_responsable
                     FROM reportes_error r
-                    LEFT JOIN usuarios_anonimos ua ON r.id_anonimo = ua.id_anonimo
                     LEFT JOIN usuarios u ON r.id_responsable = u.id_usuario
                     ORDER BY r.fecha DESC
                     LIMIT %s OFFSET %s
                 """
-                cursor.execute(query, (per_page, offset))
+                params = (per_page_i, offset)
+                cursor.execute(query, params)
 
             reportes = cursor.fetchall()
             for reporte in reportes:
                 reporte['tiempo_transcurrido'] = calculate_time_ago(reporte['fecha'])
             return reportes
     except Exception as e:
-        print(f"Error al obtener reportes paginados: {e}")
-        error_db('get_reportes_paginated', f'Error en consulta: {str(e)}', 'models/reportes_models.py')
+        # Loguear el query/params no sensibles para facilitar debugging
+        try:
+            detalle = f'Error en consulta: {str(e)}'
+            if 'params' in locals():
+                detalle += f' | params={params}'
+        except Exception:
+            detalle = str(e)
+        print(f"Error al obtener reportes paginados: {detalle}")
+        error_db('get_reportes_paginated', detalle, 'models/reportes_models.py')
         return []
     finally:
         if connection:

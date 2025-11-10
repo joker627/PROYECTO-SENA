@@ -3,17 +3,21 @@ Modelo para el Dashboard - Consultas de métricas del sistema
 """
 
 from connection.db import get_connection
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from utils.error_handler import error_db
 
 def _table_exists(cursor, table_name: str) -> bool:
     """Comprueba si la tabla existe en la base de datos actual."""
-    cursor.execute(
-        "SELECT COUNT(*) as c FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = %s",
-        (table_name,)
-    )
-    row = cursor.fetchone()
-    return bool(row and row.get('c', 0) > 0)
+    try:
+        cursor.execute(
+            "SELECT COUNT(*) as c FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = %s",
+            (table_name,)
+        )
+        row = cursor.fetchone()
+        return bool(row and row.get('c', 0) > 0)
+    except Exception:
+        # If anything goes wrong querying information_schema, assume table doesn't exist
+        return False
 def get_total_users():
     """Obtener total de usuarios registrados"""
     connection = get_connection()
@@ -228,25 +232,17 @@ def get_total_translations():
         return 0
     
     try:
+        # The translation tables `traducciones_senas_texto` and
+        # `traducciones_texto_senas` no longer exist in this DB.
+        # Use `contribuciones_senas` as the authoritative source for a
+        # comparable metric (number of validated contributions), or 0 if
+        # that table is also absent.
         with connection.cursor() as cursor:
-            # Evitar consultar tablas inexistentes: comprobar tablas primero
-            exists_a = _table_exists(cursor, 'traducciones_senas_texto')
-            exists_b = _table_exists(cursor, 'traducciones_texto_senas')
-
-            if not exists_a and not exists_b:
-                # No hay tablas de traducción en esta BD, devolver 0 sin generar error crítico
-                return 0
-
-            parts = []
-            if exists_a:
-                parts.append("(SELECT COUNT(*) FROM traducciones_senas_texto)")
-            if exists_b:
-                parts.append("(SELECT COUNT(*) FROM traducciones_texto_senas)")
-
-            query = f"SELECT {' + '.join(parts)} as total"
-            cursor.execute(query)
-            result = cursor.fetchone()
-            return result['total'] if result and result.get('total') is not None else 0
+            if _table_exists(cursor, 'contribuciones_senas'):
+                cursor.execute("SELECT COUNT(*) as total FROM contribuciones_senas WHERE estado = 'validada'")
+                res = cursor.fetchone()
+                return res['total'] if res else 0
+            return 0
     except Exception as e:
         error_db('get_total_translations', f'Error: {str(e)}', 'models/dashboard_models.py')
         print(f"Error en get_total_translations: {e}")
@@ -261,42 +257,20 @@ def get_translations_growth():
         return 0
     
     try:
+        # Since translation tables are not available, measure growth using
+        # `contribuciones_senas` (validated contributions) as a proxy when
+        # possible.
         with connection.cursor() as cursor:
-            # Traducciones del mes actual
-            # Construir la consulta sólo con las tablas que existan
-            exists_a = _table_exists(cursor, 'traducciones_senas_texto')
-            exists_b = _table_exists(cursor, 'traducciones_texto_senas')
-
-            if not exists_a and not exists_b:
-                return 0
-
-            selects = []
-            if exists_a:
-                selects.append("SELECT fecha FROM traducciones_senas_texto WHERE fecha >= DATE_SUB(NOW(), INTERVAL 1 MONTH)")
-            if exists_b:
-                selects.append("SELECT fecha FROM traducciones_texto_senas WHERE fecha >= DATE_SUB(NOW(), INTERVAL 1 MONTH)")
-
-            union_sql = " UNION ALL ".join(selects)
-            cursor.execute(f"SELECT COUNT(*) as total FROM ({union_sql}) as traducciones_mes")
-            current_month = cursor.fetchone()['total']
-            
-            # Traducciones del mes anterior
-            # Mes anterior (usar mismas tablas existentes)
-            selects_prev = []
-            if exists_a:
-                selects_prev.append("SELECT fecha FROM traducciones_senas_texto WHERE fecha >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND fecha < DATE_SUB(NOW(), INTERVAL 1 MONTH)")
-            if exists_b:
-                selects_prev.append("SELECT fecha FROM traducciones_texto_senas WHERE fecha >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND fecha < DATE_SUB(NOW(), INTERVAL 1 MONTH)")
-
-            union_prev_sql = " UNION ALL ".join(selects_prev)
-            cursor.execute(f"SELECT COUNT(*) as total FROM ({union_prev_sql}) as traducciones_mes_anterior")
-            previous_month = cursor.fetchone()['total']
-            
-            if previous_month == 0:
-                return 100 if current_month > 0 else 0
-            
-            growth = ((current_month - previous_month) / previous_month) * 100
-            return round(growth, 1)
+            if _table_exists(cursor, 'contribuciones_senas'):
+                cursor.execute("SELECT COUNT(*) as total FROM contribuciones_senas WHERE fecha >= DATE_SUB(NOW(), INTERVAL 1 MONTH) AND estado = 'validada'")
+                current_month = cursor.fetchone()['total']
+                cursor.execute("SELECT COUNT(*) as total FROM contribuciones_senas WHERE fecha >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND fecha < DATE_SUB(NOW(), INTERVAL 1 MONTH) AND estado = 'validada'")
+                previous_month = cursor.fetchone()['total']
+                if previous_month == 0:
+                    return 100 if current_month > 0 else 0
+                growth = ((current_month - previous_month) / previous_month) * 100
+                return round(growth, 1)
+            return 0
     except Exception as e:
         error_db('get_translations_growth', f'Error: {str(e)}', 'models/dashboard_models.py')
         print(f"Error en get_translations_growth: {e}")
@@ -338,16 +312,8 @@ def get_average_precision():
                 row = cursor.fetchone()
                 if row and row.get('precision_promedio') is not None:
                     return float(round(row['precision_promedio'], 2))
-
-            # Fallback: si no existe rendimiento_modelo, intentar promediar las traducciones (si la tabla existe)
-            if _table_exists(cursor, 'traducciones_senas_texto'):
-                cursor.execute(
-                    "SELECT AVG(precision_modelo) as promedio FROM traducciones_senas_texto WHERE precision_modelo IS NOT NULL"
-                )
-                result = cursor.fetchone()
-                return round(result['promedio'], 2) if result and result['promedio'] else 0
-
-            # Si ninguna tabla está disponible, devolver 0
+            # If there is no rendimiento_modelo table, there's no reliable
+            # precision metric available in this DB; return 0.
             return 0
     except Exception as e:
         error_db('get_average_precision', f'Error: {str(e)}', 'models/dashboard_models.py')
@@ -482,7 +448,50 @@ def get_weekly_stats():
             exists_b = _table_exists(cursor, 'traducciones_texto_senas')
 
             if not exists_a and not exists_b:
-                return {'labels': days, 'values': [0, 0, 0, 0, 0, 0, 0]}
+                # Si no hay tablas de traducción, usar un gráfico alternativo basado
+                # en `contribuciones_senas` (actividad de señas) si la tabla existe.
+                if _table_exists(cursor, 'contribuciones_senas'):
+                    cursor.execute("""
+                        SELECT DATE(fecha) as dia, COUNT(*) as total
+                        FROM contribuciones_senas
+                        WHERE fecha >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                        GROUP BY DATE(fecha)
+                        ORDER BY dia ASC
+                    """)
+                    contribs = cursor.fetchall()
+
+                    # Construir labels y valores para últimos 7 días
+                    days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
+                    values = []
+                    today = datetime.now()
+                    # Normalizar posibles tipos devueltos por el cursor (datetime/date/str)
+                    def _to_date(val):
+                        if isinstance(val, datetime):
+                            return val.date()
+                        if isinstance(val, date):
+                            return val
+                        if isinstance(val, str):
+                            try:
+                                return datetime.strptime(val.split(" ")[0], "%Y-%m-%d").date()
+                            except Exception:
+                                return None
+                        return None
+
+                    data_dict = {}
+                    for row in contribs:
+                        d = _to_date(row.get('dia'))
+                        if d is not None:
+                            data_dict[d] = row.get('total', 0)
+                    for i in range(6, -1, -1):
+                        day = today - timedelta(days=i)
+                        date_key = day.date()
+                        values.append(data_dict.get(date_key, 0))
+
+                    return {'labels': days, 'values': values}
+                else:
+                    # No hay datos alternativos — devolver ceros por defecto
+                    default_labels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
+                    return {'labels': default_labels, 'values': [0, 0, 0, 0, 0, 0, 0]}
 
             selects = []
             if exists_a:
@@ -502,7 +511,24 @@ def get_weekly_stats():
             today = datetime.now()
             
             # Crear diccionario de resultados
-            data_dict = {row['dia']: row['total'] for row in results}
+            # Normalizar los valores de 'dia' (pueden venir como date/datetime/str según el driver)
+            def _to_date(val):
+                if isinstance(val, datetime):
+                    return val.date()
+                if isinstance(val, date):
+                    return val
+                if isinstance(val, str):
+                    try:
+                        return datetime.strptime(val.split(" ")[0], "%Y-%m-%d").date()
+                    except Exception:
+                        return None
+                return None
+
+            data_dict = {}
+            for row in results:
+                d = _to_date(row.get('dia'))
+                if d is not None:
+                    data_dict[d] = row.get('total', 0)
             
             # Llenar valores para los últimos 7 días
             for i in range(6, -1, -1):
