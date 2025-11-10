@@ -12,7 +12,7 @@ def _generar_hash(modulo, tipo_error, funcion_fallida):
     return hashlib.md5(cadena.encode()).hexdigest()
 
 
-def registrar_error(modulo, tipo_error, severidad, descripcion, funcion_fallida=None, origen_sistema=None, extra_context=None):
+def registrar_error(modulo, tipo_error, severidad, descripcion, funcion_fallida=None, origen_sistema=None, extra_context=None, es_bloqueante=None):
     """
     Registra error en alertas_sistema. Si ya existe sin resolver, incrementa contador.
     Args:
@@ -71,6 +71,18 @@ def registrar_error(modulo, tipo_error, severidad, descripcion, funcion_fallida=
 
             if contexto_parts:
                 descripcion = f"{descripcion}\n\nContexto: {' | '.join(contexto_parts)}"
+            # Determinar si la alerta debe considerarse bloqueante
+            def inferir_bloqueante(sev, override):
+                # Si el caller pasó explicitamente, respetarlo
+                if override is not None:
+                    return bool(override)
+                # Por convención: 'alto' o 'critico' implican un error bloqueante
+                return str(sev).lower() in ('alto', 'critico')
+
+            bloqueante = inferir_bloqueante(severidad, es_bloqueante)
+            # Añadir marca visible en la descripción para facilitar filtrado sin cambiar la BD
+            if bloqueante and not descripcion.startswith('[BLOQUEANTE]'):
+                descripcion = f"[BLOQUEANTE] {descripcion}"
             hash_error = _generar_hash(modulo, tipo_error, funcion_fallida)
 
             # Verificar si ya existe error sin resolver
@@ -95,12 +107,14 @@ def registrar_error(modulo, tipo_error, severidad, descripcion, funcion_fallida=
                 print(f"⚠️ Error repetido (ID: {error_existente['id_alerta']}, Ocurrencias: {error_existente['contador_ocurrencias'] + 1})")
             else:
                 # Crear nueva alerta
+                # Si la alerta es bloqueante, la dejamos con mayor prioridad en estado 'en revision'
+                estado_inicial = 'en revision' if bloqueante else 'pendiente'
                 cursor.execute("""
                     INSERT INTO alertas_sistema 
                     (modulo, tipo_error, severidad, origen_sistema, funcion_fallida, 
                      descripcion, hash_error, contador_ocurrencias, estado)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, 1, 'pendiente')
-                """, (modulo, tipo_error, severidad, origen_sistema, funcion_fallida, descripcion, hash_error))
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, 1, %s)
+                """, (modulo, tipo_error, severidad, origen_sistema, funcion_fallida, descripcion, hash_error, estado_inicial))
                 connection.commit()
                 print(f"🆕 Nueva alerta creada (ID: {cursor.lastrowid})")
 

@@ -46,7 +46,7 @@ def accept_solicitud(id_solicitud):
     id_revisor = session.get('user_id')
     
     if accept_solicitud(id_solicitud, id_revisor):
-        flash('✅ Solicitud aceptada. Se ha creado una cuenta de usuario con rol GESTOR automáticamente.', 'success')
+        flash(' Solicitud aceptada. Se ha creado una cuenta de usuario con rol GESTOR automáticamente.', 'success')
     else:
         flash('Error al aceptar la solicitud', 'error')
     

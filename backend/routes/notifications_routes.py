@@ -138,7 +138,6 @@ def delete_all_notifications():
     """
     Ruta: /notifications/delete-all
     Elimina TODAS las notificaciones del sistema.
-    ⚠️ Cuidado: Esta acción no se puede deshacer.
     """
     resultado = eliminar_todas()
     

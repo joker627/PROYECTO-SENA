@@ -19,6 +19,8 @@ def _require_login_for_admin():
     Protege las rutas del blueprint `admin_bp` redirigiendo al login
     si no existe una sesión válida (user_id en session).
     """
+    # Permitimos recursos estáticos y llamadas AJAX que puedan no necesitar sesión
+    # pero por simplicidad aquí redirigimos si no hay user_id
     if 'user_id' not in session:
         # flash un mensaje corto y redirigir al login
         try:
@@ -53,6 +55,7 @@ def dashboard():
 
 @admin_bp.route('/admin/api/dashboard-data')
 def get_dashboard_data():
+    """API: Obtener datos del dashboard en formato JSON para actualización AJAX"""
     try:
         dashboard_data = controller_get_dashboard_data()
         return jsonify({
