@@ -101,10 +101,9 @@
                         <span class="user-role">{% if session.get('id_rol') == 1 %}Super Admin{% else %}Gestor{% endif %}</span>
                     </div>
                 </div>
-                <div class="notifications">
+                    <div class="notifications">
                         <i class="fas fa-bell"></i>
-                        {%- from 'components/_badge.html' import render_badge -%}
-                        {{ render_badge(notification_count, id='navbarNotificationBadge', classes='notification-badge') }}
+                        <span id="navbarNotificationBadge" class="notification-badge{% if notification_count == 0 %} hidden{% endif %}">{{ notification_count }}</span>
                     </div>
                 
                 <!-- Dropdown de notificaciones -->
@@ -256,7 +255,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Alertas del sistema eliminado de las tarjetas: se mantiene la campana en el header -->
+                <!-- Alertas del sistema campana en el header -->
                 <div class="project-card solicitudes-card">
                     <div class="project-header">
                         <h3>Solicitudes</h3>

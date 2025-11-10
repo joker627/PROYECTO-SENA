@@ -152,6 +152,99 @@ def count_reportes_pendientes():
             connection.close()
 
 
+def count_reportes(estado=None):
+    """Cuenta reportes, opcionalmente filtrados por estado"""
+    connection = None
+    try:
+        connection = get_connection()
+        with connection.cursor() as cursor:
+            if estado:
+                query = "SELECT COUNT(*) as total FROM reportes_error WHERE estado = %s"
+                cursor.execute(query, (estado,))
+            else:
+                query = "SELECT COUNT(*) as total FROM reportes_error"
+                cursor.execute(query)
+            result = cursor.fetchone()
+            return result['total'] if result else 0
+    except Exception as e:
+        print(f"Error al contar reportes (general): {e}")
+        error_db('count_reportes', f'Error en consulta: {str(e)}', 'models/reportes_models.py')
+        return 0
+    finally:
+        if connection:
+            connection.close()
+
+
+def get_reportes_paginated(page=1, per_page=10, estado=None):
+    """Obtiene reportes paginados desde la base de datos. Si `estado` es suministrado,
+    aplica filtro por estado. Ordena por fecha descendente.
+    """
+    connection = None
+    try:
+        offset = max(0, (int(page) - 1)) * int(per_page)
+        connection = get_connection()
+        with connection.cursor() as cursor:
+            if estado:
+                query = f"""
+                    SELECT 
+                        r.id_reporte,
+                        r.id_anonimo,
+                        r.tipo_error,
+                        r.descripcion,
+                        r.evidencia_url,
+                        r.id_traduccion,
+                        r.origen,
+                        r.fecha,
+                        r.estado,
+                        r.fecha_resolucion,
+                        r.id_responsable,
+                        ua.uuid_transaccion,
+                        u.nombre as nombre_responsable
+                    FROM reportes_error r
+                    LEFT JOIN usuarios_anonimos ua ON r.id_anonimo = ua.id_anonimo
+                    LEFT JOIN usuarios u ON r.id_responsable = u.id_usuario
+                    WHERE r.estado = %s
+                    ORDER BY r.fecha DESC
+                    LIMIT %s OFFSET %s
+                """
+                cursor.execute(query, (estado, per_page, offset))
+            else:
+                query = f"""
+                    SELECT 
+                        r.id_reporte,
+                        r.id_anonimo,
+                        r.tipo_error,
+                        r.descripcion,
+                        r.evidencia_url,
+                        r.id_traduccion,
+                        r.origen,
+                        r.fecha,
+                        r.estado,
+                        r.fecha_resolucion,
+                        r.id_responsable,
+                        ua.uuid_transaccion,
+                        u.nombre as nombre_responsable
+                    FROM reportes_error r
+                    LEFT JOIN usuarios_anonimos ua ON r.id_anonimo = ua.id_anonimo
+                    LEFT JOIN usuarios u ON r.id_responsable = u.id_usuario
+                    ORDER BY r.fecha DESC
+                    LIMIT %s OFFSET %s
+                """
+                cursor.execute(query, (per_page, offset))
+
+            reportes = cursor.fetchall()
+            for reporte in reportes:
+                reporte['tiempo_transcurrido'] = calculate_time_ago(reporte['fecha'])
+            return reportes
+    except Exception as e:
+        print(f"Error al obtener reportes paginados: {e}")
+        error_db('get_reportes_paginated', f'Error en consulta: {str(e)}', 'models/reportes_models.py')
+        return []
+    finally:
+        if connection:
+            connection.close()
+
+
 def update_estado_reporte(id_reporte, nuevo_estado):
     """Actualiza el estado de un reporte"""
     connection = None
