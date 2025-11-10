@@ -1,15 +1,7 @@
 // ===========================
-// UTILIDADES DE PERFORMANCE - Debouncing y Throttling
+// UTILIDADES DE PERFORMANCE 
 // ===========================
 
-/**
- * Debounce: Ejecuta una función solo después de que haya pasado un tiempo desde la última llamada
- * Útil para: búsquedas en tiempo real, resize de ventana, scroll events
- * 
- * @param {Function} func - Función a ejecutar
- * @param {Number} wait - Tiempo de espera en milisegundos
- * @returns {Function} Función debounced
- */
 function debounce(func, wait = 300) {
     let timeout;
     
@@ -26,14 +18,6 @@ function debounce(func, wait = 300) {
     };
 }
 
-/**
- * Throttle: Limita la ejecución de una función a una vez cada X milisegundos
- * Útil para: scroll infinito, drag events, mousemove
- * 
- * @param {Function} func - Función a ejecutar
- * @param {Number} limit - Tiempo mínimo entre ejecuciones en milisegundos
- * @returns {Function} Función throttled
- */
 function throttle(func, limit = 300) {
     let inThrottle;
     let lastResult;
@@ -54,13 +38,6 @@ function throttle(func, limit = 300) {
     };
 }
 
-/**
- * Request Animation Frame Throttle: Optimizado para animaciones
- * Limita ejecución al siguiente repaint del navegador
- * 
- * @param {Function} func - Función a ejecutar
- * @returns {Function} Función optimizada con RAF
- */
 function rafThrottle(func) {
     let rafId = null;
     
@@ -76,14 +53,6 @@ function rafThrottle(func) {
     };
 }
 
-/**
- * Lazy Execution: Ejecuta función solo cuando el elemento es visible
- * Útil para: analytics, cargar contenido dinámico
- * 
- * @param {HTMLElement} element - Elemento a observar
- * @param {Function} callback - Función a ejecutar cuando sea visible
- * @param {Object} options - Opciones de IntersectionObserver
- */
 function onVisible(element, callback, options = {}) {
     const defaultOptions = {
         root: null,
@@ -106,13 +75,6 @@ function onVisible(element, callback, options = {}) {
     return observer;
 }
 
-/**
- * Idle Callback: Ejecuta función cuando el navegador está inactivo
- * Útil para: tareas no críticas, analytics, prefetching
- * 
- * @param {Function} callback - Función a ejecutar
- * @param {Object} options - Opciones de timeout
- */
 function onIdle(callback, options = {}) {
     const defaultOptions = {
         timeout: 2000, // Máximo 2 segundos de espera
@@ -127,13 +89,7 @@ function onIdle(callback, options = {}) {
     }
 }
 
-/**
- * Memoize: Cachea resultados de funciones costosas
- * Útil para: cálculos complejos, búsquedas repetidas
- * 
- * @param {Function} func - Función a memoizar
- * @returns {Function} Función memoizada
- */
+
 function memoize(func) {
     const cache = new Map();
     
@@ -152,13 +108,7 @@ function memoize(func) {
     };
 }
 
-/**
- * Optimize Scroll: Mejora performance de scroll listeners
- * Combina RAF + throttle para scroll suave
- * 
- * @param {Function} callback - Función a ejecutar en scroll
- * @returns {Function} Listener optimizado
- */
+
 function optimizeScroll(callback) {
     let ticking = false;
     
@@ -194,4 +144,4 @@ window.onIdle = onIdle;
 window.memoize = memoize;
 window.optimizeScroll = optimizeScroll;
 
-console.log('✅ Performance Utils cargados correctamente');
+console.log(' Performance Utils cargados correctamente');

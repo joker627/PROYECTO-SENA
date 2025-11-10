@@ -44,7 +44,6 @@ CREATE TABLE usuarios_anonimos (
 -- ============================================================
 CREATE TABLE solicitudes_colaboracion (
     id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
-    id_anonimo INT NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(120) NOT NULL,
     motivacion TEXT NOT NULL,
@@ -52,9 +51,9 @@ CREATE TABLE solicitudes_colaboracion (
     estado ENUM('pendiente','aceptado') DEFAULT 'pendiente',
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_revisor INT NULL,
-    FOREIGN KEY (id_anonimo) REFERENCES usuarios_anonimos(id_anonimo),
     FOREIGN KEY (id_revisor) REFERENCES usuarios(id_usuario)
 );
+
 
 -- ============================================================
 -- 4️⃣ CONTRIBUCIONES DE SEÑAS (subidas por anónimos)

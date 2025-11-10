@@ -16,7 +16,7 @@ def iniciar_sesion():
             session['user_name'] = usuario.get('nombre') or usuario.get('name')
             session['id_rol'] = usuario.get('id_rol')
             session.permanent = True
-            flash(f"Bienvenido {session['user_name']} 👋", "success")
+            flash(f"Bienvenido {session['user_name']} ", "success")
 
             if session.get('id_rol') == 1:
                 return redirect(url_for('admin_bp.dashboard'))
@@ -26,7 +26,7 @@ def iniciar_sesion():
                 flash("Rol desconocido", "warning")
                 return redirect(url_for('login_bp.login'))
         else:
-            flash("Correo o contraseña incorrectos ❌", "danger")
+            flash("Correo o contraseña incorrectos ", "danger")
             return redirect(url_for('login_bp.login'))
     except Exception as e:
         error_auth('iniciar_sesion', f'Error en proceso de login: {str(e)}', 'controllers/login_controller.py')

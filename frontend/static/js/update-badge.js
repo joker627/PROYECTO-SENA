@@ -82,7 +82,7 @@ async function updateAllNotificationBadges() {
                 }
             });
 
-            // 2b. Además, por robustez, actualizar cualquier .menu-badge dentro del .menu
+        
             // cuyo enlace padre (closest <a>) contenga 'notifications' en el href.
             const allMenuBadges = document.querySelectorAll('.menu .menu-item .menu-badge');
             allMenuBadges.forEach(badge => {
