@@ -3,12 +3,13 @@
 /* ========== SIDEBAR ========== */
 .sidebar {
     width: 280px;
-    background: linear-gradient(180deg, #ffffff 0%, #f8fafa 50%, #f0f5f5 100%);
-    color: #1a1a1a;
+    /* Light background using global tokens (soft light -> slightly tinted) */
+    background: linear-gradient(180deg, var(--white) 0%, var(--turquoise-25) 100%);
+    color: var(--gray-900);
     display: flex;
     flex-direction: column;
     padding: 25px 15px;
-    box-shadow: 4px 0 24px rgba(6, 115, 100, 0.08);
+    box-shadow: 2px 0 12px rgba(6, 115, 100, 0.06);
     position: fixed;
     left: 0;
     top: 0;
@@ -16,18 +17,19 @@
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 1000;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
-    border-right: 1px solid rgba(6, 115, 100, 0.12);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid var(--gray-200);
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Ocultar scrollbar pero permitir scroll */
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
 .sidebar {
     scrollbar-width: none;
     -ms-overflow-style: none;
-}
-
-.sidebar::-webkit-scrollbar {
-    display: none;
 }
 
 /* Sidebar colapsado en desktop */
@@ -41,44 +43,51 @@
     width: 0;
     overflow: hidden;
     white-space: nowrap;
+    transition: opacity 0.3s ease, width 0.3s ease;
 }
 
 .sidebar.collapsed .toggle-text {
     opacity: 0;
     width: 0;
+    transition: opacity 0.3s ease, width 0.3s ease;
 }
 
 .sidebar.collapsed .menu-badge {
     position: absolute;
-    right: 10px;
-    top: 5px;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
     opacity: 1;
     width: auto;
+    transition: all 0.3s ease;
 }
 
 .sidebar.collapsed .menu-item a {
     justify-content: center;
     padding: 14px 10px;
     position: relative;
+    overflow: visible; /* allow absolute-positioned badge to be visible */
 }
 
 /* Botón para colapsar sidebar */
 .sidebar-toggle {
     width: 100%;
     height: 60px;
-    background: linear-gradient(135deg, var(--turquoise-500), var(--turquoise-600));
+    /* Accent gradient using turquoise variables (not as dark as teal) */
+    background: linear-gradient(135deg, var(--turquoise-400), var(--turquoise-600));
     border: none;
-    border-radius: 14px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 25px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(6, 115, 100, 0.15);
+    box-shadow: 0 4px 12px rgba(6, 115, 100, 0.12);
+    font-family: 'Poppins', sans-serif;
 }
 
 .sidebar-toggle::before {
@@ -87,7 +96,7 @@
     inset: 0;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
 }
 
 .sidebar-toggle:hover::before {
@@ -95,41 +104,43 @@
 }
 
 .sidebar-toggle:hover {
-    background: linear-gradient(135deg, var(--turquoise-600), var(--turquoise-700));
+    background: linear-gradient(135deg, var(--turquoise-300), var(--turquoise-500));
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(6, 115, 100, 0.25);
+    box-shadow: 0 6px 20px rgba(6, 115, 100, 0.16);
 }
 
 .sidebar-toggle:active {
     transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.25);
 }
 
 .sidebar-toggle i {
-    color: white;
+    color: var(--white);
     font-size: 20px;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     z-index: 1;
 }
 
+.sidebar.collapsed .sidebar-toggle i {
+    transform: rotate(180deg);
+}
+
 .toggle-text {
-    color: white;
+    color: var(--white);
     font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    transition: opacity 0.3s ease, width 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: opacity 0.4s ease, width 0.4s ease;
     white-space: nowrap;
     position: relative;
     z-index: 1;
+    font-family: 'Poppins', sans-serif;
 }
 
 .sidebar.collapsed .sidebar-toggle {
     height: 52px;
     gap: 0;
-}
-
-.sidebar.collapsed .sidebar-toggle i {
-    font-size: 18px;
 }
 
 /* Menú del sidebar */
@@ -145,177 +156,183 @@
     align-items: center;
     gap: 14px;
     padding: 14px 16px;
-    color: var(--turquoise-900);
+    height: 56px; /* uniform item height so icons vertically center */
+    color: var(--gray-900);
     text-decoration: none;
     font-size: 15px;
-    font-weight: 600;
-    border-radius: 12px;
+    font-weight: 500;
+    border-radius: 10px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    letter-spacing: 0.2px;
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid var(--turquoise-100);
-}
-
-.menu-item a::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(180deg, var(--teal-500), var(--teal-600));
-    transform: scaleY(0);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 0 4px 4px 0;
+    background: transparent;
+    border: none;
+    font-family: 'Poppins', sans-serif;
 }
 
 .menu-item a::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(0, 150, 136, 0.06), transparent);
+    background: linear-gradient(90deg, rgba(6, 115, 100, 0.06), transparent);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .menu-item a i {
-    font-size: 19px;
-    width: 24px;
+    font-size: 18px;
+    width: 36px; /* larger icon box to align visually */
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    color: var(--turquoise-700);
-    transition: all 0.3s ease;
+    color: var(--turquoise-600);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     z-index: 1;
+    flex-shrink: 0;
 }
 
 /* Badge de notificaciones */
 .menu-badge {
     margin-left: auto;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
+    /* token-based red gradient for badge */
+    background: linear-gradient(135deg, var(--red-500), var(--red-600));
+    color: var(--white);
     font-size: 11px;
     font-weight: 700;
-    min-width: 24px;
-    height: 24px;
-    display: none; /* Oculto por defecto, JavaScript lo mostrará si count > 0 */
+    min-width: 22px;
+    height: 22px;
+    display: none;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
-    padding: 0 8px;
-    box-shadow: 0 3px 10px rgba(239, 68, 68, 0.5);
-    transition: all 0.3s ease;
+    border-radius: 11px;
+    padding: 0 7px;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.18);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    z-index: 1;
+    z-index: 3; /* above icon */
     flex-shrink: 0;
-    align-self: center;
-    text-align: center;
-    line-height: 24px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .menu-badge.hidden {
     display: none !important;
 }
 
-/* Cuando el badge está visible (activado por JavaScript) */
 .menu-badge:not(.hidden) {
     display: flex;
 }
 
 @keyframes pulse {
     0%, 100% {
-        box-shadow: 0 3px 10px rgba(239, 68, 68, 0.5);
         transform: scale(1);
     }
     50% {
-        box-shadow: 0 3px 16px rgba(239, 68, 68, 0.7);
         transform: scale(1.05);
     }
 }
 
+.menu-badge:not(.hidden) {
+    animation: pulse 2s ease-in-out infinite;
+}
+
 .menu-item:first-child a {
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid var(--turquoise-300);
+    background: var(--turquoise-50);
+    color: var(--turquoise-600);
+    font-weight: 600;
     margin-bottom: 20px;
-    color: var(--turquoise-900);
-    font-weight: 700;
-    box-shadow: 0 3px 15px rgba(0, 150, 136, 0.15);
 }
 
 .menu-item:first-child a i {
-    color: var(--turquoise-700);
+    color: var(--turquoise-500);
 }
 
 .menu-item:first-child a:hover {
-    background: rgba(255, 255, 255, 1);
-    border-color: var(--turquoise-400);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(0, 150, 136, 0.25);
+    background: #ccfbf1;
 }
 
 .menu-item a:hover {
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--turquoise-900);
+    background: #f0fdfa;
+    color: #0f766e;
     transform: translateX(4px);
-    border-color: var(--turquoise-300);
-    box-shadow: 0 2px 8px rgba(0, 150, 136, 0.15);
 }
+
+/* COLLAPSED: hide text labels (but keep .menu-badge visible) and keep icon+badge centered and aligned */
+.sidebar.collapsed .menu-item a span:not(.menu-badge) {
+    display: none !important;
+}
+
+.sidebar.collapsed .menu-item a {
+    justify-content: center;
+    padding: 14px 10px;
+    position: relative;
+}
+
+/* place the badge near the icon in collapsed state (to the right of the icon) */
+.sidebar.collapsed .menu-item a .menu-badge {
+    position: absolute !important;
+    right: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 18px !important;
+    height: 18px !important;
+    padding: 0 6px !important;
+    z-index: 6 !important;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.12) !important;
+}
+
+/* EXPANDED: ensure badge stays at the end of the item */
+.sidebar:not(.collapsed) .menu-item a .menu-badge {
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+/* Keep responsive mobile behavior (badge inline) - rely on existing media rules below */
 
 .menu-item a:hover::after {
     opacity: 1;
 }
 
 .menu-item a:hover i {
-    color: var(--turquoise-700);
+    color: #0d9488;
     transform: scale(1.1);
 }
 
-.menu-item a:hover::before {
-    transform: scaleY(1);
-}
-
 .menu-item.active a {
-    background: rgba(255, 255, 255, 1);
-    color: var(--turquoise-900);
-    font-weight: 700;
-    box-shadow: 0 3px 12px rgba(0, 150, 136, 0.2);
-    border: 2px solid var(--turquoise-400);
+    background: #ccfbf1;
+    color: #0f766e;
+    font-weight: 600;
 }
 
 .menu-item.active a i {
-    color: var(--turquoise-700);
-    transform: scale(1.05);
-}
-
-.menu-item.active a::before {
-    transform: scaleY(1);
+    color: #14b8a6;
 }
 
 .menu-item.logout {
     margin-top: auto;
     padding-top: 20px;
-    border-top: 1px solid var(--gray-200);
+    border-top: 1px solid #e5e7eb;
 }
 
 .menu-item.logout a {
-    color: var(--red-800);
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid var(--red-300);
+    color: #dc2626;
+    background: #fef2f2;
     font-weight: 600;
-    box-shadow: 0 3px 15px rgba(239, 68, 68, 0.12);
 }
 
 .menu-item.logout a:hover {
-    background: rgba(255, 255, 255, 1);
-    border-color: var(--red-400);
-    color: var(--red-900);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(239, 68, 68, 0.25);
+    background: #fee2e2;
+    color: #991b1b;
 }
 
 .menu-item.logout a i {
-    color: var(--red-500);
+    color: #ef4444;
 }
 
 /* ========== RESPONSIVE ========== */
@@ -402,7 +419,7 @@
         position: relative !important;
         margin-left: auto !important;
         flex-shrink: 0;
-        display: flex !important;
+        /* rely on .menu-badge:not(.hidden) to control display */
         align-items: center;
         justify-content: center;
         text-align: center !important;

@@ -1,7 +1,50 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+<!-- Script inline para prevenir flash del sidebar - ejecutar ANTES de cargar la página -->
+<script>
+(function() {
+    // Aplicar estado del sidebar inmediatamente desde localStorage
+    if (window.innerWidth > 768 && localStorage.getItem('sidebarCollapsed') === 'true') {
+        document.documentElement.classList.add('sidebar-collapsed-init');
+    }
+})();
+</script>
+<style>
+    /* Prevenir flash visual - aplicar estado inicial del sidebar */
+    .sidebar-collapsed-init .sidebar {
+        width: 80px !important;
+        padding: 25px 10px !important;
+    }
+    .sidebar-collapsed-init .sidebar .menu-item a span:not(.menu-badge) {
+        opacity: 0 !important;
+        width: 0 !important;
+    }
+    .sidebar-collapsed-init .sidebar .toggle-text {
+        opacity: 0 !important;
+        width: 0 !important;
+    }
+    .sidebar-collapsed-init .sidebar .menu-badge {
+        position: absolute !important;
+        right: 8px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+    }
+    .sidebar-collapsed-init .sidebar .menu-item a {
+        justify-content: center !important;
+    }
+    .sidebar-collapsed-init .sidebar .sidebar-toggle {
+        height: 52px !important;
+        gap: 0 !important;
+    }
+    .sidebar-collapsed-init .sidebar .sidebar-toggle i {
+        transform: rotate(180deg) !important;
+    }
+</style>
+
 <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
 <!-- Font Awesome ya está cargado en base.html -->
 {% endblock %}
@@ -59,9 +102,10 @@
                     </div>
                 </div>
                 <div class="notifications">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge{{ ' hidden' if notification_count == 0 else '' }}">{{ notification_count }}</span>
-                </div>
+                        <i class="fas fa-bell"></i>
+                        {%- from 'components/_badge.html' import render_badge -%}
+                        {{ render_badge(notification_count, id='navbarNotificationBadge', classes='notification-badge') }}
+                    </div>
                 
                 <!-- Dropdown de notificaciones -->
                 <div class="dashboard-notifications-dropdown">
@@ -77,7 +121,7 @@
                         </div>
                     </div>
                     <div class="notifications-footer">
-                        <a href="/notifications" class="view-all-notifications">Ver todas las alertas</a>
+                        <a href="/notifications/page" class="view-all-notifications">Ver todas las alertas</a>
                     </div>
                 </div>
             </div>
@@ -88,130 +132,144 @@
             <h2>Métricas Principales</h2>
             <div class="cards" id="metricsCards">
                 <!-- Fila 1 -->
-                <div class="card user-card">
-                    <div class="card-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="card-content">
+                <div class="project-card user-card">
+                    <div class="project-header">
                         <h3>Usuarios</h3>
-                        <p class="card-description">Total registrados</p>
-                        <span class="card-value">{{ metrics.users.total }}</span>
-                        <div class="card-trend {{ metrics.users.trend }}">
+                        <span class="project-status {{ 'completed' if metrics.users.trend == 'positive' else 'pending' }}">{{ 'Crecimiento' if metrics.users.trend == 'positive' else 'Estable' }}</span>
+                    </div>
+                    <p class="project-description">Total registrados</p>
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <i class="fas fa-users"></i>
+                            <span class="card-value">{{ metrics.users.total }}</span>
+                        </div>
+                        <div class="project-meta-item">
                             <i class="fas fa-arrow-{{ 'up' if metrics.users.trend == 'positive' else 'down' }}"></i>
                             <span>{{ metrics.users.growth|abs }}% este mes</span>
                         </div>
                     </div>
                 </div>
-                <div class="card translations-card">
-                    <div class="card-icon">
-                        <i class="fas fa-language"></i>
-                    </div>
-                    <div class="card-content">
+                <div class="project-card translations-card">
+                    <div class="project-header">
                         <h3>Traducciones</h3>
-                        <p class="card-description">Total realizadas</p>
-                        <span class="card-value">{{ metrics.translations.total }}</span>
-                        <div class="card-trend {{ metrics.translations.trend }}">
+                        <span class="project-status {{ 'completed' if metrics.translations.trend == 'positive' else 'pending' }}">{{ 'Crecimiento' if metrics.translations.trend == 'positive' else 'Estable' }}</span>
+                    </div>
+                    <p class="project-description">Total realizadas</p>
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <i class="fas fa-language"></i>
+                            <span class="card-value">{{ metrics.translations.total }}</span>
+                        </div>
+                        <div class="project-meta-item">
                             <i class="fas fa-arrow-{{ 'up' if metrics.translations.trend == 'positive' else 'down' }}"></i>
                             <span>{{ metrics.translations.growth|abs }}% este mes</span>
                         </div>
                     </div>
                 </div>
-                <div class="card anonymous-card">
-                    <div class="card-icon">
-                        <i class="fas fa-user-secret"></i>
-                    </div>
-                    <div class="card-content">
+                <div class="project-card anonymous-card">
+                    <div class="project-header">
                         <h3>Usuarios Anónimos</h3>
-                        <p class="card-description">Registrados</p>
-                        <span class="card-value">{{ metrics.anonymous.total }}</span>
-                        <div class="card-trend neutral">
-                            <i class="fas fa-chart-line"></i>
+                        <span class="project-status">Acumulado</span>
+                    </div>
+                    <p class="project-description">Registrados</p>
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <i class="fas fa-user-secret"></i>
+                            <span class="card-value">{{ metrics.anonymous.total }}</span>
+                        </div>
+                        <div class="project-meta-item">
+                            <i class="fas fa-info-circle"></i>
                             <span>Total acumulado</span>
                         </div>
                     </div>
                 </div>
-                <div class="card precision-card">
-                    <div class="card-icon">
-                        <i class="fas fa-bullseye"></i>
+                <!-- Precisión: usar diseño similar a proyectos para consistencia visual -->
+                <div class="project-card precision-card">
+                    <div class="project-header">
+                        <h3>IA Precision</h3>
+                        <span class="project-status {{ 'completed' if metrics.precision.status == 'excellent' else 'in-progress' if metrics.precision.status == 'good' else 'pending' }}">
+                            {{ 'Excelente' if metrics.precision.status == 'excellent' else 'Bueno' if metrics.precision.status == 'good' else 'Necesita mejora' }}
+                        </span>
                     </div>
-                    <div class="card-content">
-                        <h3>Precisión Modelo</h3>
-                        <p class="card-description">Promedio</p>
-                        <span class="card-value">{{ metrics.precision.average }}%</span>
-                        <div class="card-trend {{ 'positive' if metrics.precision.status == 'excellent' else 'neutral' if metrics.precision.status == 'good' else 'negative' }}">
-                            <i class="fas fa-{{ 'check' if metrics.precision.status == 'excellent' else 'minus' if metrics.precision.status == 'good' else 'exclamation' }}"></i>
-                            <span>{{ 'Excelente' if metrics.precision.status == 'excellent' else 'Bueno' if metrics.precision.status == 'good' else 'Necesita mejora' }}</span>
+                    <p class="project-description">Promedio del modelo en base a las últimas mediciones</p>
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <i class="fas fa-bullseye"></i>
+                            <span class="card-value">{{ metrics.precision.average }}%</span>
+                        </div>
+                        <div class="project-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Última actualización: {{ metrics.precision.updated_at or 'Ahora' }}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Fila 2 -->
-                <div class="card project-card">
-                    <div class="card-icon">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <div class="card-content">
+                <div class="project-card project-card--contribuciones">
+                    <div class="project-header">
                         <h3>Contribuciones</h3>
-                        <p class="card-description">Validadas</p>
-                        <span class="card-value">{{ metrics.projects.total }}</span>
-                        <div class="card-trend {{ metrics.projects.trend }}">
+                        <span class="project-status {{ 'completed' if metrics.projects.trend == 'positive' else 'pending' }}">{{ 'Crecimiento' if metrics.projects.trend == 'positive' else 'Estable' }}</span>
+                    </div>
+                    <p class="project-description">Validadas</p>
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="card-value">{{ metrics.projects.total }}</span>
+                        </div>
+                        <div class="project-meta-item">
                             <i class="fas fa-arrow-{{ 'up' if metrics.projects.trend == 'positive' else 'down' }}"></i>
                             <span>{{ metrics.projects.growth|abs }}% este mes</span>
                         </div>
                     </div>
                 </div>
-                <div class="card colaboradores-card">
-                    <div class="card-icon">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <div class="card-content">
+                <div class="project-card colaboradores-card">
+                    <div class="project-header">
                         <h3>Colaboradores</h3>
-                        <p class="card-description">Activos</p>
-                        <span class="card-value">{{ metrics.colaboradores.total }}</span>
-                        <div class="card-trend neutral">
+                        <span class="project-status">Activos</span>
+                    </div>
+                    <p class="project-description">Activos</p>
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <i class="fas fa-user-tie"></i>
+                            <span class="card-value">{{ metrics.colaboradores.total }}</span>
+                        </div>
+                        <div class="project-meta-item">
                             <i class="fas fa-users"></i>
                             <span>Total activos</span>
                         </div>
                     </div>
                 </div>
-                <div class="card report-card">
-                    <div class="card-icon">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                    <div class="card-content">
+                <div class="project-card report-card">
+                    <div class="project-header">
                         <h3>Reportes</h3>
-                        <p class="card-description">Pendientes</p>
-                        <span class="card-value">{{ metrics.reports.total }}</span>
-                        <div class="card-trend {{ metrics.reports.trend }}">
+                        <span class="project-status {{ 'completed' if metrics.reports.trend == 'positive' else 'pending' }}">{{ 'Mejora' if metrics.reports.trend == 'positive' else 'Atención' }}</span>
+                    </div>
+                    <p class="project-description">Pendientes</p>
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="card-value">{{ metrics.reports.total }}</span>
+                        </div>
+                        <div class="project-meta-item">
                             <i class="fas fa-arrow-{{ 'down' if metrics.reports.trend == 'positive' else 'up' }}"></i>
                             <span>{{ metrics.reports.change|abs }}% este mes</span>
                         </div>
                     </div>
                 </div>
-                <div class="card performance-card">
-                    <div class="card-icon">
-                        <i class="fas fa-bell"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3>Alertas Sistema</h3>
-                        <p class="card-description">No resueltas</p>
-                        <span class="card-value">{{ metrics.alerts.total }}</span>
-                        <div class="card-trend {{ 'neutral' if metrics.alerts.total == 0 else 'negative' }}">
-                            <i class="fas fa-{{ 'check' if metrics.alerts.total == 0 else 'exclamation' }}"></i>
-                            <span>{{ 'Todo bien' if metrics.alerts.total == 0 else 'Requiere atención' }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card solicitudes-card">
-                    <div class="card-icon">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <div class="card-content">
+                <!-- Alertas del sistema eliminado de las tarjetas: se mantiene la campana en el header -->
+                <div class="project-card solicitudes-card">
+                    <div class="project-header">
                         <h3>Solicitudes</h3>
-                        <p class="card-description">Pendientes</p>
-                        <span class="card-value">{{ metrics.solicitudes.total }}</span>
-                        <div class="card-trend {{ 'neutral' if metrics.solicitudes.total == 0 else 'pending' }}">
-                            <i class="fas fa-{{ 'check' if metrics.solicitudes.total == 0 else 'clock' }}"></i>
+                        <span class="project-status {{ 'completed' if metrics.solicitudes.total == 0 else 'pending' }}">{{ 'Sin pendientes' if metrics.solicitudes.total == 0 else 'Revisar' }}</span>
+                    </div>
+                    <p class="project-description">Pendientes</p>
+                    <div class="project-meta">
+                        <div class="project-meta-item">
+                            <i class="fas fa-user-plus"></i>
+                            <span class="card-value">{{ metrics.solicitudes.total }}</span>
+                        </div>
+                        <div class="project-meta-item">
+                            <i class="fas fa-clock"></i>
                             <span>{{ 'Sin pendientes' if metrics.solicitudes.total == 0 else 'Revisar' }}</span>
                         </div>
                     </div>
@@ -277,7 +335,7 @@
                             <h3>{{ project.titulo }}</h3>
                             <span class="project-status {{ project.estado_class }}">{{ project.estado }}</span>
                         </div>
-                        <p class="project-description">{{ project.descripcion[:80] }}{{ '...' if project.descripcion|length > 80 else '' }}</p>
+                        <p class="project-description">{{ project.descripcion }}</p>
                         <div class="project-meta">
                             <div class="project-meta-item">
                                 <i class="fas fa-calendar"></i>

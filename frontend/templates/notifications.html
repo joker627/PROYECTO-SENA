@@ -5,6 +5,31 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+<!-- Script inline para prevenir flash del sidebar -->
+<script>
+(function() {
+    if (window.innerWidth > 768 && localStorage.getItem('sidebarCollapsed') === 'true') {
+        document.documentElement.classList.add('sidebar-collapsed-init');
+    }
+})();
+</script>
+<style>
+    .sidebar-collapsed-init .sidebar { width: 80px !important; padding: 25px 10px !important; }
+    .sidebar-collapsed-init .sidebar .menu-item a span:not(.menu-badge) { opacity: 0 !important; width: 0 !important; }
+    .sidebar-collapsed-init .sidebar .toggle-text { opacity: 0 !important; width: 0 !important; }
+    /* Position badge relative to the <a> (link) container when sidebar starts collapsed */
+    .sidebar-collapsed-init .sidebar .menu-item a .menu-badge {
+        position: absolute !important;
+        right: 8px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+    }
+    .sidebar-collapsed-init .sidebar .menu-item a { justify-content: center !important; }
+    .sidebar-collapsed-init .sidebar .sidebar-toggle { height: 52px !important; gap: 0 !important; }
+    .sidebar-collapsed-init .sidebar .sidebar-toggle i { transform: rotate(180deg) !important; }
+</style>
+
 <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
 {% endblock %}
 
@@ -44,17 +69,6 @@
             </form>
             {% endif %}
             
-            <!-- Nuevo botón: Eliminar resueltas -->
-            {% if alertas|selectattr('estado', 'equalto', 'resuelto')|list|length > 0 %}
-            <form method="POST" action="{{ url_for('notifications_bp.delete_all_resolved') }}" 
-                  onsubmit="return confirm('¿Estás seguro de eliminar todas las alertas resueltas? Esta acción no se puede deshacer.')" class="form-inline">
-                <button type="submit" class="btn-delete-resolved">
-                    <i class="fas fa-trash-restore"></i>
-                    Eliminar resueltas ({{ alertas|selectattr('estado', 'equalto', 'resuelto')|list|length }})
-                </button>
-            </form>
-            {% endif %}
-            
             {% if alertas %}
             <form method="POST" action="{{ url_for('notifications_bp.delete_all_notifications') }}" 
                   onsubmit="return confirm('⚠️ ¿Estás seguro de eliminar TODAS las alertas? Esta acción no se puede deshacer.')" class="form-inline">
@@ -82,12 +96,12 @@
             <div class="notification-card {% if alerta.estado != 'resuelto' %}unread{% endif %}">
                 <!-- Icono según severidad -->
                 <div class="notification-icon 
-                    {% if alerta.severidad == 'crítico' %}error
+                    {% if alerta.severidad == 'critico' %}error
                     {% elif alerta.severidad == 'alto' %}warning
                     {% elif alerta.estado == 'resuelto' %}success
                     {% else %}info{% endif %}">
                     <i class="fas 
-                        {% if alerta.severidad == 'crítico' %}fa-times-circle
+                        {% if alerta.severidad == 'critico' %}fa-times-circle
                         {% elif alerta.severidad == 'alto' %}fa-exclamation-triangle
                         {% elif alerta.estado == 'resuelto' %}fa-check-circle
                         {% else %}fa-info-circle{% endif %}">
@@ -123,7 +137,7 @@
                         <select name="estado" class="status-dropdown" onchange="this.form.submit()">
                             <option value="">Cambiar estado...</option>
                             <option value="pendiente" {% if alerta.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
-                            <option value="en revisión" {% if alerta.estado == 'en revisión' %}selected{% endif %}>En Revisión</option>
+                            <option value="en revision" {% if alerta.estado == 'en revision' %}selected{% endif %}>En Revision</option>
                             <option value="resuelto">Resolver</option>
                         </select>
                     </form>

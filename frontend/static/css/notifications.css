@@ -412,7 +412,7 @@
 }
 
 /* Badges de severidad */
-.badge-crítico {
+.badge-critico {
     background: linear-gradient(135deg, var(--red-100), var(--red-200));
     color: var(--red-700);
     border: 1px solid var(--red-300);
@@ -590,82 +590,227 @@
 
 @media (max-width: 768px) {
     .notifications-container {
-        padding: 15px;
+        padding: 1rem;
+        width: 100%;
+        max-width: 100vw;
     }
 
     .notifications-header {
         flex-direction: column;
-        gap: 20px;
-        padding: 20px;
+        gap: 1rem;
+        padding: 1.25rem;
+        align-items: stretch;
+    }
+    
+    .header-left {
+        text-align: center;
     }
 
     .header-left h1 {
-        font-size: 26px;
+        font-size: 1.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+    
+    .header-left h1 i {
+        font-size: 1.25rem;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
     }
 
     .header-actions {
         width: 100%;
+        flex-direction: column;
+        gap: 0.75rem;
     }
 
-    .btn-mark-all {
+    .btn-mark-all,
+    .btn-delete-all,
+    .btn-delete-resolved {
         width: 100%;
         justify-content: center;
+        font-size: 0.9rem;
+        padding: 0.875rem 1rem;
+    }
+    
+    /* Alert counter responsive */
+    .alert-counter {
+        padding: 1rem;
+        font-size: 0.9rem;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
     }
 
     .notification-card {
         flex-direction: column;
-        padding: 20px;
-        gap: 15px;
+        padding: 1.25rem;
+        gap: 1rem;
     }
 
     .notification-icon {
-        width: 48px;
-        height: 48px;
+        width: 50px;
+        height: 50px;
         font-size: 22px;
+        margin: 0 auto;
+    }
+
+    .notification-content {
+        width: 100%;
+    }
+    
+    .notification-header-row {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+    }
+    
+    .notification-badges {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .notification-title {
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    .notification-message {
+        font-size: 0.9rem;
+        line-height: 1.5;
     }
 
     .notification-actions {
-        flex-direction: row;
-        justify-content: flex-end;
+        flex-direction: column;
         width: 100%;
-        gap: 10px;
+        gap: 0.75rem;
     }
 
-    .status-form {
-        flex: 1;
+    .status-form,
+    .btn-delete-notification {
+        width: 100%;
+    }
+
+    .btn-change-status,
+    .btn-delete-notification {
+        width: 100%;
+        justify-content: center;
+        padding: 0.875rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Empty state */
+    .empty-state {
+        padding: 3rem 1.5rem;
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.25rem;
     }
 }
 
 @media (max-width: 480px) {
     .notifications-container {
-        padding: 10px;
+        padding: 0.75rem;
     }
 
     .notifications-header {
-        padding: 16px;
+        padding: 1rem;
+        gap: 0.875rem;
     }
 
     .header-left h1 {
-        font-size: 22px;
+        font-size: 1.25rem;
+    }
+    
+    .header-left h1 i {
+        font-size: 1.125rem;
     }
 
     .subtitle {
-        font-size: 13px;
+        font-size: 0.8rem;
+    }
+    
+    .header-actions {
+        gap: 0.625rem;
+    }
+    
+    .btn-mark-all,
+    .btn-delete-all,
+    .btn-delete-resolved {
+        font-size: 0.85rem;
+        padding: 0.75rem 0.875rem;
+    }
+    
+    .alert-counter {
+        padding: 0.875rem;
+        font-size: 0.85rem;
     }
 
     .notification-card {
-        padding: 16px;
+        padding: 1rem;
+        gap: 0.875rem;
+    }
+    
+    .notification-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
     }
 
     .notification-badges {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
+        gap: 0.5rem;
     }
 
     .badge {
-        font-size: 10px;
-        padding: 3px 8px;
+        font-size: 0.7rem;
+        padding: 0.25rem 0.625rem;
+    }
+    
+    .notification-title {
+        font-size: 0.9rem;
+    }
+    
+    .notification-message {
+        font-size: 0.85rem;
+    }
+    
+    .notification-time {
+        font-size: 0.75rem;
+    }
+    
+    .notification-actions {
+        gap: 0.625rem;
+    }
+    
+    .btn-change-status,
+    .btn-delete-notification {
+        padding: 0.75rem 0.875rem;
+        font-size: 0.85rem;
+    }
+    
+    .empty-state {
+        padding: 2.5rem 1rem;
+    }
+    
+    .empty-state i {
+        font-size: 3.5rem;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.125rem;
+    }
+    
+    .empty-state p {
+        font-size: 0.875rem;
     }
 }
 

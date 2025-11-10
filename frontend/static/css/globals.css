@@ -1,3 +1,6 @@
+/* Importar fuente Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 :root {
     /*  Verde */
     --green-25: #f4faf4;
@@ -148,7 +151,7 @@
     --pink-700: #c2185b;
     --pink-800: #ad1457;
     --pink-900: #880e4f;
-    
+
     /* INDIGO */
     --indigo-50: #e8eaf6;
     --indigo-100: #c5cae9;
@@ -202,6 +205,54 @@
 }
 
 /* ===========================
+   ESTILOS GLOBALES
+   =========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: var(--gray-900);
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Botones responsivos */
+button,
+.btn {
+    min-height: 44px;
+    /* Tamaño mínimo táctil */
+}
+
+/* Enlaces responsivos */
+a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Contenedores */
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* ===========================
    LAZY LOADING - Optimización de Carga
    =========================== */
 
@@ -215,7 +266,7 @@ video[data-lazy] {
 }
 
 video[data-lazy]::before {
-    content: "⏳ Cargando video...";
+    content: " Cargando video...";
     position: absolute;
     color: var(--gray-500);
     font-size: 14px;

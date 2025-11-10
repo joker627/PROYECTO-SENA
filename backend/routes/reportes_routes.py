@@ -1,7 +1,13 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, session
-from controllers.reportes_controller import ReportesController
-from controllers.notifications_controller import NotificationController
-from utils.error_handler import ErrorHandler
+from controllers.reportes_controller import (
+    get_page_data, mark_as_revision, mark_as_resolved,
+    delete_reporte, delete_all_resolved, get_pending_count
+)
+from controllers.notifications_controller import (
+    obtener_todas, obtener_pendientes, contar_pendientes,
+    obtener_vista_previa
+)
+from utils.error_handler import error_generico
 from functools import wraps
 
 reportes_bp = Blueprint('reportes_bp', __name__, url_prefix='/reportes')
@@ -21,7 +27,7 @@ def reportes_page():
     """Página principal de gestión de reportes"""
     try:
         # Obtener datos de reportes
-        data = ReportesController.get_page_data()
+        data = get_page_data()
         
         return render_template(
             'admin/reportes.html',
@@ -30,7 +36,7 @@ def reportes_page():
         )
     except Exception as e:
         print(f"Error en reportes_page: {e}")
-        ErrorHandler.error_generico('reportes_page', f'Error al cargar reportes: {str(e)}', 'alto', 'routes/reportes_routes.py', 'Error Página Reportes')
+        error_generico('reportes_page', f'Error al cargar reportes: {str(e)}', 'alto', 'routes/reportes_routes.py', 'Error Página Reportes')
         flash('Error al cargar los reportes', 'error')
         return redirect(url_for('admin_bp.dashboard'))
 
@@ -39,14 +45,14 @@ def reportes_page():
 def marcar_revision(id_reporte):
     """Marca un reporte como 'en revisión'"""
     try:
-        success = ReportesController.mark_as_revision(id_reporte)
+        success = mark_as_revision(id_reporte)
         if success:
             flash('Reporte marcado como "en revisión"', 'success')
         else:
             flash('Error al actualizar el reporte', 'error')
     except Exception as e:
         print(f"Error al marcar como revisión: {e}")
-        ErrorHandler.error_generico('marcar_revision', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Cambiar Estado Reporte')
+        error_generico('marcar_revision', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Cambiar Estado Reporte')
         flash('Error al procesar la solicitud', 'error')
     
     return redirect(url_for('reportes_bp.reportes_page'))
@@ -56,14 +62,14 @@ def marcar_revision(id_reporte):
 def resolver_reporte(id_reporte):
     """Marca un reporte como resuelto"""
     try:
-        success = ReportesController.mark_as_resolved(id_reporte)
+        success = mark_as_resolved(id_reporte)
         if success:
             flash('Reporte marcado como resuelto', 'success')
         else:
             flash('Error al actualizar el reporte', 'error')
     except Exception as e:
         print(f"Error al resolver reporte: {e}")
-        ErrorHandler.error_generico('resolver_reporte', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Resolver Reporte')
+        error_generico('resolver_reporte', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Resolver Reporte')
         flash('Error al procesar la solicitud', 'error')
     
     return redirect(url_for('reportes_bp.reportes_page'))
@@ -73,14 +79,14 @@ def resolver_reporte(id_reporte):
 def eliminar_reporte(id_reporte):
     """Elimina un reporte"""
     try:
-        success = ReportesController.delete_reporte(id_reporte)
+        success = delete_reporte(id_reporte)
         if success:
             flash('Reporte eliminado correctamente', 'success')
         else:
             flash('Error al eliminar el reporte', 'error')
     except Exception as e:
         print(f"Error al eliminar reporte: {e}")
-        ErrorHandler.error_generico('eliminar_reporte', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Eliminar Reporte')
+        error_generico('eliminar_reporte', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Eliminar Reporte')
         flash('Error al procesar la solicitud', 'error')
     
     return redirect(url_for('reportes_bp.reportes_page'))
@@ -90,14 +96,14 @@ def eliminar_reporte(id_reporte):
 def eliminar_resueltos():
     """Elimina todos los reportes resueltos"""
     try:
-        count = ReportesController.delete_all_resolved()
+        count = delete_all_resolved()
         if count > 0:
             flash(f'Se eliminaron {count} reporte{"s" if count != 1 else ""} resuelto{"s" if count != 1 else ""}', 'success')
         else:
             flash('No hay reportes resueltos para eliminar', 'warning')
     except Exception as e:
         print(f"Error al eliminar reportes resueltos: {e}")
-        ErrorHandler.error_generico('eliminar_resueltos', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Eliminar Resueltos')
+        error_generico('eliminar_resueltos', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Eliminar Resueltos')
         flash('Error al procesar la solicitud', 'error')
     
     return redirect(url_for('reportes_bp.reportes_page'))
@@ -106,9 +112,9 @@ def eliminar_resueltos():
 def get_count():
     """API para obtener el conteo de reportes pendientes"""
     try:
-        count = ReportesController.get_pending_count()
+        count = get_pending_count()
         return jsonify({'count': count})
     except Exception as e:
         print(f"Error en get_count: {e}")
-        ErrorHandler.error_generico('get_count', f'Error al contar reportes: {str(e)}', 'bajo', 'routes/reportes_routes.py', 'Error API Count Reportes')
+        error_generico('get_count', f'Error al contar reportes: {str(e)}', 'bajo', 'routes/reportes_routes.py', 'Error API Count Reportes')
         return jsonify({'count': 0}), 500

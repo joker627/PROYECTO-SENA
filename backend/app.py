@@ -9,6 +9,9 @@ from routes.solicitudes_routes import solicitudes_bp
 from routes.reportes_routes import reportes_bp
 from routes.usuarios_routes import usuarios_bp
 from routes.usuario_anonimo_routes import usuario_anonimo_bp
+from controllers.notifications_controller import contar_pendientes
+from controllers.reportes_controller import get_pending_count
+from utils.error_handler import error_generico
 
 app = Flask(__name__, template_folder='../frontend/templates', static_folder='../frontend/static')
 app.secret_key = 'clave_super_segura'
@@ -26,31 +29,52 @@ app.register_blueprint(usuarios_bp)
 app.register_blueprint(usuario_anonimo_bp)
 
 
-@app.context_processor
-def inject_notification_count():
-    """Inyectar el conteo de notificaciones y reportes en todas las plantillas"""
-    if session.get('user_id'):
-        try:
-            from models.notification_models import NotificationModel
-            from models.reportes_models import ReportesModels
-            
-            notification_count = NotificationModel.count_unresolved_alerts()
-            reportes_count = ReportesModels.count_reportes_pendientes()
-            
-            return {
-                'notification_count': notification_count,
-                'reportes_count': reportes_count
-            }
-        except Exception as e:
-            print(f"[ERROR] Error al obtener conteos: {str(e)}")
-            return {'notification_count': 0, 'reportes_count': 0}
-    return {'notification_count': 0, 'reportes_count': 0}
-
-
 @app.before_request
 def refresh_session():
     if session.get('usuario') or session.get('user_id'):
         session.permanent = True
+
+
+@app.context_processor
+def inject_global_counts():
+    """
+    Inyecta `notification_count` y `reportes_count` en el contexto de todas las plantillas.
+    Esto permite renderizar badges con Jinja sin tener que pasar las variables manualmente
+    en cada render_template.
+    """
+    notif_count = 0
+    reportes_count = 0
+    try:
+        resultado = contar_pendientes()
+        if isinstance(resultado, dict):
+            notif_count = int(resultado.get('count', 0) or 0)
+    except Exception:
+        notif_count = 0
+
+    try:
+        reportes_count = int(get_pending_count() or 0)
+    except Exception:
+        reportes_count = 0
+
+    return dict(notification_count=notif_count, reportes_count=reportes_count)
+
+
+
+@app.errorhandler(Exception)
+def handle_unhandled_exception(error):
+    try:
+        error_generico(
+            funcion='unhandled_exception',
+            detalle=f'Unhandled exception: {str(error)}',
+            severidad='critico',
+            archivo='app.py',
+            tipo_especifico='UnhandledException'
+        )
+    except Exception:
+        pass
+
+
+    return ("Internal Server Error", 500)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

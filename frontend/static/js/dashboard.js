@@ -3,6 +3,9 @@
 // ===========================
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Remover clase de inicialización para permitir transiciones suaves
+    document.documentElement.classList.remove('sidebar-collapsed-init');
+    
     initDashboardNotifications();
     initMobileMenu();
     initSidebarToggle();
@@ -38,19 +41,29 @@ function initSidebarToggle() {
         }
     }
 
-    // Aplicar estado inicial
+    // Aplicar estado inicial INMEDIATAMENTE antes de que se vea
     applyCollapsedState();
 
-    // Aplicar estado al cambiar tamaño de ventana
-    window.addEventListener('resize', applyCollapsedState);
+    // Aplicar estado al cambiar tamaño de ventana con debounce
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(applyCollapsedState, 100);
+    });
 
-    // Toggle sidebar al hacer clic
+    // Toggle sidebar al hacer clic con animación suave
     sidebarToggle.addEventListener('click', function() {
         sidebar.classList.toggle('collapsed');
         
         // Guardar estado en localStorage
         const collapsed = sidebar.classList.contains('collapsed');
         localStorage.setItem('sidebarCollapsed', collapsed);
+        
+        // Animación del icono
+        const icon = this.querySelector('i');
+        if (icon) {
+            icon.style.transform = collapsed ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
     });
 }
 
@@ -62,9 +75,12 @@ function initMobileMenu() {
 
     if (!menuToggle || !sidebar) return;
 
-    // Toggle menú al hacer clic en hamburguesa
+    // Toggle menú al hacer clic en hamburguesa con animación suave
     menuToggle.addEventListener('click', function(e) {
         e.stopPropagation();
+        const isActive = sidebar.classList.contains('active');
+        
+        // Animación del botón hamburguesa
         menuToggle.classList.toggle('active');
         sidebar.classList.toggle('active');
         
@@ -73,25 +89,26 @@ function initMobileMenu() {
         }
         
         // Prevenir scroll del body cuando el menú está abierto
-        if (sidebar.classList.contains('active')) {
+        if (!isActive) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'auto';
         }
     });
 
-    // Cerrar menú al hacer clic en el overlay
+    // Cerrar menú al hacer clic en el overlay con animación
     if (overlay) {
         overlay.addEventListener('click', function() {
             closeMobileMenu();
         });
     }
 
-    // Cerrar menú al hacer clic en un enlace del sidebar
-    const sidebarLinks = sidebar.querySelectorAll('a');
+    // Cerrar menú al hacer clic en un enlace del sidebar (excepto el dropdown)
+    const sidebarLinks = sidebar.querySelectorAll('.menu-item:not(.logout) a');
     sidebarLinks.forEach(link => {
         link.addEventListener('click', function() {
-            closeMobileMenu();
+            // Pequeño delay para que se vea el efecto de clic
+            setTimeout(closeMobileMenu, 150);
         });
     });
 
@@ -253,140 +270,125 @@ async function refreshDashboard() {
 function updateMetricsCards(metrics) {
     const container = document.getElementById('metricsCards');
     if (!container) return;
-    
-    const precisionStatus = metrics.precision.average >= 90 ? 'excellent' : metrics.precision.average >= 75 ? 'good' : 'warning';
-    const precisionTrend = precisionStatus === 'excellent' ? 'positive' : precisionStatus === 'good' ? 'neutral' : 'negative';
-    const precisionIcon = precisionStatus === 'excellent' ? 'check' : precisionStatus === 'good' ? 'minus' : 'exclamation';
-    const precisionText = precisionStatus === 'excellent' ? 'Excelente' : precisionStatus === 'good' ? 'Bueno' : 'Necesita mejora';
-    
-    container.innerHTML = `
-        <div class="card user-card">
-            <div class="card-icon">
-                <i class="fas fa-users"></i>
-            </div>
-            <div class="card-content">
-                <h3>Usuarios</h3>
-                <p class="card-description">Total registrados</p>
-                <span class="card-value">${metrics.users.total}</span>
-                <div class="card-trend ${metrics.users.trend}">
-                    <i class="fas fa-arrow-${metrics.users.trend === 'positive' ? 'up' : 'down'}"></i>
-                    <span>${Math.abs(metrics.users.growth)}% este mes</span>
-                </div>
-            </div>
-        </div>
-        <div class="card translations-card">
-            <div class="card-icon">
-                <i class="fas fa-language"></i>
-            </div>
-            <div class="card-content">
-                <h3>Traducciones</h3>
-                <p class="card-description">Total realizadas</p>
-                <span class="card-value">${metrics.translations.total}</span>
-                <div class="card-trend ${metrics.translations.trend}">
-                    <i class="fas fa-arrow-${metrics.translations.trend === 'positive' ? 'up' : 'down'}"></i>
-                    <span>${Math.abs(metrics.translations.growth)}% este mes</span>
-                </div>
-            </div>
-        </div>
-        <div class="card anonymous-card">
-            <div class="card-icon">
-                <i class="fas fa-user-secret"></i>
-            </div>
-            <div class="card-content">
-                <h3>Usuarios Anónimos</h3>
-                <p class="card-description">Registrados</p>
-                <span class="card-value">${metrics.anonymous.total}</span>
-                <div class="card-trend neutral">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Total acumulado</span>
-                </div>
-            </div>
-        </div>
-        <div class="card precision-card">
-            <div class="card-icon">
-                <i class="fas fa-bullseye"></i>
-            </div>
-            <div class="card-content">
-                <h3>Precisión Modelo</h3>
-                <p class="card-description">Promedio</p>
-                <span class="card-value">${metrics.precision.average}%</span>
-                <div class="card-trend ${precisionTrend}">
-                    <i class="fas fa-${precisionIcon}"></i>
-                    <span>${precisionText}</span>
-                </div>
-            </div>
-        </div>
-        <div class="card project-card">
-            <div class="card-icon">
-                <i class="fas fa-project-diagram"></i>
-            </div>
-            <div class="card-content">
-                <h3>Contribuciones</h3>
-                <p class="card-description">Validadas</p>
-                <span class="card-value">${metrics.projects.total}</span>
-                <div class="card-trend ${metrics.projects.trend}">
-                    <i class="fas fa-arrow-${metrics.projects.trend === 'positive' ? 'up' : 'down'}"></i>
-                    <span>${Math.abs(metrics.projects.growth)}% este mes</span>
-                </div>
-            </div>
-        </div>
-        <div class="card colaboradores-card">
-            <div class="card-icon">
-                <i class="fas fa-user-tie"></i>
-            </div>
-            <div class="card-content">
-                <h3>Colaboradores</h3>
-                <p class="card-description">Activos</p>
-                <span class="card-value">${metrics.colaboradores.total}</span>
-                <div class="card-trend neutral">
-                    <i class="fas fa-users"></i>
-                    <span>Total activos</span>
-                </div>
-            </div>
-        </div>
-        <div class="card report-card">
-            <div class="card-icon">
-                <i class="fas fa-chart-bar"></i>
-            </div>
-            <div class="card-content">
-                <h3>Reportes</h3>
-                <p class="card-description">Pendientes</p>
-                <span class="card-value">${metrics.reports.total}</span>
-                <div class="card-trend ${metrics.reports.trend}">
-                    <i class="fas fa-arrow-${metrics.reports.trend === 'positive' ? 'down' : 'up'}"></i>
-                    <span>${Math.abs(metrics.reports.change)}% este mes</span>
-                </div>
-            </div>
-        </div>
-        <div class="card performance-card">
-            <div class="card-icon">
-                <i class="fas fa-bell"></i>
-            </div>
-            <div class="card-content">
-                <h3>Alertas Sistema</h3>
-                <p class="card-description">No resueltas</p>
-                <span class="card-value">${metrics.alerts.total}</span>
-                <div class="card-trend ${metrics.alerts.total === 0 ? 'neutral' : 'negative'}">
-                    <i class="fas fa-${metrics.alerts.total === 0 ? 'check' : 'exclamation'}"></i>
-                    <span>${metrics.alerts.total === 0 ? 'Todo bien' : 'Requiere atención'}</span>
-                </div>
-            </div>
-        </div>
-        <div class="card solicitudes-card">
-            <div class="card-icon">
-                <i class="fas fa-user-plus"></i>
-            </div>
-            <div class="card-content">
-                <h3>Solicitudes</h3>
-                <p class="card-description">Pendientes</p>
-                <span class="card-value">${metrics.solicitudes.total}</span>
-                <div class="card-trend ${metrics.solicitudes.total === 0 ? 'neutral' : 'pending'}">
-                    <i class="fas fa-${metrics.solicitudes.total === 0 ? 'check' : 'clock'}"></i>
-                    <span>${metrics.solicitudes.total === 0 ? 'Sin pendientes' : 'Revisar'}</span>
-                </div>
-            </div>
-        </div>
-    `;
+
+    // Helper para actualizar texto/valores dentro de una tarjeta existente
+    function safeText(el, selector, text) {
+        if (!el) return;
+        const target = el.querySelector(selector);
+        if (target) target.textContent = text;
+    }
+
+    // Usuarios
+    const userCard = container.querySelector('.user-card');
+    if (userCard) {
+        safeText(userCard, '.card-value', metrics.users.total);
+        safeText(userCard, '.card-trend span', `${Math.abs(metrics.users.growth)}% este mes`);
+        const trend = userCard.querySelector('.card-trend');
+        if (trend) {
+            trend.className = 'card-trend ' + (metrics.users.trend || 'neutral');
+        }
+    }
+
+    // Traducciones
+    const transCard = container.querySelector('.translations-card');
+    if (transCard) {
+        safeText(transCard, '.card-value', metrics.translations.total);
+        safeText(transCard, '.card-trend span', `${Math.abs(metrics.translations.growth)}% este mes`);
+        const trend = transCard.querySelector('.card-trend');
+        if (trend) trend.className = 'card-trend ' + (metrics.translations.trend || 'neutral');
+    }
+
+    // Usuarios anónimos
+    const anonCard = container.querySelector('.anonymous-card');
+    if (anonCard) {
+        safeText(anonCard, '.card-value', metrics.anonymous.total);
+    }
+
+    // Precisión (puede ser project-card + precision-card o card precision-card)
+    const precisionCard = container.querySelector('.precision-card');
+    if (precisionCard) {
+        // Si tiene badge de estado (project-card)
+        const badge = precisionCard.querySelector('.project-status');
+        if (badge) {
+            const status = metrics.precision.status === 'excellent' ? 'completed' : metrics.precision.status === 'good' ? 'in-progress' : 'pending';
+            badge.className = 'project-status ' + status;
+            badge.textContent = metrics.precision.status === 'excellent' ? 'Excelente' : metrics.precision.status === 'good' ? 'Bueno' : 'Necesita mejora';
+        }
+        // Actualizar valor mostrado
+        const val = precisionCard.querySelector('.card-value') || precisionCard.querySelector('.project-meta .card-value') || precisionCard.querySelector('.project-meta-item span');
+        if (val) val.textContent = metrics.precision.average + '%';
+    }
+
+    // Contribuciones / proyectos (project-card structured)
+    const projectsCard = container.querySelector('.project-card--contribuciones');
+    if (projectsCard) {
+        // actualizar valor total
+        const valueSpan = projectsCard.querySelector('.project-meta .project-meta-item:first-child span');
+        if (valueSpan) valueSpan.textContent = metrics.projects.total;
+        // actualizar segundo meta (porcentaje)
+        const percentSpan = projectsCard.querySelector('.project-meta .project-meta-item:nth-child(2) span');
+        if (percentSpan) percentSpan.textContent = `${Math.abs(metrics.projects.growth)}% este mes`;
+        // actualizar badge
+        const status = metrics.projects.trend === 'positive' ? 'completed' : 'pending';
+        const badge = projectsCard.querySelector('.project-status');
+        if (badge) {
+            badge.className = 'project-status ' + status;
+            badge.textContent = metrics.projects.trend === 'positive' ? 'Crecimiento' : 'Estable';
+        }
+    } else {
+        // backward-compatible: if still using old card structure
+        const legacyProjectsCard = container.querySelector('.card.project-card');
+        if (legacyProjectsCard) {
+            safeText(legacyProjectsCard, '.card-value', metrics.projects.total);
+            const trend = legacyProjectsCard.querySelector('.card-trend');
+            if (trend) trend.className = 'card-trend ' + (metrics.projects.trend || 'neutral');
+        }
+    }
+
+    // Colaboradores (project-card)
+    const colabCard = container.querySelector('.colaboradores-card');
+    if (colabCard) {
+        const valueSpan = colabCard.querySelector('.project-meta .project-meta-item:first-child span') || colabCard.querySelector('.card-value');
+        if (valueSpan) valueSpan.textContent = metrics.colaboradores.total;
+    }
+
+    // Reportes (project-card)
+    const reportCard = container.querySelector('.report-card');
+    if (reportCard) {
+        const valueSpan = reportCard.querySelector('.project-meta .project-meta-item:first-child span') || reportCard.querySelector('.card-value');
+        if (valueSpan) valueSpan.textContent = metrics.reports.total;
+        const percentSpan = reportCard.querySelector('.project-meta .project-meta-item:nth-child(2) span');
+        if (percentSpan) percentSpan.textContent = `${Math.abs(metrics.reports.change)}% este mes`;
+        const badge = reportCard.querySelector('.project-status');
+        if (badge) {
+            const status = metrics.reports.trend === 'positive' ? 'completed' : 'pending';
+            badge.className = 'project-status ' + status;
+            badge.textContent = metrics.reports.trend === 'positive' ? 'Mejora' : 'Atención';
+        }
+    }
+
+    // Alertas: card removed from grid; header badge is updated elsewhere
+
+    // Solicitudes (project-card)
+    const solCard = container.querySelector('.solicitudes-card');
+    if (solCard) {
+        const valueSpan = solCard.querySelector('.project-meta .project-meta-item:first-child span') || solCard.querySelector('.card-value');
+        if (valueSpan) valueSpan.textContent = metrics.solicitudes.total;
+        const badge = solCard.querySelector('.project-status');
+        if (badge) {
+            const status = metrics.solicitudes.total == 0 ? 'completed' : 'pending';
+            badge.className = 'project-status ' + status;
+            badge.textContent = metrics.solicitudes.total == 0 ? 'Sin pendientes' : 'Revisar';
+        }
+    }
+
+    // Si por alguna razón faltan tarjetas (p.ej. primera carga), recrearlas parcialmente
+    // Para evitar romper estilos existentes, sólo añadimos lo mínimo necesario
+    const expectedCount = 9; // número aproximado de tarjetas
+    if (container.children.length < expectedCount) {
+        // fallback: forzar recarga completa (menos frecuente)
+        container.innerHTML = container.innerHTML; // no-op para forzar reflow sin cambiar estilos
+    }
 }
 
 // Actualizar lista de actividad
@@ -448,7 +450,8 @@ function updateProjects(projects) {
                     <h3>${project.titulo}</h3>
                     <span class="project-status ${project.estado_class}">${project.estado}</span>
                 </div>
-                <p class="project-description">${project.descripcion.substring(0, 80)}${project.descripcion.length > 80 ? '...' : ''}</p>
+                // Entregar la descripción completa; el recorte visual lo hará CSS (2 líneas si se desea)
+                <p class="project-description">${project.descripcion}</p>
                 <div class="project-meta">
                     <div class="project-meta-item">
                         <i class="fas fa-calendar"></i>

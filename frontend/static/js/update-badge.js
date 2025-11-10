@@ -7,14 +7,14 @@
     updateAllNotificationBadges();
     updateReportesBadge();
     updateNotificationsPreview(); // Actualizar preview de notificaciones
-    
-    // Actualizar cada 60 segundos (optimizado para mejor rendimiento)
+
+    // Actualizar cada 5 segundos (optimizado para mejor rendimiento)
     // ESTE ES EL ÚNICO TIMER GLOBAL PARA NOTIFICACIONES
     setInterval(() => {
         updateAllNotificationBadges();
         updateReportesBadge();
         updateNotificationsPreview(); // Actualizar preview de notificaciones
-    }, 60000);
+    }, 5000);
 })();
 
 // Función para actualizar badge de reportes
@@ -31,6 +31,8 @@ async function updateReportesBadge() {
         if (sliderReportesBadge) {
             sliderReportesBadge.textContent = count;
             sliderReportesBadge.style.display = count > 0 ? 'flex' : 'none';
+            // Ensure CSS "hidden" class (which may use !important) is in sync
+            if (count > 0) sliderReportesBadge.classList.remove('hidden'); else sliderReportesBadge.classList.add('hidden');
         }
         
         // Todos los badges en enlaces de reportes
@@ -40,6 +42,7 @@ async function updateReportesBadge() {
             if (badge) {
                 badge.textContent = count;
                 badge.style.display = count > 0 ? 'flex' : 'none';
+                if (count > 0) badge.classList.remove('hidden'); else badge.classList.add('hidden');
             }
         });
         
@@ -64,6 +67,8 @@ async function updateAllNotificationBadges() {
             if (sliderBadge) {
                 sliderBadge.textContent = count;
                 sliderBadge.style.display = count > 0 ? 'flex' : 'none';
+                // Sync hidden class so stylesheet with !important doesn't keep it hidden
+                if (count > 0) sliderBadge.classList.remove('hidden'); else sliderBadge.classList.add('hidden');
             }
             
             // 2. Todos los badges en enlaces de notificaciones
@@ -73,28 +78,67 @@ async function updateAllNotificationBadges() {
                 if (badge) {
                     badge.textContent = count;
                     badge.style.display = count > 0 ? 'flex' : 'none';
+                    if (count > 0) badge.classList.remove('hidden'); else badge.classList.add('hidden');
+                }
+            });
+
+            // 2b. Además, por robustez, actualizar cualquier .menu-badge dentro del .menu
+            // cuyo enlace padre (closest <a>) contenga 'notifications' en el href.
+            const allMenuBadges = document.querySelectorAll('.menu .menu-item .menu-badge');
+            allMenuBadges.forEach(badge => {
+                try {
+                    const parentLink = badge.closest('a');
+                    const href = parentLink ? parentLink.getAttribute('href') || '' : '';
+                    if (href.includes('notifications') || badge.id === 'sliderNotificationBadge') {
+                        badge.textContent = count;
+                        badge.style.display = count > 0 ? 'flex' : 'none';
+                        if (count > 0) badge.classList.remove('hidden'); else badge.classList.add('hidden');
+                    }
+                } catch (e) {
+                    // ignore
                 }
             });
             
-            // 3. Badge de la campana en el header del dashboard
-            const notificationBadge = document.querySelector('.notification-badge');
-            if (notificationBadge) {
-                notificationBadge.textContent = count;
-                notificationBadge.style.display = count > 0 ? 'inline-block' : 'none';
-            }
+            // 3. Badge de la campana en el navbar y dashboard (clase unificada)
+            const notificationBadges = document.querySelectorAll('.notification-badge');
+            notificationBadges.forEach(badge => {
+                badge.textContent = count;
+                if (count > 0) {
+                    badge.style.display = 'inline-block';
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.style.display = 'none';
+                    badge.classList.add('hidden');
+                }
+            });
             
-            // 4. Badge en navbar (si existe)
+            // 4. Badge móvil
+            const mobileBadges = document.querySelectorAll('.mobile-notification-badge');
+            mobileBadges.forEach(badge => {
+                badge.textContent = count;
+                if (count > 0) {
+                    badge.style.display = 'inline-block';
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.style.display = 'none';
+                    badge.classList.add('hidden');
+                }
+            });
+            
+            // 5. Badge en navbar con clase específica (si existe)
             const navbarBadge = document.querySelector('.notifications-btn .menu-badge');
             if (navbarBadge) {
                 navbarBadge.textContent = count;
                 navbarBadge.style.display = count > 0 ? 'flex' : 'none';
+                if (count > 0) navbarBadge.classList.remove('hidden'); else navbarBadge.classList.add('hidden');
             }
             
-            // 5. Badge en móvil (si existe)
+            // 6. Badge en móvil con clase específica (si existe)
             const mobileBadge = document.querySelector('.mobile-notifications-btn .menu-badge');
             if (mobileBadge) {
                 mobileBadge.textContent = count;
                 mobileBadge.style.display = count > 0 ? 'flex' : 'none';
+                if (count > 0) mobileBadge.classList.remove('hidden'); else mobileBadge.classList.add('hidden');
             }
             
             console.log('Badges de notificaciones actualizados exitosamente');

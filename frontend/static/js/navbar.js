@@ -113,19 +113,13 @@ function initMobileNotifications() {
     const mobileMenu = document.querySelector('.mobile-menu');
     const overlay = document.querySelector('.overlay');
 
-    if (!mobileNotificationsBtn || !mobileNotificationsPanel) return;
-
-    // Abrir panel de notificaciones móvil
-    mobileNotificationsBtn.addEventListener('click', () => {
-        mobileNotificationsPanel.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
-
-    // Cerrar panel de notificaciones móvil
-    if (closeNotificationsMobile) {
+    // Ya no necesitamos abrir el panel porque ahora es un link directo
+    // El botón móvil ahora redirige a /notifications/page
+    
+    // Mantener funcionalidad de cerrar panel si existe (por si se usa en otra parte)
+    if (closeNotificationsMobile && mobileNotificationsPanel) {
         closeNotificationsMobile.addEventListener('click', () => {
             mobileNotificationsPanel.classList.remove('active');
-            // Cerrar menú móvil también
             if (mobileMenu) {
                 mobileMenu.classList.remove('active');
             }
@@ -137,18 +131,20 @@ function initMobileNotifications() {
     }
 
     // Cerrar con tecla Escape
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mobileNotificationsPanel.classList.contains('active')) {
-            mobileNotificationsPanel.classList.remove('active');
-            if (mobileMenu) {
-                mobileMenu.classList.remove('active');
+    if (mobileNotificationsPanel) {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNotificationsPanel.classList.contains('active')) {
+                mobileNotificationsPanel.classList.remove('active');
+                if (mobileMenu) {
+                    mobileMenu.classList.remove('active');
+                }
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
+                document.body.style.overflow = 'auto';
             }
-            if (overlay) {
-                overlay.classList.remove('active');
-            }
-            document.body.style.overflow = 'auto';
-        }
-    });
+        });
+    }
 }
 
 // ========== ACTUALIZAR BADGE DE NOTIFICACIONES ==========
