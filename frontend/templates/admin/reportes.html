@@ -5,6 +5,25 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
+
+<!-- Script inline para prevenir flash del sidebar -->
+<script>
+(function() {
+    if (window.innerWidth > 768 && localStorage.getItem('sidebarCollapsed') === 'true') {
+        document.documentElement.classList.add('sidebar-collapsed-init');
+    }
+})();
+</script>
+<style>
+    .sidebar-collapsed-init .sidebar { width: 80px !important; padding: 25px 10px !important; }
+    .sidebar-collapsed-init .sidebar .menu-item a span:not(.menu-badge) { opacity: 0 !important; width: 0 !important; }
+    .sidebar-collapsed-init .sidebar .toggle-text { opacity: 0 !important; width: 0 !important; }
+    .sidebar-collapsed-init .sidebar .menu-badge { position: absolute !important; right: 8px !important; top: 50% !important; transform: translateY(-50%) !important; }
+    .sidebar-collapsed-init .sidebar .menu-item a { justify-content: center !important; }
+    .sidebar-collapsed-init .sidebar .sidebar-toggle { height: 52px !important; gap: 0 !important; }
+    .sidebar-collapsed-init .sidebar .sidebar-toggle i { transform: rotate(180deg) !important; }
+</style>
+
 <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
 {% endblock %}
 
@@ -40,10 +59,6 @@
                 <span class="stat-number">{{ stats.en_revision }}</span>
                 <span class="stat-label">En Revisión</span>
             </div>
-            <div class="stat-item resueltos">
-                <span class="stat-number">{{ stats.resueltos }}</span>
-                <span class="stat-label">Resueltos</span>
-            </div>
         </div>
     </div>
 
@@ -70,11 +85,8 @@
         <button class="filter-btn" data-filter="pendiente">
             <i class="fas fa-clock"></i> Pendientes ({{ stats.pendientes }})
         </button>
-        <button class="filter-btn" data-filter="en revisión">
-            <i class="fas fa-eye"></i> En Revisión ({{ stats.en_revision }})
-        </button>
-        <button class="filter-btn" data-filter="resuelto">
-            <i class="fas fa-check-circle"></i> Resueltos ({{ stats.resueltos }})
+        <button class="filter-btn" data-filter="en revision">
+            <i class="fas fa-eye"></i> En Revision ({{ stats.en_revision }})
         </button>
     </div>
 
@@ -91,8 +103,8 @@
                     <span class="estado-badge {{ reporte.estado|replace(' ', '-') }}">
                         {% if reporte.estado == 'pendiente' %}
                             <i class="fas fa-clock"></i> Pendiente
-                        {% elif reporte.estado == 'en revisión' %}
-                            <i class="fas fa-eye"></i> En Revisión
+                        {% elif reporte.estado == 'en revision' %}
+                            <i class="fas fa-eye"></i> En Revision
                         {% else %}
                             <i class="fas fa-check-circle"></i> Resuelto
                         {% endif %}

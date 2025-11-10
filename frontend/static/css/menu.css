@@ -5,13 +5,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     background: linear-gradient(180deg, var(--teal-50) 0%, var(--turquoise-100) 100%);
     min-height: 100vh;
-    padding-top: 86px; /* Espacio para el navbar fijo */
+    padding-top: 70px; /* Espacio para el navbar fijo */
 }
 
 .navbar {
@@ -23,9 +22,9 @@ body {
     justify-content: space-between;
     align-items: center;
     background: rgba(224, 242, 241, 0.95);
-    padding: 18px 6%;
-    box-shadow: 0 2px 20px rgba(6, 115, 100, 0.12);
-    border-bottom: 1px solid rgba(6, 115, 100, 0.15);
+    padding: 12px 5%;
+    box-shadow: 0 2px 15px rgba(6, 115, 100, 0.1);
+    border-bottom: 1px solid rgba(6, 115, 100, 0.12);
     z-index: 1000;
     backdrop-filter: blur(12px);
 }
@@ -33,46 +32,49 @@ body {
 .brand {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .logo {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
-    border-radius: 12px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 20px;
     box-shadow: var(--shadow-turquoise);
 }
 
 .brand-text {
     display: flex;
     flex-direction: column;
+    gap: 2px;
 }
 
 .brand-name {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--turquoise-800);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+    line-height: 1;
 }
 
 .brand-tagline {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--teal-600);
-    letter-spacing: 1.2px;
+    letter-spacing: 1px;
     font-weight: 500;
+    line-height: 1;
 }
 
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 40px;
+    gap: 30px;
     align-items: center;
 }
 
@@ -81,8 +83,8 @@ body {
     color: var(--turquoise-700);
     font-weight: 600;
     transition: all 0.3s ease;
-    padding: 10px 0;
-    font-size: 16px;
+    padding: 8px 0;
+    font-size: 15px;
     position: relative;
 }
 
@@ -230,21 +232,22 @@ body {
 
 .notification-badge {
     position: absolute;
-    top: -4px;
-    right: -4px;
-    background: linear-gradient(135deg, var(--red-500), var(--red-600));
+    top: -6px;
+    right: -6px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
     font-size: 11px;
     font-weight: 700;
     min-width: 20px;
     height: 20px;
-    display: none; /* Oculto por defecto, JavaScript lo mostrará si count > 0 */
+    display: none;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    padding: 0 5px;
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
-    line-height: 1;
+    padding: 0 6px;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
 }
 
 .notification-badge.hidden {
@@ -574,16 +577,17 @@ body {
     display: none;
     flex-direction: column;
     cursor: pointer;
-    width: 32px;
-    height: 25px;
-    justify-content: space-between;
+    width: 28px;
+    height: 22px;
+    justify-content: space-evenly;
     background: transparent;
     border: none;
+    padding: 0;
 }
 
 .hamburger span {
     width: 100%;
-    height: 3px;
+    height: 2.5px;
     background: var(--teal-500);
     border-radius: 2px;
     transition: all 0.3s ease;
@@ -827,19 +831,21 @@ body {
     position: absolute;
     top: 10px;
     left: 30px;
-    background: linear-gradient(135deg, var(--red-500), var(--red-600));
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
     font-size: 11px;
     font-weight: 700;
     min-width: 20px;
     height: 20px;
-    display: none; /* Oculto por defecto, JavaScript lo mostrará si count > 0 */
+    display: none;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    padding: 0 5px;
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    padding: 0 6px;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
     line-height: 1;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
 }
 
 .mobile-notification-badge.hidden {
@@ -849,6 +855,7 @@ body {
 /* Cuando el badge está visible (activado por JavaScript) */
 .mobile-notification-badge:not(.hidden) {
     display: flex;
+    align-content: center;
 }
 
 .mobile-notification-text {
@@ -1098,43 +1105,80 @@ body {
     .nav-actions {
         display: none;
     }
+    
+    .navbar {
+        padding: 10px 4%;
+    }
 
     .brand-name {
-        font-size: 22px;
+        font-size: 18px;
+    }
+    
+    .brand-tagline {
+        font-size: 9px;
     }
 
     .logo {
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    body {
+        padding-top: 62px;
     }
 }
 
 @media (max-width: 480px) {
     .navbar {
-        padding: 15px 5%;
+        padding: 8px 4%;
     }
 
     .mobile-menu {
-        width: 320px;
-        padding: 25px 25px 30px;
+        width: 85%;
+        max-width: 320px;
+        padding: 20px;
+    }
+
+    .hamburger {
+        width: 26px;
+        height: 20px;
+    }
+    
+    .hamburger span {
+        height: 2.5px;
     }
 
     .brand-name {
-        font-size: 20px;
+        font-size: 16px;
     }
 
     .brand-tagline {
-        font-size: 10px;
+        font-size: 8px;
+    }
+    
+    .brand {
+        gap: 10px;
+    }
+    
+    .logo {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+    
+    body {
+        padding-top: 56px;
     }
 
     .mobile-logo {
-        width: 55px;
-        height: 55px;
+        width: 50px;
+        height: 50px;
     }
 
     .mobile-brand-name {
-        font-size: 22px;
+        font-size: 20px;
     }
 
     .close-menu {

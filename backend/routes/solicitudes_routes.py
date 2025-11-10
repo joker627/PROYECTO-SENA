@@ -1,6 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
-from controllers.solicitudes_controller import SolicitudesController
-from utils.error_handler import ErrorHandler
+from controllers.solicitudes_controller import (
+    get_page_data,
+    get_pending_count,
+    accept_solicitud,
+    reject_solicitud, 
+    delete_solicitud
+)
+from utils.error_handler import error_generico
 
 
 solicitudes_bp = Blueprint('solicitudes_bp', __name__, url_prefix='/solicitudes')
@@ -19,7 +25,7 @@ def solicitudes_page():
     estado_filter = request.args.get('estado', None)
     orden = request.args.get('orden', 'reciente')
     
-    data = SolicitudesController.get_page_data(page, per_page, estado_filter, orden)
+    data = get_page_data(page, per_page, estado_filter, orden)
     
     return render_template(
         'admin/solicitudes.html',
@@ -39,7 +45,7 @@ def accept_solicitud(id_solicitud):
     
     id_revisor = session.get('user_id')
     
-    if SolicitudesController.accept_solicitud(id_solicitud, id_revisor):
+    if accept_solicitud(id_solicitud, id_revisor):
         flash('✅ Solicitud aceptada. Se ha creado una cuenta de usuario con rol GESTOR automáticamente.', 'success')
     else:
         flash('Error al aceptar la solicitud', 'error')
@@ -60,7 +66,7 @@ def reject_solicitud(id_solicitud):
         flash('Debes proporcionar un motivo de rechazo', 'error')
         return redirect(url_for('solicitudes_bp.solicitudes_page'))
     
-    if SolicitudesController.reject_solicitud(id_solicitud, id_revisor, motivo_rechazo):
+    if reject_solicitud(id_solicitud, id_revisor, motivo_rechazo):
         flash(f'Solicitud rechazada. Motivo: {motivo_rechazo}', 'info')
     else:
         flash('Error al rechazar la solicitud', 'error')
@@ -74,7 +80,7 @@ def delete_solicitud(id_solicitud):
     if 'user_id' not in session:
         return redirect(url_for('login_bp.login'))
     
-    if SolicitudesController.delete_solicitud(id_solicitud):
+    if delete_solicitud(id_solicitud):
         flash('Solicitud eliminada correctamente', 'success')
     else:
         flash('Error al eliminar la solicitud', 'error')
@@ -86,13 +92,13 @@ def delete_solicitud(id_solicitud):
 def get_count():
     # API: Contador de solicitudes pendientes
     try:
-        count = SolicitudesController.get_pending_count()
+        count = get_pending_count()
         return jsonify({
             'success': True,
             'count': count
         })
     except Exception as e:
-        ErrorHandler.error_generico('get_count', f'Error al contar solicitudes: {str(e)}', 'bajo', 'routes/solicitudes_routes.py', 'Error API Count Solicitudes')
+        error_generico('get_count', f'Error al contar solicitudes: {str(e)}', 'bajo', 'routes/solicitudes_routes.py', 'Error API Count Solicitudes')
         return jsonify({
             'success': False,
             'error': str(e)

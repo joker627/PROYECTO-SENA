@@ -19,8 +19,8 @@ def get_connection():
     except Exception as e:
         # Registrar error en alertas_sistema
         try:
-            from utils.error_handler import ErrorHandler
-            ErrorHandler.error_db('get_connection', f'Error al conectar: {str(e)}', 'connection/db.py')
+            from utils.error_handler import error_db
+            error_db('get_connection', f'Error al conectar: {str(e)}', 'connection/db.py')
         except:
             pass  # Si falla el registro, no detener el flujo
         raise  # Re-lanzar el error original

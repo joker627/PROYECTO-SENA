@@ -119,7 +119,7 @@ function loadAllMediaImmediately() {
     });
 }
 
-// ========== UTILIDAD: PRELOAD DE VIDEOS CRÍTICOS ==========
+// ========== UTILIDAD: PRELOAD DE VIDEOS CRITICOS ==========
 function preloadCriticalVideo(videoElement) {
     // Para el hero video, se puede hacer preload inmediato
     const source = videoElement.querySelector('source');

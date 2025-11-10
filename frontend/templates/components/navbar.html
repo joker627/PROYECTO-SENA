@@ -24,7 +24,7 @@
                 <!-- Botón de notificaciones -->
                 <div class="notifications-btn">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge{{ ' hidden' if notification_count == 0 else '' }}">{{ notification_count }}</span>
+                    <span class="notification-badge" style="display: none;">0</span>
                 </div>
 
                 <div class="user-dropdown-trigger">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     <div class="notifications-footer">
-                        <a href="/notifications" class="view-all-notifications">Ver todas las alertas</a>
+                        <a href="/notifications/page" class="view-all-notifications">Ver todas las alertas</a>
                     </div>
                 </div>
             </div>
@@ -165,11 +165,11 @@
         </div>
 
         <!-- Botón de notificaciones móvil -->
-        <div class="mobile-notifications-btn">
+        <a href="/notifications/page" class="mobile-notifications-btn">
             <i class="fas fa-bell"></i>
-            <span class="mobile-notification-badge{{ ' hidden' if notification_count == 0 else '' }}">{{ notification_count }}</span>
+            <span class="mobile-notification-badge" style="display: none;">0</span>
             <span class="mobile-notification-text">Notificaciones</span>
-        </div>
+        </a>
 
         <!-- Panel de notificaciones móvil -->
         <div class="mobile-notifications-panel">
@@ -214,7 +214,7 @@
                 </div>
             </div>
             <div class="mobile-notifications-footer">
-                <a href="#" class="mobile-view-all-notifications">Ver todas las notificaciones</a>
+                <a href="/notifications/page" class="mobile-view-all-notifications">Ver todas las notificaciones</a>
             </div>
         </div>
 

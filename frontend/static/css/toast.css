@@ -1,3 +1,6 @@
+/* Importar variables globales */
+@import url('globals.css');
+
 /* Sistema de notificaciones toast global */
 .toast-container {
     position: fixed;

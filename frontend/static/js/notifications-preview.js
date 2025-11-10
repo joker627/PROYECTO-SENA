@@ -46,7 +46,7 @@ function updateNotificationsDropdown(notifications) {
                 // Determinar color del badge según severidad
                 let badgeClass = 'badge-info';
                 let badgeStyle = 'background: #17a2b8; color: white;';
-                if (notif.severidad === 'crítico') {
+                if (notif.severidad === 'critico') {
                     badgeClass = 'badge-error';
                     badgeStyle = 'background: #dc3545; color: white;';
                 } else if (notif.severidad === 'alto') {
@@ -71,7 +71,7 @@ function updateNotificationsDropdown(notifications) {
                 // Hacer que la notificación sea clickeable
                 notifElement.style.cursor = 'pointer';
                 notifElement.addEventListener('click', () => {
-                    window.location.href = '/notifications';
+                    window.location.href = '/notifications/page';
                 });
                 
                 listContainer.appendChild(notifElement);

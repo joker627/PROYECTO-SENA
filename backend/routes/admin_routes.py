@@ -2,14 +2,32 @@
 Rutas del panel de administración
 """
 
-from flask import Blueprint, render_template, jsonify, send_file
-from controllers.dashboard_controller import DashboardController
-from utils.error_handler import ErrorHandler
-from utils.pdf_generator import PDFGenerator
+from flask import Blueprint, render_template, jsonify, send_file, session, redirect, url_for, flash
+from controllers.dashboard_controller import get_dashboard_data as controller_get_dashboard_data
+from utils.error_handler import error_generico
+from utils.pdf_generator import generar_reporte_metricas
 from datetime import datetime
+from functools import wraps
 
 
 admin_bp = Blueprint('admin_bp', __name__)
+
+
+@admin_bp.before_request
+def _require_login_for_admin():
+    """
+    Protege las rutas del blueprint `admin_bp` redirigiendo al login
+    si no existe una sesión válida (user_id en session).
+    """
+    # Permitimos recursos estáticos y llamadas AJAX que puedan no necesitar sesión
+    # pero por simplicidad aquí redirigimos si no hay user_id
+    if 'user_id' not in session:
+        # flash un mensaje corto y redirigir al login
+        try:
+            flash('Debes iniciar sesión para acceder al panel de administración', 'warning')
+        except Exception:
+            pass
+        return redirect(url_for('login_bp.login'))
 
 
 @admin_bp.route('/admin')
@@ -17,7 +35,7 @@ def dashboard():
     """Ruta: Panel de control del administrador"""
     try:
         # Obtener todos los datos del dashboard
-        dashboard_data = DashboardController.get_dashboard_data()
+        dashboard_data = controller_get_dashboard_data()
         
         return render_template(
             'admin/dashboard.html',
@@ -27,25 +45,25 @@ def dashboard():
             projects=dashboard_data['projects']
         )
     except Exception as e:
-        ErrorHandler.error_generico('dashboard', f'Error al cargar dashboard: {str(e)}', 'crítico', 'routes/admin_routes.py', 'Error Dashboard Admin')
+        error_generico('dashboard', f'Error al cargar dashboard: {str(e)}', 'critico', 'routes/admin_routes.py', 'Error Dashboard Admin')
         return render_template('admin/dashboard.html', 
-                             metrics={}, 
-                             activities=[], 
-                             chart_data=[], 
-                             projects=[])
+                            metrics={}, 
+                            activities=[], 
+                            chart_data=[], 
+                            projects=[])
 
 
 @admin_bp.route('/admin/api/dashboard-data')
 def get_dashboard_data():
     """API: Obtener datos del dashboard en formato JSON para actualización AJAX"""
     try:
-        dashboard_data = DashboardController.get_dashboard_data()
+        dashboard_data = controller_get_dashboard_data()
         return jsonify({
             'success': True,
             'data': dashboard_data
         })
     except Exception as e:
-        ErrorHandler.error_generico('get_dashboard_data', f'Error en API dashboard: {str(e)}', 'alto', 'routes/admin_routes.py', 'Error API Dashboard')
+        error_generico('get_dashboard_data', f'Error en API dashboard: {str(e)}', 'alto', 'routes/admin_routes.py', 'Error API Dashboard')
         return jsonify({
             'success': False,
             'error': str(e)
@@ -63,7 +81,7 @@ def descargar_metricas_pdf():
     """Ruta: Descargar reporte de métricas en formato PDF"""
     try:
         # Obtener datos del dashboard
-        dashboard_data = DashboardController.get_dashboard_data()
+        dashboard_data = controller_get_dashboard_data()
         
         # Preparar datos para el PDF
         metricas_data = {
@@ -81,7 +99,7 @@ def descargar_metricas_pdf():
         }
         
         # Generar PDF
-        pdf_buffer = PDFGenerator.generar_reporte_metricas(metricas_data)
+        pdf_buffer = generar_reporte_metricas(metricas_data)
         
         # Nombre del archivo con fecha
         fecha_actual = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -96,7 +114,7 @@ def descargar_metricas_pdf():
         )
         
     except Exception as e:
-        ErrorHandler.error_generico('descargar_metricas_pdf', f'Error al generar PDF: {str(e)}', 'alto', 'routes/admin_routes.py', 'Error Generar PDF Métricas')
+        error_generico('descargar_metricas_pdf', f'Error al generar PDF: {str(e)}', 'alto', 'routes/admin_routes.py', 'Error Generar PDF Métricas')
         return jsonify({
             'success': False,
             'error': 'Error al generar el reporte PDF'

@@ -1,4 +1,5 @@
 from connection.db import get_connection
+from utils.error_handler import error_db
 
 def verificar_usuario(correo, contrasena):
     """
@@ -14,6 +15,10 @@ def verificar_usuario(correo, contrasena):
             usuario = cursor.fetchone()
     except Exception as e:
         print("Error DB:", e)
+        try:
+            error_db('verificar_usuario', f'Error consulta login: {str(e)}', 'models/login_models.py')
+        except Exception:
+            pass
     finally:
         conexion.close()
     return usuario
