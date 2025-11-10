@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/slider.css') }}">
-{%- from 'components/_badge.html' import render_badge -%}
+{# badge macro removed - render inline spans to avoid dependency on components/_badge.html #}
 
 <aside class="sidebar">
     <!-- Botón para colapsar/expandir -->
@@ -31,14 +31,14 @@
             <a href="{{ url_for('reportes_bp.reportes_page') }}">
                 <i class="fas fa-chart-bar"></i>
                 <span>Reportes</span>
-                {{ render_badge(reportes_count, 'sliderReportesBadge') }}
+                <span id="sliderReportesBadge" class="menu-badge{% if reportes_count == 0 %} hidden{% endif %}">{{ reportes_count }}</span>
             </a>
         </li>
         <li class="menu-item {% if request.endpoint == 'notifications_bp.notifications_page' %}active{% endif %}">
             <a href="{{ url_for('notifications_bp.notifications_page') }}">
                 <i class="fas fa-bell"></i>
                 <span>Notificaciones</span>
-                {{ render_badge(notification_count, 'sliderNotificationBadge') }}
+                <span id="sliderNotificationBadge" class="menu-badge{% if notification_count == 0 %} hidden{% endif %}">{{ notification_count }}</span>
             </a>
         </li>
         <li class="menu-item {% if request.endpoint == 'usuarios_bp.usuarios_page' %}active{% endif %}">

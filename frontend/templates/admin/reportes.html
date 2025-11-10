@@ -77,17 +77,17 @@
     </div>
     {% endif %}
 
-    <!-- Filtros -->
+    <!-- Filtros (server-side): enlaces que recargan la página con ?estado=... -->
     <div class="filters">
-        <button class="filter-btn active" data-filter="all">
+        <a href="{{ url_for('reportes_bp.reportes_page') }}" class="filter-btn {% if not current_filter %}active{% endif %}">
             <i class="fas fa-list"></i> Todos ({{ stats.total }})
-        </button>
-        <button class="filter-btn" data-filter="pendiente">
+        </a>
+        <a href="{{ url_for('reportes_bp.reportes_page', estado='pendiente') }}" class="filter-btn {% if current_filter == 'pendiente' %}active{% endif %}">
             <i class="fas fa-clock"></i> Pendientes ({{ stats.pendientes }})
-        </button>
-        <button class="filter-btn" data-filter="en revision">
+        </a>
+        <a href="{{ url_for('reportes_bp.reportes_page', estado='en revision') }}" class="filter-btn {% if current_filter == 'en revision' %}active{% endif %}">
             <i class="fas fa-eye"></i> En Revision ({{ stats.en_revision }})
-        </button>
+        </a>
     </div>
 
     <!-- Lista de Reportes -->
@@ -215,8 +215,34 @@
 </div>
     </main>
 </div>
+    <!-- Paginación -->
+    {% if pagination and pagination.total_pages and pagination.total_pages > 1 %}
+    <nav class="pagination" aria-label="Paginación reportes">
+        <ul class="pagination-list">
+            {# Prev link #}
+            {% set prev_page = pagination.current_page - 1 %}
+            <li class="pagination-item {% if pagination.current_page <= 1 %}disabled{% endif %}">
+                <a href="{{ url_for('reportes_bp.reportes_page', estado=current_filter, page=prev_page, per_page=pagination.per_page) }}">&laquo; Anterior</a>
+            </li>
+
+            {# Page numbers: show a small window around current page #}
+            {% set start = pagination.current_page - 2 if pagination.current_page - 2 > 1 else 1 %}
+            {% set end = pagination.current_page + 2 if pagination.current_page + 2 < pagination.total_pages else pagination.total_pages %}
+            {% for p in range(start, end + 1) %}
+            <li class="pagination-item {% if p == pagination.current_page %}active{% endif %}">
+                <a href="{{ url_for('reportes_bp.reportes_page', estado=current_filter, page=p, per_page=pagination.per_page) }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+
+            {# Next link #}
+            {% set next_page = pagination.current_page + 1 %}
+            <li class="pagination-item {% if pagination.current_page >= pagination.total_pages %}disabled{% endif %}">
+                <a href="{{ url_for('reportes_bp.reportes_page', estado=current_filter, page=next_page, per_page=pagination.per_page) }}">Siguiente &raquo;</a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}
-<script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
 {% endblock %}

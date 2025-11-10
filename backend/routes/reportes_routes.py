@@ -26,13 +26,31 @@ def login_required(f):
 def reportes_page():
     """Página principal de gestión de reportes"""
     try:
-        # Obtener datos de reportes
-        data = get_page_data()
-        
+        # Leer parámetros desde query string (p.ej. ?estado=pendiente&page=2&per_page=10)
+        estado = request.args.get('estado')
+        try:
+            page = int(request.args.get('page', 1))
+            if page < 1:
+                page = 1
+        except Exception:
+            page = 1
+
+        try:
+            per_page = int(request.args.get('per_page', 10))
+            if per_page < 1:
+                per_page = 10
+        except Exception:
+            per_page = 10
+
+        # Obtener datos de reportes, posiblemente filtrados y paginados
+        data = get_page_data(estado=estado, page=page, per_page=per_page)
+
         return render_template(
             'admin/reportes.html',
             reportes=data['reportes'],
-            stats=data['stats']
+            stats=data['stats'],
+            pagination=data.get('pagination', {}),
+            current_filter=estado
         )
     except Exception as e:
         print(f"Error en reportes_page: {e}")
