@@ -8,12 +8,14 @@
             <!-- Columna 1: Logo y descripción -->
             <div class="footer-column footer-about">
                 <div class="footer-logo">
-                    <img src="{{ url_for('static', filename='img/general/logo.webp') }}" alt="Sign Technology Logo">
-                    <div class="footer-brand">
-                        <h3>Sign Technology</h3>
-                        <p class="footer-tagline">INNOVACIÓN DIGITAL</p>
+                        <a href="{{ url_for('general_bp.inicio') }}" class="footer-logo-link">
+                            <img src="{{ url_for('static', filename='img/general/logo.webp') }}" alt="Sign Technology Logo">
+                            <div class="footer-brand">
+                                <h3>Sign Technology</h3>
+                                <p class="footer-tagline">INNOVACIÓN DIGITAL</p>
+                            </div>
+                        </a>
                     </div>
-                </div>
                 <p class="footer-description">
                     Transformando ideas en soluciones digitales innovadoras. 
                     Expertos en tecnología y desarrollo web para impulsar tu negocio.

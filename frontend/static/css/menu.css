@@ -35,24 +35,81 @@ body {
     gap: 12px;
 }
 
+/* Links alrededor del logo/marca: quitar subrayado y heredar color */
+.brand-link,
+.mobile-brand-link,
+.footer-logo-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.brand-link:hover,
+.mobile-brand-link:hover,
+.footer-logo-link:hover {
+    text-decoration: none;
+}
+
 .logo {
     width: 45px;
     height: 45px;
-    background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
-    border-radius: 10px;
+    background: transparent; /* logo should be flat, no gradient */
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: inherit;
     font-weight: bold;
     font-size: 20px;
-    box-shadow: var(--shadow-turquoise);
+    box-shadow: none; /* remove shadow for flat look */
 }
 
 .brand-text {
     display: flex;
     flex-direction: column;
     gap: 2px;
+}
+
+/* Flat, stacked brand name: 'Sign' over 'Technology' */
+.brand-name-top {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--turquoise-900);
+    line-height: 1;
+    letter-spacing: 0.2px;
+}
+.brand-name-bottom {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--teal-600);
+    line-height: 1;
+    margin-top: -2px;
+}
+
+/* Mobile stacked brand */
+.mobile-brand-name-top {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--turquoise-900);
+    line-height: 1;
+}
+.mobile-brand-name-bottom {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--teal-600);
+    line-height: 1.1;
+    margin-top: 6px; /* pequeño espacio para que 'Sign' y 'Technology' no se peguen */
+}
+
+/* Make brand-link flat (no hover transforms or shadows) */
+.brand-link, .mobile-brand-link {
+    transition: none;
+}
+.brand-link:hover, .mobile-brand-link:hover {
+    text-decoration: none;
+    transform: none;
+    box-shadow: none;
 }
 
 .brand-name {
@@ -68,7 +125,8 @@ body {
     color: var(--teal-600);
     letter-spacing: 1px;
     font-weight: 500;
-    line-height: 1;
+    line-height: 1.1;
+    margin-top: 6px; /* pequeño espacio para separar la marca del subtítulo en escritorio */
 }
 
 .nav-links {
@@ -205,373 +263,7 @@ body {
 }
 
 /* Botón de notificaciones */
-.notifications-btn {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(6, 115, 100, 0.08);
-    border: 1px solid rgba(6, 115, 100, 0.15);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.notifications-btn:hover {
-    background: rgba(6, 115, 100, 0.12);
-    border-color: rgba(6, 115, 100, 0.25);
-    transform: scale(1.05);
-}
-
-.notifications-btn i {
-    color: var(--teal-600);
-    font-size: 18px;
-}
-
-.notification-badge {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    min-width: 20px;
-    height: 20px;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    padding: 0 6px;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-}
-
-.notification-badge.hidden {
-    display: none !important;
-}
-
-/* Cuando el badge está visible (activado por JavaScript) */
-.notification-badge:not(.hidden) {
-    display: flex;
-}
-
-/* Trigger del dropdown - avatar + nombre clickeable */
-.user-dropdown-trigger {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 16px;
-    border-radius: 10px;
-    background: rgba(6, 115, 100, 0.08);
-    border: 1px solid rgba(6, 115, 100, 0.15);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.user-dropdown-trigger:hover {
-    background: rgba(6, 115, 100, 0.12);
-    border-color: rgba(6, 115, 100, 0.25);
-}
-
-.user-name-nav {
-    color: var(--turquoise-800);
-    font-weight: 600;
-    font-size: 15px;
-}
-
-.dropdown-arrow {
-    color: var(--teal-500);
-    font-size: 12px;
-    transition: transform 0.3s ease;
-}
-
-.user-section.active .dropdown-arrow {
-    transform: rotate(180deg);
-}
-
-.user-avatar {
-    width: 35px;
-    height: 35px;
-    background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-    flex-shrink: 0;
-}
-
-/* Menú desplegable */
-.user-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    min-width: 280px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(6, 115, 100, 0.2);
-    border: 1px solid rgba(6, 115, 100, 0.1);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
-
-.user-section.active .user-dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-/* Header del dropdown con info del usuario */
-.dropdown-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-}
-
-.user-avatar-large {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, var(--accent-400), var(--accent-700));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
-    flex-shrink: 0;
-}
-
-.user-details {
-    flex: 1;
-    min-width: 0;
-}
-
-.user-name-dropdown {
-    font-weight: 700;
-    color: var(--turquoise-800);
-    font-size: 16px;
-    margin-bottom: 2px;
-}
-
-.user-email {
-    font-size: 13px;
-    color: var(--teal-600);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.dropdown-divider {
-    height: 1px;
-    background: rgba(6, 115, 100, 0.1);
-    margin: 0 12px;
-}
-
-/* Items del dropdown */
-.dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    color: var(--turquoise-700);
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
-
-.dropdown-item:hover {
-    background: rgba(6, 115, 100, 0.06);
-}
-
-.dropdown-item i {
-    width: 20px;
-    color: var(--teal-500);
-    font-size: 16px;
-}
-
-.dropdown-item.logout {
-    color: var(--red-600);
-    border-top: 1px solid rgba(6, 115, 100, 0.08);
-    margin-top: 4px;
-}
-
-.dropdown-item.logout i {
-    color: var(--red-600);
-}
-
-.dropdown-item.logout:hover {
-    background: rgba(244, 67, 54, 0.06);
-}
-
-/* Dropdown de notificaciones */
-.notifications-dropdown {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    width: 380px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(6, 115, 100, 0.15);
-    border: 1px solid rgba(6, 115, 100, 0.1);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1000;
-    overflow: hidden;
-}
-
-.user-section.notifications-active .notifications-dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.notifications-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(6, 115, 100, 0.1);
-    background: rgba(6, 115, 100, 0.03);
-}
-
-.notifications-header h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--turquoise-800);
-}
-
-.mark-all-read {
-    font-size: 12px;
-    color: var(--teal-600);
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.mark-all-read:hover {
-    color: var(--teal-800);
-}
-
-.notifications-list {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.notification-item {
-    display: flex;
-    gap: 12px;
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(6, 115, 100, 0.08);
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.notification-item:hover {
-    background: rgba(6, 115, 100, 0.04);
-}
-
-.notification-item.unread {
-    background: rgba(6, 115, 100, 0.05);
-}
-
-.notification-item.unread::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    width: 6px;
-    height: 6px;
-    background: var(--accent-500);
-    border-radius: 50%;
-    margin-top: 6px;
-}
-
-.notification-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.notification-icon i {
-    color: white;
-    font-size: 18px;
-}
-
-.notification-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.notification-title {
-    margin: 0 0 4px 0;
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--turquoise-800);
-}
-
-.notification-text {
-    margin: 0 0 6px 0;
-    font-size: 13px;
-    color: var(--teal-600);
-    line-height: 1.4;
-}
-
-.notification-time {
-    font-size: 11px;
-    color: var(--teal-500);
-}
-
-.notifications-footer {
-    padding: 12px 20px;
-    text-align: center;
-    border-top: 1px solid rgba(6, 115, 100, 0.1);
-    background: rgba(6, 115, 100, 0.02);
-}
-
-.view-all-notifications {
-    color: var(--teal-600);
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.view-all-notifications:hover {
-    color: var(--teal-800);
-}
-
-/* Estado de carga de notificaciones */
-.notification-item.loading-state {
-    text-align: center;
-    padding: 20px;
-    color: #888;
-}
-
-.notification-item.loading-state i {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.notification-item.loading-state p {
-    margin: 0;
-}
+/* Notification UI/CSS removed: styles for the notification button, dropdown, badges and mobile panels were deleted. */
 
 .hamburger {
     display: none;
@@ -599,18 +291,20 @@ body {
     right: -400px;
     width: 380px;
     height: 100vh;
-    background: linear-gradient(180deg, var(--teal-50) 0%, var(--turquoise-100) 100%);
-    box-shadow: -5px 0 30px rgba(0, 150, 136, 0.25);
-    transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Flat, neutral background for elegance */
+    background: #ffffff;
+    /* remove heavy shadow to simplify visual weight */
+    box-shadow: none;
+    transition: right 0.38s ease;
     z-index: 1000;
-    padding: 30px 30px 40px;
+    padding: 20px 20px 36px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
     overflow-y: auto;
     max-height: 100vh;
     -webkit-overflow-scrolling: touch;
-    border-left: 2px solid var(--turquoise-200);
+    border-left: 0;
 }
 
 .mobile-menu.active {
@@ -620,10 +314,12 @@ body {
 .mobile-header {
     display: flex;
     align-items: center;
-    gap: 18px;
-    padding: 20px 0;
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--turquoise-200);
+    gap: 12px;
+    padding: 12px 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(6,115,100,0.06);
+    z-index: 1; /* mantener header por debajo del botón de cierre */
+    justify-content: flex-start; /* alinear a la izquierda */
 }
 
 .mobile-logo {
@@ -635,6 +331,8 @@ body {
 .mobile-brand-text {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
 }
 
 .mobile-brand-name {
@@ -653,19 +351,17 @@ body {
 
 .mobile-menu a {
     text-decoration: none;
-    color: var(--turquoise-800);
+    color: rgba(15, 76, 64, 0.88); /* slightly muted */
     font-weight: 600;
-    padding: 20px 25px;
-    border-radius: 14px;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    font-size: 18px;
-    background: white;
-    border: 1px solid var(--turquoise-100);
-    backdrop-filter: blur(10px);
+    padding: 12px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 17px;
+    background: transparent; /* flat */
+    border: none;
     display: flex;
     align-items: center;
-    gap: 15px;
-    box-shadow: 0 2px 8px rgba(0, 150, 136, 0.08);
+    gap: 12px;
 }
 
 .mobile-menu a svg {
@@ -676,11 +372,9 @@ body {
 }
 
 .mobile-menu a:hover {
-    background: var(--teal-25);
-    color: var(--turquoise-900);
-    transform: translateX(8px);
-    border-color: var(--turquoise-300);
-    box-shadow: 0 4px 15px rgba(0, 150, 136, 0.15);
+    background: rgba(6,115,100,0.03);
+    color: rgba(15,76,64,1);
+    transform: translateX(6px);
 }
 
 .mobile-menu a:hover svg {
@@ -769,36 +463,56 @@ body {
 .mobile-user-info {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 15px;
-    background: white;
-    border: 1px solid var(--turquoise-100);
+    gap: 14px;
+    padding: 16px;
+    /* subtle gradient header for mobile user info */
+    background: linear-gradient(135deg, rgba(6,115,100,0.06), rgba(6,115,100,0.02));
+    border: 1px solid rgba(6,115,100,0.06);
     border-radius: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 8px rgba(0, 150, 136, 0.08);
+    margin-bottom: 16px;
+    box-shadow: 0 8px 22px rgba(6,115,100,0.06);
 }
 
 .mobile-user-avatar {
-    width: 40px;
-    height: 40px;
+    width: 56px;
+    height: 56px;
     background: linear-gradient(135deg, var(--turquoise-400), var(--teal-500));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-weight: bold;
-    font-size: 16px;
+    font-weight: 800;
+    font-size: 18px;
+    box-shadow: 0 8px 20px rgba(6,115,100,0.08);
 }
 
 .mobile-user-name {
-    font-weight: 700;
-    color: var(--mint-dark, #007a5e);
+    font-weight: 800;
+    color: var(--turquoise-900);
+    font-size: 16px;
 }
 
 .mobile-user-status {
-    font-size: 12px;
-    color: var(--mint-secondary, #00b386);
+    font-size: 13px;
+    color: var(--teal-600);
+    opacity: 0.95;
+}
+
+/* Make the mobile action links look like clear full-width buttons */
+.mobile-panel-section {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(6,115,100,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mobile-panel-link,
+.mobile-logout-link {
+    padding: 14px 18px;
+    font-size: 16px;
 }
 
 /* Botón de notificaciones móvil */
@@ -1030,8 +744,8 @@ body {
     position: absolute;
     top: 28px;
     right: 28px;
-    background: transparent;
-    border: none;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(6,115,100,0.06);
     width: 40px;
     height: 40px;
     cursor: pointer;
@@ -1039,29 +753,31 @@ body {
     align-items: center;
     justify-content: center;
     padding: 0;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 50%;
+    transition: all 0.18s ease;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    z-index: 2100; /* asegurarnos que el botón de cierre quede por encima del logo/marca */
 }
 
 .close-menu svg {
-    width: 24px;
-    height: 24px;
-    color: var(--teal-600);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 22px;
+    height: 22px;
+    color: rgba(6,115,100,0.85);
+    transition: transform 0.18s ease, color 0.18s ease;
 }
 
 .close-menu:hover {
-    background: rgba(6, 115, 100, 0.1);
-    transform: rotate(90deg);
+    background: rgba(255,255,255,1);
+    transform: rotate(15deg) scale(1.02);
 }
 
 .close-menu:hover svg {
-    color: var(--teal-800);
-    transform: scale(1.1);
+    color: rgba(6,115,100,1);
+    transform: scale(1.05);
 }
 
 .close-menu:active {
-    transform: rotate(90deg) scale(0.95);
+    transform: rotate(12deg) scale(0.98);
 }
 
 .overlay {
@@ -1194,8 +910,250 @@ body {
     }
 }
 
+/* Mobile: force flat brand and logo (no gradients, shadows, transforms) */
+@media (max-width: 480px) {
+    .mobile-logo,
+    .mobile-brand-link,
+    .mobile-header,
+    .mobile-brand-text {
+        background: transparent !important;
+        box-shadow: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+
+    /* ensure logo image itself appears flat (no tint or background) */
+    .mobile-logo img,
+    .mobile-brand-link img,
+    .mobile-brand-link .logo {
+        background: transparent !important;
+        box-shadow: none !important;
+        filter: none !important;
+    }
+
+    /* disable hover/active effects for the brand on mobile */
+    .mobile-brand-link:hover {
+        transform: none !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+    }
+}
+
+/* NOTE: movement suppression for non-brand elements on mobile was removed per user request; only brand rules remain. */
+
 @media (max-width: 360px) {
     .mobile-menu {
         width: 300px;
     }
+}
+
+/* ====== User section (avatar, username, dropdown) ====== */
+.user-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--turquoise-400), var(--teal-500));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 15px;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(6,115,100,0.06);
+}
+
+.user-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 14px;
+    background: rgba(6, 115, 100, 0.08);
+    border: 1px solid rgba(6, 115, 100, 0.10);
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.12s ease;
+    box-shadow: 0 2px 6px rgba(6,115,100,0.04);
+}
+
+.user-dropdown-trigger:hover {
+    background: rgba(6,115,100,0.10);
+}
+
+.user-name-nav {
+    color: var(--turquoise-800);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 240px;
+    max-width: 340px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 18px 50px rgba(6,115,100,0.12);
+    border: 1px solid rgba(6,115,100,0.06);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px) scale(0.995);
+    transition: transform 180ms cubic-bezier(.2,.9,.2,1), opacity 150ms ease, visibility 140ms;
+    z-index: 1400;
+    overflow: hidden;
+}
+
+/* Dropdown content: header with avatar + name/email */
+.user-dropdown-menu .dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    /* subtle gradient to highlight the header */
+    background: linear-gradient(135deg, rgba(6,115,100,0.06), rgba(6,115,100,0.02));
+    border-bottom: 1px solid rgba(6,115,100,0.04);
+    backdrop-filter: blur(4px);
+}
+
+.user-avatar-large {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--turquoise-400), var(--teal-500));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 16px;
+    flex-shrink: 0;
+    box-shadow: 0 6px 18px rgba(6,115,100,0.08);
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.user-name-dropdown {
+    font-weight: 700;
+    color: var(--turquoise-900);
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-email {
+    font-size: 13px;
+    color: var(--teal-600);
+    opacity: 0.9;
+}
+
+/* Make dropdown links full-width buttons */
+.user-dropdown-menu a.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--turquoise-800);
+    text-decoration: none;
+}
+
+.user-dropdown-menu a.dropdown-item.logout {
+    color: var(--red-600);
+}
+
+.user-dropdown-menu a.dropdown-item:hover {
+    background: rgba(6,115,100,0.03);
+}
+
+.user-section.active .user-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* decorative arrow */
+.user-dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+    right: 18px;
+    width: 14px;
+    height: 14px;
+    background: #ffffff;
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 6px rgba(6,115,100,0.04);
+    z-index: 0;
+}
+
+/* rotate chevron when open */
+.user-section .dropdown-arrow {
+    transition: transform 180ms ease;
+}
+.user-section.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* focus and keyboard outline for accessibility */
+.user-dropdown-trigger:focus {
+    outline: 2px solid rgba(6,115,100,0.12);
+    outline-offset: 2px;
+}
+
+/* refine dropdown-item styles */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--turquoise-800);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.dropdown-item.logout {
+    color: var(--red-600);
+}
+
+.dropdown-item i {
+    color: var(--teal-600);
+    font-size: 16px;
+    width: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    color: var(--turquoise-700);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.dropdown-item:hover {
+    background: rgba(6,115,100,0.04);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(6,115,100,0.06);
+    margin: 6px 0;
 }

@@ -27,7 +27,7 @@ function isDuplicateToast(message, type, title) {
     if (toastCache.has(hash)) {
         const lastShown = toastCache.get(hash);
         if (now - lastShown < TOAST_CACHE_DURATION) {
-            console.log('🚫 Toast duplicado bloqueado:', message);
+            console.log(' Toast duplicado bloqueado:', message);
             return true;
         }
     }
@@ -133,22 +133,29 @@ function toastInfo(message, title = null, duration = 5000) {
 
 // Convertir flash messages a toasts al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
-    const flashMessages = document.querySelector('.flash-messages');
-    if (flashMessages) {
-        const alerts = flashMessages.querySelectorAll('.alert');
-        alerts.forEach(alert => {
-            const classList = Array.from(alert.classList);
-            let type = 'info';
-            
-            if (classList.includes('alert-success')) type = 'success';
-            else if (classList.includes('alert-error') || classList.includes('alert-danger')) type = 'error';
-            else if (classList.includes('alert-warning')) type = 'warning';
-            
-            const message = alert.textContent.replace('×', '').trim();
-            showToast(message, type);
-        });
-        
-        // Ocultar flash messages originales
-        flashMessages.style.display = 'none';
+    try {
+        const flashMessages = document.querySelector('.flash-messages');
+        if (flashMessages) {
+            const alerts = flashMessages.querySelectorAll('.alert');
+            console.debug('[toast] flash-messages container found, alerts count:', alerts.length);
+            alerts.forEach((alert, idx) => {
+                const classList = Array.from(alert.classList || []);
+                let type = 'info';
+                if (classList.includes('alert-success')) type = 'success';
+                else if (classList.includes('alert-error') || classList.includes('alert-danger')) type = 'error';
+                else if (classList.includes('alert-warning')) type = 'warning';
+
+                const message = (alert.textContent || '').replace('×', '').trim();
+                console.debug(`[toast] alert[${idx}] type=${type} message=`, message);
+                if (message) showToast(message, type);
+            });
+
+            // Ocultar flash messages originales
+            try { flashMessages.style.display = 'none'; } catch (e) { /* ignore */ }
+        } else {
+            console.debug('[toast] no flash-messages container present');
+        }
+    } catch (e) {
+        console.error('[toast] error while processing flash messages', e);
     }
 });

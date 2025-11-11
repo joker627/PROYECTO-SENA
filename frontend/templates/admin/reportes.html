@@ -14,15 +14,7 @@
     }
 })();
 </script>
-<style>
-    .sidebar-collapsed-init .sidebar { width: 80px !important; padding: 25px 10px !important; }
-    .sidebar-collapsed-init .sidebar .menu-item a span:not(.menu-badge) { opacity: 0 !important; width: 0 !important; }
-    .sidebar-collapsed-init .sidebar .toggle-text { opacity: 0 !important; width: 0 !important; }
-    .sidebar-collapsed-init .sidebar .menu-badge { position: absolute !important; right: 8px !important; top: 50% !important; transform: translateY(-50%) !important; }
-    .sidebar-collapsed-init .sidebar .menu-item a { justify-content: center !important; }
-    .sidebar-collapsed-init .sidebar .sidebar-toggle { height: 52px !important; gap: 0 !important; }
-    .sidebar-collapsed-init .sidebar .sidebar-toggle i { transform: rotate(180deg) !important; }
-</style>
+ 
 
 <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
 {% endblock %}
@@ -118,7 +110,7 @@
                         </div>
                         <div class="user-info">
                             <span class="user-name">Usuario Anónimo</span>
-                            <span class="user-email">UUID: {{ reporte.uuid_transaccion[:8] }}...</span>
+                            <span class="user-email">UUID: {{ (reporte.uuid_transaccion or '')[:8] }}...</span>
                         </div>
                     </div>
 

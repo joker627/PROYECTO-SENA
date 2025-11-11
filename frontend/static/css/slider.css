@@ -2,7 +2,7 @@
 
 /* ========== SIDEBAR ========== */
 .sidebar {
-    width: 280px;
+    width: var(--sidebar-width, 280px);
     /* Light background using global tokens (soft light -> slightly tinted) */
     background: linear-gradient(180deg, var(--white) 0%, var(--turquoise-25) 100%);
     color: var(--gray-900);
@@ -34,7 +34,7 @@
 
 /* Sidebar colapsado en desktop */
 .sidebar.collapsed {
-    width: 80px;
+    width: var(--sidebar-collapsed-width, 80px);
     padding: 25px 10px;
 }
 
@@ -197,24 +197,25 @@
 /* Badge de notificaciones */
 .menu-badge {
     margin-left: auto;
-    /* token-based red gradient for badge */
-    background: linear-gradient(135deg, var(--red-500), var(--red-600));
-    color: var(--white);
-    font-size: 11px;
+    /* Modern pill badge: vivid background, white text and slight elevation */
+    background: linear-gradient(135deg, var(--red-500), #ef4444);
+    color: #fff;
+    font-size: 12px;
     font-weight: 700;
     min-width: 22px;
     height: 22px;
     display: none;
     align-items: center;
     justify-content: center;
-    border-radius: 11px;
-    padding: 0 7px;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.18);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 999px;
+    padding: 0 8px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
     position: relative;
     z-index: 3; /* above icon */
     flex-shrink: 0;
     font-family: 'Poppins', sans-serif;
+    text-align: center;
 }
 
 .menu-badge.hidden {
@@ -222,20 +223,24 @@
 }
 
 .menu-badge:not(.hidden) {
-    display: flex;
+    display: inline-flex;
 }
 
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-}
-
+/* Removed pulsing animation for a calmer, more elegant badge appearance */
 .menu-badge:not(.hidden) {
-    animation: pulse 2s ease-in-out infinite;
+    /* keep a short transition for hover/focus but no animation */
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+/* pulse animation when badge is updated (JS can add .badge-updated to trigger) */
+.menu-badge.badge-updated {
+    animation: badgePulse 700ms ease forwards;
+}
+
+@keyframes badgePulse {
+    0% { transform: scale(0.9); box-shadow: 0 4px 12px rgba(15,23,42,0.06); }
+    50% { transform: scale(1.08); box-shadow: 0 10px 24px rgba(15,23,42,0.12); }
+    100% { transform: scale(1); box-shadow: 0 6px 18px rgba(15,23,42,0.08); }
 }
 
 .menu-item:first-child a {
@@ -278,11 +283,13 @@
     transform: translateY(-50%) !important;
     align-items: center !important;
     justify-content: center !important;
-    min-width: 18px !important;
-    height: 18px !important;
+    min-width: 16px !important;
+    height: 16px !important;
     padding: 0 6px !important;
     z-index: 6 !important;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.12) !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.10) !important;
+    font-size: 11px !important;
+    border-radius: 999px !important;
 }
 
 /* EXPANDED: ensure badge stays at the end of the item */
@@ -338,11 +345,11 @@
 /* ========== RESPONSIVE ========== */
 @media (max-width: 992px) {
     .sidebar {
-        width: 240px;
+        width: calc(var(--sidebar-width, 280px) - 40px);
     }
 
     .sidebar.collapsed {
-        width: 70px;
+        width: calc(var(--sidebar-collapsed-width, 80px) - 10px);
         padding: 25px 8px;
     }
 }
@@ -354,7 +361,7 @@
         right: auto;
         transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        width: 280px;
+        width: var(--sidebar-width, 280px);
         height: 100vh;
         background: linear-gradient(180deg, var(--teal-50) 0%, var(--turquoise-100) 100%);
         box-shadow: 4px 0 20px rgba(0, 150, 136, 0.15);
@@ -373,7 +380,7 @@
 
     /* Remover estado collapsed en móvil */
     .sidebar.collapsed {
-        width: 280px !important;
+        width: var(--sidebar-width, 280px) !important;
         padding: 25px 15px !important;
     }
 
@@ -423,7 +430,12 @@
         align-items: center;
         justify-content: center;
         text-align: center !important;
-        line-height: 24px !important;
+        line-height: 22px !important;
+        min-width: 22px !important;
+        height: 22px !important;
+        padding: 0 8px !important;
+        border-radius: 999px !important;
+        box-shadow: 0 6px 18px rgba(15,23,42,0.08) !important;
     }
 
     .menu-item a i {
