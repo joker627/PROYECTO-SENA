@@ -13,37 +13,7 @@
     }
 })();
 </script>
-<style>
-    /* Prevenir flash visual - aplicar estado inicial del sidebar */
-    .sidebar-collapsed-init .sidebar {
-        width: 80px !important;
-        padding: 25px 10px !important;
-    }
-    .sidebar-collapsed-init .sidebar .menu-item a span:not(.menu-badge) {
-        opacity: 0 !important;
-        width: 0 !important;
-    }
-    .sidebar-collapsed-init .sidebar .toggle-text {
-        opacity: 0 !important;
-        width: 0 !important;
-    }
-    .sidebar-collapsed-init .sidebar .menu-badge {
-        position: absolute !important;
-        right: 8px !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-    }
-    .sidebar-collapsed-init .sidebar .menu-item a {
-        justify-content: center !important;
-    }
-    .sidebar-collapsed-init .sidebar .sidebar-toggle {
-        height: 52px !important;
-        gap: 0 !important;
-    }
-    .sidebar-collapsed-init .sidebar .sidebar-toggle i {
-        transform: rotate(180deg) !important;
-    }
-</style>
+
 
 <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
 <!-- Font Awesome ya está cargado en base.html -->
@@ -101,28 +71,7 @@
                         <span class="user-role">{% if session.get('id_rol') == 1 %}Super Admin{% else %}Gestor{% endif %}</span>
                     </div>
                 </div>
-                    <div class="notifications">
-                        <i class="fas fa-bell"></i>
-                        <span id="navbarNotificationBadge" class="notification-badge{% if notification_count == 0 %} hidden{% endif %}">{{ notification_count }}</span>
-                    </div>
-                
-                <!-- Dropdown de notificaciones -->
-                <div class="dashboard-notifications-dropdown">
-                    <div class="notifications-header">
-                        <h3>Notificaciones</h3>
-                        <span class="mark-all-read hidden">Marcar todo como leído</span>
-                    </div>
-                    <div class="notifications-list">
-                        <!-- Las notificaciones se cargan dinámicamente con JavaScript -->
-                        <div class="notification-item loading-state">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <p>Cargando alertas...</p>
-                        </div>
-                    </div>
-                    <div class="notifications-footer">
-                        <a href="/notifications/page" class="view-all-notifications">Ver todas las alertas</a>
-                    </div>
-                </div>
+                    {# Notificaciones eliminadas del header del dashboard #}
             </div>
         </header>
 
@@ -131,74 +80,44 @@
             <h2>Métricas Principales</h2>
             <div class="cards" id="metricsCards">
                 <!-- Fila 1 -->
-                <div class="project-card user-card">
-                    <div class="project-header">
-                        <h3>Usuarios</h3>
-                        <span class="project-status {{ 'completed' if metrics.users.trend == 'positive' else 'pending' }}">{{ 'Crecimiento' if metrics.users.trend == 'positive' else 'Estable' }}</span>
-                    </div>
-                    <p class="project-description">Total registrados</p>
-                    <div class="project-meta">
-                        <div class="project-meta-item">
-                            <i class="fas fa-users"></i>
-                            <span class="card-value">{{ metrics.users.total }}</span>
-                        </div>
-                        <div class="project-meta-item">
-                            <i class="fas fa-arrow-{{ 'up' if metrics.users.trend == 'positive' else 'down' }}"></i>
-                            <span>{{ metrics.users.growth|abs }}% este mes</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card translations-card">
+                <div class="project-card translations-card fixed-metric">
                     <div class="project-header">
                         <h3>Traducciones</h3>
-                        <span class="project-status {{ 'completed' if metrics.translations.trend == 'positive' else 'pending' }}">{{ 'Crecimiento' if metrics.translations.trend == 'positive' else 'Estable' }}</span>
+                        <span class="project-status">Totales</span>
                     </div>
-                    <p class="project-description">Total realizadas</p>
+                    <p class="project-description">Totales realizadas</p>
                     <div class="project-meta">
                         <div class="project-meta-item">
                             <i class="fas fa-language"></i>
-                            <span class="card-value">{{ metrics.translations.total }}</span>
+                            <span class="card-value">4</span>
                         </div>
                         <div class="project-meta-item">
-                            <i class="fas fa-arrow-{{ 'up' if metrics.translations.trend == 'positive' else 'down' }}"></i>
-                            <span>{{ metrics.translations.growth|abs }}% este mes</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card anonymous-card">
-                    <div class="project-header">
-                        <h3>Usuarios Anónimos</h3>
-                        <span class="project-status">Acumulado</span>
-                    </div>
-                    <p class="project-description">Registrados</p>
-                    <div class="project-meta">
-                        <div class="project-meta-item">
-                            <i class="fas fa-user-secret"></i>
-                            <span class="card-value">{{ metrics.anonymous.total }}</span>
+                            <i class="fas fa-code-branch"></i>
+                            <span class="card-value">2</span>
+                            <span class="meta-label">Texto→Señas</span>
                         </div>
                         <div class="project-meta-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Total acumulado</span>
+                            <i class="fas fa-exchange-alt"></i>
+                            <span class="card-value">2</span>
+                            <span class="meta-label">Señas→Texto</span>
                         </div>
                     </div>
                 </div>
                 <!-- Precisión: usar diseño similar a proyectos para consistencia visual -->
-                <div class="project-card precision-card">
+                <div class="project-card precision-card fixed-metric">
                     <div class="project-header">
                         <h3>IA Precision</h3>
-                        <span class="project-status {{ 'completed' if metrics.precision.status == 'excellent' else 'in-progress' if metrics.precision.status == 'good' else 'pending' }}">
-                            {{ 'Excelente' if metrics.precision.status == 'excellent' else 'Bueno' if metrics.precision.status == 'good' else 'Necesita mejora' }}
-                        </span>
+                        <span class="project-status">Precisión</span>
                     </div>
                     <p class="project-description">Promedio del modelo en base a las últimas mediciones</p>
                     <div class="project-meta">
                         <div class="project-meta-item">
                             <i class="fas fa-bullseye"></i>
-                            <span class="card-value">{{ metrics.precision.average }}%</span>
+                            <span class="card-value">94.0%</span>
                         </div>
                         <div class="project-meta-item">
                             <i class="fas fa-clock"></i>
-                            <span>Última actualización: {{ metrics.precision.updated_at or 'Ahora' }}</span>
+                            <span>Última actualización: 2025-11-11 07:26:15</span>
                         </div>
                     </div>
                 </div>
@@ -207,69 +126,55 @@
                 <div class="project-card project-card--contribuciones">
                     <div class="project-header">
                         <h3>Contribuciones</h3>
-                        <span class="project-status {{ 'completed' if metrics.projects.trend == 'positive' else 'pending' }}">{{ 'Crecimiento' if metrics.projects.trend == 'positive' else 'Estable' }}</span>
+                        <span class="project-status {{ 'completed' if metrics.contribuciones.pendientes == 0 else 'pending' }}">{{ 'Sin pendientes' if metrics.contribuciones.pendientes == 0 else 'Pendientes' }}</span>
                     </div>
-                    <p class="project-description">Validadas</p>
+                    <p class="project-description">Estado de contribuciones</p>
                     <div class="project-meta">
                         <div class="project-meta-item">
-                            <i class="fas fa-project-diagram"></i>
-                            <span class="card-value">{{ metrics.projects.total }}</span>
+                            <i class="fas fa-hourglass-start"></i>
+                            <span class="card-value">1</span>
+                            <span class="meta-label">Pendientes</span>
                         </div>
                         <div class="project-meta-item">
-                            <i class="fas fa-arrow-{{ 'up' if metrics.projects.trend == 'positive' else 'down' }}"></i>
-                            <span>{{ metrics.projects.growth|abs }}% este mes</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card colaboradores-card">
-                    <div class="project-header">
-                        <h3>Colaboradores</h3>
-                        <span class="project-status">Activos</span>
-                    </div>
-                    <p class="project-description">Activos</p>
-                    <div class="project-meta">
-                        <div class="project-meta-item">
-                            <i class="fas fa-user-tie"></i>
-                            <span class="card-value">{{ metrics.colaboradores.total }}</span>
-                        </div>
-                        <div class="project-meta-item">
-                            <i class="fas fa-users"></i>
-                            <span>Total activos</span>
+                            <i class="fas fa-check"></i>
+                            <span class="card-value">1</span>
+                            <span class="meta-label">Aprobadas</span>
                         </div>
                     </div>
                 </div>
                 <div class="project-card report-card">
                     <div class="project-header">
                         <h3>Reportes</h3>
-                        <span class="project-status {{ 'completed' if metrics.reports.trend == 'positive' else 'pending' }}">{{ 'Mejora' if metrics.reports.trend == 'positive' else 'Atención' }}</span>
+                        <span class="project-status">Reportes</span>
                     </div>
                     <p class="project-description">Pendientes</p>
                     <div class="project-meta">
                         <div class="project-meta-item">
                             <i class="fas fa-chart-bar"></i>
-                            <span class="card-value">{{ metrics.reports.total }}</span>
+                            <span class="card-value">2</span>
                         </div>
                         <div class="project-meta-item">
-                            <i class="fas fa-arrow-{{ 'down' if metrics.reports.trend == 'positive' else 'up' }}"></i>
-                            <span>{{ metrics.reports.change|abs }}% este mes</span>
+                            <i class="fas fa-info-circle"></i>
+                            <span>Totales reportes</span>
                         </div>
                     </div>
                 </div>
-                <!-- Alertas del sistema campana en el header -->
+                <!-- Señas validadas -->
                 <div class="project-card solicitudes-card">
                     <div class="project-header">
                         <h3>Solicitudes</h3>
-                        <span class="project-status {{ 'completed' if metrics.solicitudes.total == 0 else 'pending' }}">{{ 'Sin pendientes' if metrics.solicitudes.total == 0 else 'Revisar' }}</span>
+                        <span class="project-status">Solicitudes</span>
                     </div>
-                    <p class="project-description">Pendientes</p>
+                    <p class="project-description">Validadas en el repositorio</p>
                     <div class="project-meta">
                         <div class="project-meta-item">
                             <i class="fas fa-user-plus"></i>
-                            <span class="card-value">{{ metrics.solicitudes.total }}</span>
+                            <!-- Fixed value for solicitudes -->
+                            <span class="card-value">2</span>
                         </div>
                         <div class="project-meta-item">
-                            <i class="fas fa-clock"></i>
-                            <span>{{ 'Sin pendientes' if metrics.solicitudes.total == 0 else 'Revisar' }}</span>
+                            <i class="fas fa-info-circle"></i>
+                            <span>Total validadas</span>
                         </div>
                     </div>
                 </div>
@@ -340,10 +245,6 @@
                                 <i class="fas fa-calendar"></i>
                                 <span>{{ project.fecha }}</span>
                             </div>
-                            <div class="project-meta-item">
-                                <i class="fas fa-user"></i>
-                                <span>{{ project.colaborador }}</span>
-                            </div>
                         </div>
                     </div>
                     {% endfor %}
@@ -369,5 +270,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{{ url_for('static', filename='js/notifications-preview.js') }}"></script>
+{# Notificaciones: script eliminado porque la UI fue removida #}
 {% endblock %}

@@ -1,31 +1,31 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
 
+{% from 'components/_badge.html' import render_badge %}
+
 <nav class="navbar">
     <div class="brand">
-        <img src="{{ url_for('static', filename='img/general/logo.webp') }}" alt="Logo de Sign Technology"
-            class="logo">
-        <div class="brand-text">
-            <div class="brand-name">Sign Technology</div>
-            <div class="brand-tagline">INNOVACIÓN DIGITAL</div>
-        </div>
+    <a href="{{ url_for('general_bp.index') }}" class="brand-link">
+            <img src="{{ url_for('static', filename='img/general/logo.webp') }}" alt="Logo de Sign Technology"
+                class="logo">
+            <div class="brand-text">
+                <div class="brand-name">Sign Technology</div>
+                <div class="brand-tagline">INNOVACIÓN DIGITAL</div>
+            </div>
+        </a>
     </div>
 
     <div class="nav-wrapper">
         <ul class="nav-links">
-            <li><a href="{{ url_for('general_bp.inicio') }}">Inicio</a></li>
+            <li><a href="{{ url_for('general_bp.index') }}">Inicio</a></li>
             <li><a href="{{ url_for('general_bp.nosotros') }}">Nosotros</a></li>
             <li><a href="{{ url_for('general_bp.tutoriales') }}">Tutoriales</a></li>
         </ul>
 
         <div class="nav-actions">
-            {% if session.get('user_id') %}
+            {% if session.get('usuario') or session.get('user_id') %}
             <!-- Sección cuando SÍ está logueado - Notificaciones y avatar clickeable -->
             <div class="user-section">
-                <!-- Botón de notificaciones -->
-                <div class="notifications-btn">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge" style="display: none;">0</span>
-                </div>
+                <!-- Notificaciones deshabilitadas temporalmente -->
 
                 <div class="user-dropdown-trigger">
                     <div class="user-avatar">
@@ -61,7 +61,7 @@
                     </div>
                     <div class="dropdown-divider"></div>
                     {% if session.get('id_rol') == 1 %}
-                        <a href="{{ url_for('admin_bp.dashboard') }}" class="dropdown-item">
+                        <a href="{{ url_for('general_bp.admin_dashboard') }}" class="dropdown-item">
                             <i class="fas fa-cog"></i> Panel Administrador
                         </a>
                     {% elif session.get('id_rol') == 2 %}
@@ -69,33 +69,17 @@
                             <i class="fas fa-tasks"></i> Panel Gestor
                         </a>
                     {% endif %}
-                    <a href="{{ url_for('login_bp.logout') }}" class="dropdown-item logout">
+                    <a href="{{ url_for('auth_bp.logout') }}" class="dropdown-item logout">
                         <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                     </a>
                 </div>
 
-                <!-- Menú desplegable de notificaciones -->
-                <div class="notifications-dropdown">
-                    <div class="notifications-header">
-                        <h3>Notificaciones</h3>
-                        <span class="mark-all-read hidden">Marcar todo como leído</span>
-                    </div>
-                    <div class="notifications-list">
-                        <!-- Las notificaciones se cargan dinámicamente con JavaScript -->
-                        <div class="notification-item loading-state">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <p>Cargando alertas...</p>
-                        </div>
-                    </div>
-                    <div class="notifications-footer">
-                        <a href="/notifications/page" class="view-all-notifications">Ver todas las alertas</a>
-                    </div>
-                </div>
+                <!-- Notificaciones temporalmente ocultas -->
             </div>
             {% else %}
             <!-- Sección cuando NO está logueado -->
             <div class="auth-buttons auth-section">
-                <a href="{{ url_for('login_bp.login') }}" class="admin-btn">Panel Admin</a>
+            <a href="{{ url_for('auth_bp.login') }}" class="admin-btn">Panel Admin</a>
             </div>
             {% endif %}
         </div>
@@ -116,15 +100,18 @@
     </button>
 
     <div class="mobile-header">
-        <img src="{{ url_for('static', filename='img/general/logo.webp') }}" alt="Logo de Sign Technology"
-            class="logo">
-        <div class="mobile-brand-text">
-            <div class="mobile-brand-name">Sign Technology</div>
-            <div class="mobile-brand-tagline">INNOVACIÓN DIGITAL</div>
-        </div>
+        <a href="{{ url_for('general_bp.index') }}" class="mobile-brand-link">
+            <img src="{{ url_for('static', filename='img/general/logo.webp') }}" alt="Logo de Sign Technology"
+                class="logo">
+            <div class="mobile-brand-text">
+                <div class="mobile-brand-name-top">Sign</div>
+                <div class="mobile-brand-name-bottom">Technology</div>
+                <div class="mobile-brand-tagline">INNOVACIÓN DIGITAL</div>
+            </div>
+        </a>
     </div>
 
-    <a href="{{ url_for('general_bp.inicio') }}">
+    <a href="{{ url_for('general_bp.index') }}">
         <svg viewBox="0 0 26 26">
             <path d="M13 20v-7h4v7h5v-9h3L13 3 2 11h3v9z" />
         </svg>
@@ -145,7 +132,7 @@
         Tutoriales
     </a>
 
-    {% if session.get('user_id') %}
+    {% if session.get('usuario') or session.get('user_id') %}
     <!-- Sección móvil cuando SÍ está logueado -->
     <div class="mobile-user-section">
         <div class="mobile-user-info">
@@ -164,63 +151,11 @@
             </div>
         </div>
 
-        <!-- Botón de notificaciones móvil -->
-        <a href="/notifications/page" class="mobile-notifications-btn">
-            <i class="fas fa-bell"></i>
-            <span class="mobile-notification-badge" style="display: none;">0</span>
-            <span class="mobile-notification-text">Notificaciones</span>
-        </a>
-
-        <!-- Panel de notificaciones móvil -->
-        <div class="mobile-notifications-panel">
-            <div class="mobile-notifications-header">
-                <h3>Notificaciones</h3>
-                <button class="close-notifications-mobile">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="mobile-notifications-list">
-                <div class="mobile-notification-item unread">
-                    <div class="mobile-notification-icon">
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <div class="mobile-notification-content">
-                        <p class="mobile-notification-title">Nueva actualización disponible</p>
-                        <p class="mobile-notification-text">Se ha liberado la versión 2.0 del sistema</p>
-                        <span class="mobile-notification-time">Hace 5 min</span>
-                    </div>
-                </div>
-                <div class="mobile-notification-item unread">
-                    <div class="mobile-notification-icon">
-                        <i class="fas fa-user-check"></i>
-                    </div>
-                    <div class="mobile-notification-content">
-                        <p class="mobile-notification-title">Usuario aprobado</p>
-                        <p class="mobile-notification-text">Juan Pérez ha sido aprobado en el sistema</p>
-                        <span class="mobile-notification-time">Hace 1 hora</span>
-                    </div>
-                </div>
-                <div class="mobile-notification-item">
-                    <div class="mobile-notification-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="mobile-notification-content">
-                        <p class="mobile-notification-title">Tarea completada</p>
-                        <p class="mobile-notification-text">El respaldo de datos se completó exitosamente</p>
-                        <span class="mobile-notification-time">Hace 3 horas</span>
-                    </div>
-                </div>
-            </div>
-            <div class="mobile-notifications-footer">
-                <a href="/notifications/page" class="mobile-view-all-notifications">Ver todas las notificaciones</a>
-            </div>
-        </div>
+        <!-- Notificaciones móvil eliminadas -->
 
         <div class="mobile-panel-section">
             {% if session.get('id_rol') == 1 %}
-                <a href="{{ url_for('admin_bp.dashboard') }}" class="mobile-panel-link">
+                <a href="{{ url_for('general_bp.admin_dashboard') }}" class="mobile-panel-link">
                     <i class="fas fa-cog"></i> Panel Administrador
                 </a>
             {% elif session.get('id_rol') == 2 %}
@@ -228,7 +163,7 @@
                     <i class="fas fa-tasks"></i> Panel Gestor
                 </a>
             {% endif %}
-            <a href="{{ url_for('login_bp.logout') }}" class="mobile-logout-link">
+            <a href="{{ url_for('auth_bp.logout') }}" class="mobile-logout-link">
                 <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
             </a>
         </div>
@@ -236,7 +171,7 @@
     {% else %}
     <!-- Sección móvil cuando NO está logueado -->
     <div class="mobile-auth-section">
-        <a href="{{ url_for('login_bp.login') }}" class="mobile-admin-btn">
+    <a href="{{ url_for('auth_bp.login') }}" class="mobile-admin-btn">
             <svg viewBox="0 0 26 26">
                 <path
                     d="M20.8 14c.04-.3.07-.65.07-1 0-.35-.03-.7-.08-1l2.2-1.7c.2-.15.25-.45.13-.65l-2.1-3.6c-.12-.24-.4-.32-.64-.24l-2.6 1c-.55-.42-1.12-.76-1.75-1l-.4-2.8c-.04-.26-.26-.45-.52-.45h-4.2c-.26 0-.47.19-.51.45l-.4 2.8c-.63.26-1.2.61-1.75 1l-2.6-1c-.24-.09-.51 0-.64.24l-2.1 3.6c-.12.2-.09.51.13.65l2.2 1.7c-.05.3-.09.65-.09 1s.04.7.09 1l-2.2 1.7c-.2.15-.25.45-.13.65l2.1 3.6c.12.24.4.32.64.24l2.6-1c.55.42 1.12.76 1.75 1l.4 2.8c.04.26.26.45.52.45h4.2c.26 0 .47-.19.51-.45l.4-2.8c.63-.26 1.2-.61 1.75-1l2.6.96c.24.09.51 0 .64-.24l2.1-3.6c.12-.2.07-.51-.13-.65l-2.2-1.7zM13 17c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z" />
@@ -250,4 +185,3 @@
 <div class="overlay"></div>
 
 <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
-<script src="{{ url_for('static', filename='js/notifications-preview.js') }}"></script>

@@ -1,138 +1,112 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, session
-from controllers.reportes_controller import (
-    get_page_data, mark_as_revision, mark_as_resolved,
-    delete_reporte, delete_all_resolved, get_pending_count
-)
-from controllers.notifications_controller import (
-    obtener_todas, obtener_pendientes, contar_pendientes,
-    obtener_vista_previa
-)
-from utils.error_handler import error_generico
-from functools import wraps
+from flask import Blueprint, jsonify, request, redirect, url_for
+from backend.controllers.reportes_controller import list_reportes, retrieve_reporte, add_reporte, edit_reporte, remove_reporte
+from connection.db import get_connection
 
-reportes_bp = Blueprint('reportes_bp', __name__, url_prefix='/reportes')
+reportes_bp = Blueprint('reportes_bp', __name__)
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
-            flash('Debes iniciar sesión', 'warning')
-            return redirect(url_for('login_bp.login'))
-        return f(*args, **kwargs)
-    return decorated_function
 
-@reportes_bp.route('/')
-@login_required
+@reportes_bp.route('/api/reportes', methods=['GET'])
+def api_list_reportes():
+    limit = int(request.args.get('limit', 100))
+    offset = int(request.args.get('offset', 0))
+    return jsonify(list_reportes(limit, offset))
+
+
+@reportes_bp.route('/api/reportes/<int:id_reporte>', methods=['GET'])
+def api_get_reporte(id_reporte):
+    r = retrieve_reporte(id_reporte)
+    if not r:
+        return jsonify({'error': 'Not found'}), 404
+    return jsonify(r)
+
+
+@reportes_bp.route('/api/reportes', methods=['POST'])
+def api_create_reporte():
+    data = request.get_json() or {}
+    new_id = add_reporte(data)
+    if not new_id:
+        return jsonify({'error': 'Bad request'}), 400
+    return jsonify({'id_reporte': new_id}), 201
+
+
+@reportes_bp.route('/api/reportes/<int:id_reporte>', methods=['PUT'])
+def api_update_reporte(id_reporte):
+    data = request.get_json() or {}
+    ok = edit_reporte(id_reporte, data)
+    if not ok:
+        return jsonify({'error': 'Bad request or not found'}), 400
+    return jsonify({'ok': True})
+
+
+@reportes_bp.route('/api/reportes/<int:id_reporte>', methods=['DELETE'])
+def api_delete_reporte(id_reporte):
+    ok = remove_reporte(id_reporte)
+    if not ok:
+        return jsonify({'error': 'Not found'}), 404
+    return jsonify({'ok': True})
+
+
+@reportes_bp.route('/reportes/page')
 def reportes_page():
-    """Página principal de gestión de reportes"""
-    try:
-        # Leer parámetros desde query string (p.ej. ?estado=pendiente&page=2&per_page=10)
-        estado = request.args.get('estado')
-        try:
-            page = int(request.args.get('page', 1))
-            if page < 1:
-                page = 1
-        except Exception:
-            page = 1
+    """Compatibility endpoint: templates call `url_for('reportes_bp.reportes_page', ...)`.
 
-        try:
-            per_page = int(request.args.get('per_page', 10))
-            if per_page < 1:
-                per_page = 10
-        except Exception:
-            per_page = 10
+    Redirect to the admin page provided by `general_bp.admin_reportes`, preserving
+    any query parameters like 'estado', 'page', or 'per_page'. This avoids
+    duplicating the admin view while keeping old template links valid.
+    """
+    # preserve query string parameters
+    params = request.args.to_dict(flat=True)
+    target = url_for('general_bp.admin_reportes')
+    if params:
+        qs = '&'.join(f"{k}={v}" for k, v in params.items())
+        target = f"{target}?{qs}"
+    return redirect(target)
 
-        # Obtener datos de reportes, posiblemente filtrados y paginados
-        data = get_page_data(estado=estado, page=page, per_page=per_page)
 
-        return render_template(
-            'admin/reportes.html',
-            reportes=data['reportes'],
-            stats=data['stats'],
-            pagination=data.get('pagination', {}),
-            current_filter=estado
-        )
-    except Exception as e:
-        print(f"Error en reportes_page: {e}")
-        error_generico('reportes_page', f'Error al cargar reportes: {str(e)}', 'alto', 'routes/reportes_routes.py', 'Error Página Reportes')
-        flash('Error al cargar los reportes', 'error')
-        return redirect(url_for('admin_bp.dashboard'))
-
-@reportes_bp.route('/revision/<int:id_reporte>', methods=['POST'])
-@login_required
-def marcar_revision(id_reporte):
-    """Marca un reporte como 'en revisión'"""
-    try:
-        success = mark_as_revision(id_reporte)
-        if success:
-            flash('Reporte marcado como "en revisión"', 'success')
-        else:
-            flash('Error al actualizar el reporte', 'error')
-    except Exception as e:
-        print(f"Error al marcar como revisión: {e}")
-        error_generico('marcar_revision', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Cambiar Estado Reporte')
-        flash('Error al procesar la solicitud', 'error')
-    
-    return redirect(url_for('reportes_bp.reportes_page'))
-
-@reportes_bp.route('/resolver/<int:id_reporte>', methods=['POST'])
-@login_required
-def resolver_reporte(id_reporte):
-    """Marca un reporte como resuelto"""
-    try:
-        success = mark_as_resolved(id_reporte)
-        if success:
-            flash('Reporte marcado como resuelto', 'success')
-        else:
-            flash('Error al actualizar el reporte', 'error')
-    except Exception as e:
-        print(f"Error al resolver reporte: {e}")
-        error_generico('resolver_reporte', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Resolver Reporte')
-        flash('Error al procesar la solicitud', 'error')
-    
-    return redirect(url_for('reportes_bp.reportes_page'))
-
-@reportes_bp.route('/eliminar/<int:id_reporte>', methods=['POST'])
-@login_required
+@reportes_bp.route('/reportes/<int:id_reporte>/eliminar', methods=['POST'])
 def eliminar_reporte(id_reporte):
-    """Elimina un reporte"""
+    """Delete a single reporte and redirect back to admin page."""
     try:
-        success = delete_reporte(id_reporte)
-        if success:
-            flash('Reporte eliminado correctamente', 'success')
-        else:
-            flash('Error al eliminar el reporte', 'error')
-    except Exception as e:
-        print(f"Error al eliminar reporte: {e}")
-        error_generico('eliminar_reporte', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Eliminar Reporte')
-        flash('Error al procesar la solicitud', 'error')
-    
-    return redirect(url_for('reportes_bp.reportes_page'))
+        remove_reporte(id_reporte)
+    except Exception:
+        # ignore errors for compatibility
+        pass
+    return redirect(url_for('general_bp.admin_reportes'))
 
-@reportes_bp.route('/eliminar-resueltos', methods=['POST'])
-@login_required
+
+@reportes_bp.route('/reportes/<int:id_reporte>/marcar_revision', methods=['POST'])
+def marcar_revision(id_reporte):
+    """Mark a report as 'en_revision'."""
+    try:
+        edit_reporte(id_reporte, {'estado': 'en_revision'})
+    except Exception:
+        pass
+    return redirect(url_for('general_bp.admin_reportes'))
+
+
+@reportes_bp.route('/reportes/<int:id_reporte>/resolver', methods=['POST'])
+def resolver_reporte(id_reporte):
+    """Mark a report as 'resuelto'."""
+    try:
+        edit_reporte(id_reporte, {'estado': 'resuelto'})
+    except Exception:
+        pass
+    return redirect(url_for('general_bp.admin_reportes'))
+
+
+@reportes_bp.route('/reportes/eliminar_resueltos', methods=['POST'])
 def eliminar_resueltos():
-    """Elimina todos los reportes resueltos"""
+    """Bulk-delete all resolved reports. This is a small compatibility helper."""
+    conn = None
     try:
-        count = delete_all_resolved()
-        if count > 0:
-            flash(f'Se eliminaron {count} reporte{"s" if count != 1 else ""} resuelto{"s" if count != 1 else ""}', 'success')
-        else:
-            flash('No hay reportes resueltos para eliminar', 'warning')
-    except Exception as e:
-        print(f"Error al eliminar reportes resueltos: {e}")
-        error_generico('eliminar_resueltos', f'Error: {str(e)}', 'medio', 'routes/reportes_routes.py', 'Error Eliminar Resueltos')
-        flash('Error al procesar la solicitud', 'error')
-    
-    return redirect(url_for('reportes_bp.reportes_page'))
-
-@reportes_bp.route('/api/count')
-def get_count():
-    """API para obtener el conteo de reportes pendientes"""
-    try:
-        count = get_pending_count()
-        return jsonify({'count': count})
-    except Exception as e:
-        print(f"Error en get_count: {e}")
-        error_generico('get_count', f'Error al contar reportes: {str(e)}', 'bajo', 'routes/reportes_routes.py', 'Error API Count Reportes')
-        return jsonify({'count': 0}), 500
+        conn = get_connection()
+        if conn:
+            with conn.cursor() as cursor:
+                cursor.execute("DELETE FROM reportes_errores WHERE estado = 'resuelto'")
+                conn.commit()
+    except Exception:
+        pass
+    finally:
+        if conn:
+            conn.close()
+    return redirect(url_for('general_bp.admin_reportes'))

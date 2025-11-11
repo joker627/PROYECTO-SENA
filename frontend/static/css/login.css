@@ -209,7 +209,7 @@ body::before {
     max-width: 500px;
     width: 100%;
     position: relative;
-    z-index: 1;
+    z-index: 50; /* elevar para que controles dentro no queden detrás de overlays */
     backdrop-filter: blur(10px);
 }
 
@@ -255,6 +255,59 @@ body::before {
     position: relative;
 }
 
+/* Ensure password toggle sits on the right of the input on desktop and doesn't wrap */
+.form-group input[type="password"], .form-group input[type="text"] {
+    /* give room for the toggle button: reserve enough space so the icon doesn't overlap text */
+    padding-right: 56px;
+    box-sizing: border-box;
+    display: block;
+    height: 44px; /* consistent input height helps align the toggle */
+    line-height: 1.2;
+}
+
+.form-group .password-toggle {
+    /* Icon-only toggle: positioned inside the input area, centered vertically */
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+    border-radius: 50%;
+    font-size: 1.05rem; /* icon size */
+    color: var(--turquoise-900);
+}
+
+/* Make the toggle clearly visible on mobile: white background, border and pointer events */
+/* remove duplicated global card rule - card style applied only on mobile below */
+
+/* If any parent hides overflow on small screens, ensure the toggle remains clickable */
+/* Mobile layout will be handled by the consolidated mobile block below. */
+
+/* Desktop-specific: slightly larger touch target and ensure it doesn't wrap */
+@media (min-width: 576px) {
+    .form-group input[type="password"], .form-group input[type="text"] {
+        padding-right: 56px;
+    }
+    .form-group .password-toggle {
+        right: 14px;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+    }
+}
+
 .form-group label {
     display: block;
     font-weight: 700;
@@ -293,36 +346,6 @@ body::before {
 }
 
 /* Checkbox remember me */
-.remember-forgot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: -8px 0 8px;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.remember-me {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.remember-me input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: var(--turquoise-500);
-}
-
-.remember-me label {
-    font-size: 0.9rem;
-    color: var(--teal-600);
-    cursor: pointer;
-    user-select: none;
-    font-weight: 500;
-}
-
 .forgot-password {
     font-size: 0.9rem;
     color: var(--turquoise-600);
@@ -511,12 +534,20 @@ body::before {
         font-size: 0.98rem;
     }
 
-    .remember-forgot {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
+    /* removed remember-me layout */
 
+
+.form-group .password-toggle:focus { outline: none; }
+/* Mobile: keep same sizing & centering as desktop */
+.form-group input[type="password"] { padding-right: 56px; }
+.form-group .password-toggle {
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
     .login-left {
         padding: 10px;
     }

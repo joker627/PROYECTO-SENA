@@ -43,7 +43,7 @@
                 <h1>Acceso Administrativo</h1>
                 <p>Ingresa tus credenciales de administrador</p>
 
-                <form action="{{ url_for('login_bp.login') }}" method="POST">
+                            <form action="{{ url_for('auth_bp.login') }}" method="POST">
                     <div class="form-group">
                         <label for="correo">Correo electrónico</label>
                         <input type="email" id="correo" name="correo" placeholder="admin@signtech.com" required>
@@ -52,15 +52,12 @@
                     <div class="form-group">
                         <label for="contrasena">Contraseña</label>
                         <input type="password" id="contrasena" name="contrasena" placeholder="••••••••" required>
+                        <button type="button" class="password-toggle" aria-label="Mostrar contraseña">
+                            <i class="fas fa-eye"></i>
+                        </button>
                     </div>
 
-                    <div class="remember-forgot">
-                        <div class="remember-me">
-                            <input type="checkbox" id="remember" name="remember">
-                            <label for="remember">Mantener sesión activa</label>
-                        </div>
-                        <a href="#" class="forgot-password">Recuperar acceso</a>
-                    </div>
+                    <a href="#" class="forgot-password">Recuperar acceso</a>
 
                     <button type="submit">
                         <i class="fas fa-right-to-bracket"></i>
@@ -76,5 +73,6 @@
         </div>
     </div>
 </main>
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
 
 {% endblock %}

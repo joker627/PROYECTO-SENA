@@ -5,8 +5,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Remover clase de inicialización para permitir transiciones suaves
     document.documentElement.classList.remove('sidebar-collapsed-init');
-    
-    initDashboardNotifications();
     initMobileMenu();
     initSidebarToggle();
     initDashboardRefresh();
@@ -15,12 +13,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Auto-actualizar dashboard cada 5 minutos
     setInterval(refreshDashboard, 300000);
+    // Ejecutar una actualización ligera inmediatamente para poblar badges (solicitudes, métricas)
+    try { refreshDashboard(); } catch (e) { console.debug('initial refreshDashboard failed', e); }
 });
 
 // ========== COLAPSAR/EXPANDIR SIDEBAR (Desktop) ==========
 function initSidebarToggle() {
     const sidebarToggle = document.querySelector('.sidebar-toggle');
     const sidebar = document.querySelector('.sidebar');
+    const dashboardContainer = document.querySelector('.dashboard-container');
 
     if (!sidebarToggle || !sidebar) return;
 
@@ -30,12 +31,15 @@ function initSidebarToggle() {
             const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
             if (isCollapsed) {
                 sidebar.classList.add('collapsed');
+                if (dashboardContainer) dashboardContainer.classList.add('sidebar-collapsed');
             } else {
                 sidebar.classList.remove('collapsed');
+                if (dashboardContainer) dashboardContainer.classList.remove('sidebar-collapsed');
             }
         } else {
             // En móvil, siempre remover la clase collapsed
             sidebar.classList.remove('collapsed');
+            if (dashboardContainer) dashboardContainer.classList.remove('sidebar-collapsed');
         }
     }
 
@@ -52,6 +56,11 @@ function initSidebarToggle() {
     // Toggle sidebar al hacer clic con animación suave
     sidebarToggle.addEventListener('click', function() {
         sidebar.classList.toggle('collapsed');
+        // Mantener sincronizado el container para reglas CSS que usan
+        // el modificador de nivel contenedor (.dashboard-container.sidebar-collapsed)
+        if (dashboardContainer) {
+            dashboardContainer.classList.toggle('sidebar-collapsed');
+        }
         
         // Guardar estado en localStorage
         const collapsed = sidebar.classList.contains('collapsed');
@@ -127,72 +136,11 @@ function initMobileMenu() {
     }
 }
 
-// ========== NOTIFICACIONES DEL DASHBOARD ==========
-function initDashboardNotifications() {
-    const notificationsBtn = document.querySelector('.notifications');
-    const headerRight = document.querySelector('.header-right');
-
-    if (!notificationsBtn || !headerRight) return;
-
-    // Toggle notificaciones al hacer clic
-    notificationsBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        headerRight.classList.toggle('notifications-active');
-    });
-
-    // Cerrar dropdown al hacer clic fuera
-    document.addEventListener('click', function(e) {
-        if (!headerRight.contains(e.target)) {
-            headerRight.classList.remove('notifications-active');
-        }
-    });
-
-    // Cerrar con tecla Escape
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && headerRight.classList.contains('notifications-active')) {
-            headerRight.classList.remove('notifications-active');
-        }
-    });
-}
-
+// Notification UI removed: dashboard notification handlers were deleted.
 // ========== ACTUALIZAR BADGE DE NOTIFICACIONES ==========
 async function updateNotificationBadge() {
-    try {
-        const response = await fetch('/notifications/count');
-        const data = await response.json();
-        
-        if (data.success) {
-            const count = data.count;
-            
-            // Actualizar badge en la campana del header del dashboard
-            const dashboardBadge = document.querySelector('.notifications .notification-badge');
-            if (dashboardBadge) {
-                dashboardBadge.textContent = count;
-                dashboardBadge.style.display = count > 0 ? 'flex' : 'none';
-            }
-            
-            // Actualizar badge en el slider/sidebar (por ID)
-            const sliderBadge = document.getElementById('sliderNotificationBadge');
-            if (sliderBadge) {
-                sliderBadge.textContent = count;
-                sliderBadge.style.display = count > 0 ? 'inline-flex' : 'none';
-            }
-            
-            // Actualizar todos los badges .menu-badge en enlaces de notificaciones
-            const menuBadges = document.querySelectorAll('.menu-badge');
-            menuBadges.forEach(badge => {
-                const parentLink = badge.closest('a');
-                if (parentLink && parentLink.href.includes('notifications')) {
-                    badge.textContent = count;
-                    badge.style.display = count > 0 ? 'flex' : 'none';
-                }
-            });
-            
-            console.log(`[DASHBOARD] Badge actualizado: ${count} notificaciones`);
-        }
-    } catch (error) {
-        console.error('Error al actualizar badge de notificaciones:', error);
-    }
+    // Stub: notifications removed. No-op to avoid fetch errors.
+    console.debug('dashboard.updateNotificationBadge(): stubbed because notifications were removed');
 }
 
 // ========== ACTUALIZACIÓN DEL DASHBOARD SIN RECARGAR ==========
@@ -226,35 +174,34 @@ async function refreshDashboard() {
     }
     
     try {
+        // Lightweight update: only refresh numeric metrics and the report badge.
         const response = await fetch('/admin/api/dashboard-data');
         const result = await response.json();
-        
+
         if (result.success) {
             const data = result.data;
-            
-            // Actualizar métricas
+            // Update only numeric metric cards (lightweight)
             updateMetricsCards(data.metrics);
-            
-            // Actualizar actividad reciente
-            updateActivityList(data.activity);
-            
-            // Actualizar gráfico
-            updateChart(data.chart);
-            
-            // Actualizar proyectos
-            updateProjects(data.projects);
-            
-            // Actualizar timestamp
-            updateLastUpdateTime();
-            
-            // Mostrar toast de éxito
-            toastSuccess('Dashboard actualizado correctamente', 'Actualización exitosa');
+
+            // Update slider solicitudes badge if present
+            try {
+                const solCount = data.metrics && data.metrics.solicitudes ? (data.metrics.solicitudes.total || 0) : 0;
+                const sliderSolicitudesBadge = document.getElementById('sliderSolicitudesBadge');
+                if (sliderSolicitudesBadge) {
+                    sliderSolicitudesBadge.textContent = solCount;
+                    sliderSolicitudesBadge.style.display = solCount > 0 ? 'flex' : 'none';
+                    if (solCount > 0) sliderSolicitudesBadge.classList.remove('hidden'); else sliderSolicitudesBadge.classList.add('hidden');
+                }
+            } catch (e) {
+                console.debug('No se pudo actualizar badge de solicitudes:', e);
+            }
+
+            // Report badge update removed: slider badges are no longer updated automatically
         } else {
-            toastError('Error al actualizar el dashboard', 'Error de actualización');
+            console.debug('refreshDashboard: backend returned success=false');
         }
     } catch (error) {
-        console.error('Error al actualizar dashboard:', error);
-        toastError('Error de conexión al actualizar', 'Error de conexión');
+        console.error('Error al actualizar dashboard (light):', error);
     } finally {
         // Quitar animación
         if (refreshIcon) {
@@ -287,9 +234,9 @@ function updateMetricsCards(metrics) {
         }
     }
 
-    // Traducciones
+    // Traducciones (skip if the card is fixed by template)
     const transCard = container.querySelector('.translations-card');
-    if (transCard) {
+    if (transCard && !transCard.classList.contains('fixed-metric')) {
         safeText(transCard, '.card-value', metrics.translations.total);
         safeText(transCard, '.card-trend span', `${Math.abs(metrics.translations.growth)}% este mes`);
         const trend = transCard.querySelector('.card-trend');
@@ -304,7 +251,7 @@ function updateMetricsCards(metrics) {
 
     // Precisión (puede ser project-card + precision-card o card precision-card)
     const precisionCard = container.querySelector('.precision-card');
-    if (precisionCard) {
+    if (precisionCard && !precisionCard.classList.contains('fixed-metric')) {
         // Si tiene badge de estado (project-card)
         const badge = precisionCard.querySelector('.project-status');
         if (badge) {

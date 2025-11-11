@@ -1,5 +1,11 @@
 @import url('globals.css');
 
+/* CSS variables for layout sizes to avoid duplicated magic numbers */
+:root {
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 80px;
+}
+
 /* Reset y configuración base */
 * {
     margin: 0;
@@ -18,14 +24,16 @@
 .main-content {
     flex: 1;
     padding: 30px 40px;
-    margin-left: 280px;
+    margin-left: var(--sidebar-width);
     overflow-x: hidden;
-    transition: margin-left 0.3s ease;
+    transition: margin-left 0.3s ease, padding 0.3s ease;
 }
 
 /* Contenido cuando sidebar está colapsado */
-.sidebar.collapsed ~ .main-content {
-    margin-left: 80px;
+.sidebar.collapsed ~ .main-content,
+.dashboard-container.sidebar-collapsed .main-content {
+    /* Support both sibling collapse and container-level modifier */
+    margin-left: var(--sidebar-collapsed-width);
 }
 
 /* Botón hamburguesa para móvil */
@@ -149,190 +157,6 @@
     color: var(--teal-600);
 }
 
-.notifications {
-    position: relative;
-    width: 50px;
-    height: 45px;
-    background: var(--turquoise-25);
-    border: 1px solid var(--turquoise-100);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.notifications:hover {
-    background: var(--turquoise-50);
-    transform: scale(1.05);
-}
-
-.notifications i {
-    color: var(--teal-600);
-    font-size: 20px;
-}
-
-
-/* Dropdown de notificaciones del dashboard */
-.dashboard-notifications-dropdown {
-    position: absolute;
-    top: calc(100% + 15px);
-    right: 50%;
-    transform: translateX(50%) translateY(-10px);
-    width: 380px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: var(--shadow-turquoise);
-    border: 1px solid var(--turquoise-100);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1000;
-    overflow: hidden;
-}
-
-.header-right.notifications-active .dashboard-notifications-dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(50%) translateY(0);
-}
-
-.dashboard-notifications-dropdown .notifications-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--turquoise-100);
-    background: var(--turquoise-25);
-}
-
-.dashboard-notifications-dropdown .notifications-header h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--turquoise-800);
-}
-
-.dashboard-notifications-dropdown .mark-all-read {
-    font-size: 12px;
-    color: var(--teal-600);
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.dashboard-notifications-dropdown .mark-all-read:hover {
-    color: var(--teal-800);
-}
-
-.dashboard-notifications-dropdown .notifications-list {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.dashboard-notifications-dropdown .notification-item {
-    display: flex;
-    gap: 12px;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--turquoise-25);
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.dashboard-notifications-dropdown .notification-item:hover {
-    background: var(--turquoise-25);
-}
-
-.dashboard-notifications-dropdown .notification-item.unread {
-    background: var(--turquoise-25);
-}
-
-.dashboard-notifications-dropdown .notification-item.unread::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    width: 6px;
-    height: 6px;
-    background: var(--accent-500);
-    border-radius: 50%;
-    margin-top: 6px;
-}
-
-.dashboard-notifications-dropdown .notification-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-400), var(--accent-600));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.dashboard-notifications-dropdown .notification-icon i {
-    color: white;
-    font-size: 18px;
-}
-
-.dashboard-notifications-dropdown .notification-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.dashboard-notifications-dropdown .notification-title {
-    margin: 0 0 4px 0;
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--turquoise-800);
-}
-
-.dashboard-notifications-dropdown .notification-text {
-    margin: 0 0 6px 0;
-    font-size: 13px;
-    color: var(--teal-600);
-    line-height: 1.4;
-}
-
-.dashboard-notifications-dropdown .notification-time {
-    font-size: 11px;
-    color: var(--teal-500);
-}
-
-.dashboard-notifications-dropdown .notifications-footer {
-    padding: 12px 20px;
-    text-align: center;
-    border-top: 1px solid var(--turquoise-100);
-    background: var(--turquoise-25);
-}
-
-.dashboard-notifications-dropdown .view-all-notifications {
-    color: var(--teal-600);
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.dashboard-notifications-dropdown .view-all-notifications:hover {
-    color: var(--teal-800);
-}
-
-/* Estado de carga de notificaciones */
-.dashboard-notifications-dropdown .notification-item.loading-state {
-    text-align: center;
-    padding: 20px;
-    color: var(--gray-600);
-}
-
-.dashboard-notifications-dropdown .notification-item.loading-state i {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.dashboard-notifications-dropdown .notification-item.loading-state p {
-    margin: 0;
-}
-
 /* ========== SECCIÓN DE MÉTRICAS ========== */
 .metrics-section {
     margin-bottom: 40px;
@@ -347,7 +171,8 @@
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /* Increase minimum card width so content (labels/numbers) doesn't collapse on medium screens */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
 }
 
@@ -745,6 +570,112 @@
     overflow-wrap: anywhere;
 }
 
+/* Make numeric meta values behave inline and slightly smaller inside meta items
+   so labels and numbers don't stack vertically. This targets only meta items
+   where a big .card-value was used previously. */
+.project-meta-item .card-value {
+    display: inline-block;
+    font-size: 28px; /* slightly smaller than main card value */
+    font-weight: 700;
+    line-height: 1;
+    margin-right: 8px;
+}
+
+.project-meta-item .meta-label {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--teal-600);
+    font-weight: 600;
+}
+
+/* Metric badge / small pill inside cards */
+.project-header .project-status,
+.project-card .project-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    /* Subtle, elegant default: soft tint with darker text, no heavy shadow */
+    background: rgba(15,118,110,0.06);
+    color: var(--turquoise-800);
+    border: 1px solid rgba(15,118,110,0.08);
+    box-shadow: none;
+}
+
+/* Variant for completed/positive/attention states (kept consistent with project-status classes) */
+.project-status.completed {
+    background: var(--accent-100);
+    color: var(--accent-700);
+    border: 1px solid var(--accent-400);
+}
+.project-status.pending {
+    background: var(--yellow-100);
+    color: var(--yellow-700);
+    border: 1px solid var(--yellow-400);
+}
+.project-status.rejected {
+    background: var(--red-25);
+    color: var(--red-700);
+    border: 1px solid var(--red-400);
+}
+
+/* Per-card color variants to make each metric visually distinct */
+.translations-card .project-status {
+    background: rgba(6,182,212,0.12);
+    color: var(--cyan-900);
+    border-color: rgba(6,182,212,0.18);
+}
+
+.precision-card .project-status {
+    background: rgba(34,197,94,0.12);
+    color: var(--green-900);
+    border-color: rgba(34,197,94,0.18);
+}
+
+.project-card--contribuciones .project-status {
+    background: rgba(249,115,22,0.12);
+    color: var(--orange-900);
+    border-color: rgba(249,115,22,0.18);
+}
+
+.report-card .project-status {
+    background: rgba(239,68,68,0.12);
+    color: var(--red-700);
+    border-color: rgba(239,68,68,0.18);
+}
+
+.solicitudes-card .project-status {
+    background: rgba(20,184,166,0.12);
+    color: var(--teal-900);
+    border-color: rgba(20,184,166,0.18);
+}
+
+/* Slightly tint meta-labels to match each card (subtle) */
+.translations-card .project-meta-item .meta-label { background: rgba(6,182,212,0.06); color: var(--cyan-800); }
+.precision-card .project-meta-item .meta-label { background: rgba(34,197,94,0.06); color: var(--green-800); }
+.project-card--contribuciones .project-meta-item .meta-label { background: rgba(249,115,22,0.06); color: var(--orange-800); }
+.report-card .project-meta-item .meta-label { background: rgba(239,68,68,0.05); color: var(--red-700); }
+.solicitudes-card .project-meta-item .meta-label { background: rgba(20,184,166,0.05); color: var(--teal-800); }
+
+/* Make meta-label look like a subtle pill */
+.project-meta-item .meta-label {
+    background: rgba(15,118,110,0.06);
+    color: var(--teal-700);
+    padding: 6px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+/* Fixed metric styling (if the card is static) */
+.fixed-metric .card-value {
+    color: var(--turquoise-900);
+}
+
 .project-card.anonymous-card .project-status {
     background: var(--purple-25);
     color: var(--purple-700);
@@ -779,6 +710,15 @@
 .project-meta {
     display: flex;
     gap: 20px;
+    /* Allow meta items to wrap to the next line when there isn't enough width */
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.project-meta-item {
+    /* Ensure each meta item keeps reasonable width for numbers and labels */
+    min-width: 140px;
+    flex: 1 1 140px;
 }
 
 .project-meta-item {

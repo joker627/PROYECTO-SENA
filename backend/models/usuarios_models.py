@@ -1,248 +1,185 @@
-"""
-Modelo para la gestión de usuarios del sistema
+"""Model: usuarios - access to usuarios table and helpers for auth
 """
 from connection.db import get_connection
-import pymysql
-from datetime import datetime
-from utils.error_handler import error_db
+from pymysql.cursors import DictCursor
+from werkzeug.security import generate_password_hash, check_password_hash
 
-def get_all_usuarios():
-    """Obtener todos los usuarios del sistema"""
-    connection = None
-    try:
-        connection = get_connection()
-        with connection.cursor() as cursor:
-            query = """
-                SELECT 
-                    u.id_usuario,
-                    u.nombre,
-                    u.correo,
-                    u.id_rol,
-                    r.nombre as rol,
-                    u.fecha_registro,
-                    u.ultimo_acceso,
-                    u.estado
-                FROM usuarios u
-                LEFT JOIN roles r ON u.id_rol = r.id_rol
-                ORDER BY u.fecha_registro DESC
-            """
-            cursor.execute(query)
-            usuarios = cursor.fetchall()
-            for usuario in usuarios:
-                if usuario['ultimo_acceso']:
-                    usuario['tiempo_ultimo_acceso'] = calculate_time_ago(usuario['ultimo_acceso'])
-                else:
-                    usuario['tiempo_ultimo_acceso'] = 'Nunca'
-                if usuario['fecha_registro']:
-                    usuario['tiempo_registro'] = calculate_time_ago(usuario['fecha_registro'])
-                else:
-                    usuario['tiempo_registro'] = 'Desconocido'
-            return usuarios
-    except Exception as e:
-        print(f"Error al obtener usuarios: {e}")
-        error_db('get_all_usuarios', f'Error en consulta: {str(e)}', 'models/usuarios_models.py')
-        return []
-    finally:
-        if connection:
-            connection.close()
 
-def get_usuario_by_id(id_usuario):
-    """Obtener un usuario específico por ID"""
-    connection = None
+def get_user_by_email(correo):
+    """Return a dict with user record or None. Quietly returns None on DB errors."""
+    conn = None
     try:
-        connection = get_connection()
-        with connection.cursor() as cursor:
-            query = """
-                SELECT 
-                    id_usuario,
-                    nombre,
-                    correo,
-                    rol,
-                    fecha_registro,
-                    ultimo_acceso,
-                    estado
-                FROM usuarios
-                WHERE id_usuario = %s
-            """
-            cursor.execute(query, (id_usuario,))
+        conn = get_connection()
+        if not conn:
+            return None
+        with conn.cursor(DictCursor) as cursor:
+            cursor.execute("SELECT id_usuario, nombre_completo, correo, contrasena, id_rol, estado FROM usuarios WHERE correo = %s", (correo,))
             return cursor.fetchone()
-    except Exception as e:
-        print(f"Error al obtener usuario: {e}")
-        error_db('get_usuario_by_id', f'Error: {str(e)}', 'models/usuarios_models.py')
+    except Exception:
+        # Don't raise in model layer for simple auth flows; caller can treat None as not found.
         return None
     finally:
-        if connection:
-            connection.close()
+        if conn:
+            conn.close()
 
-def create_usuario(nombre, correo, contrasena_hash, id_rol):
-    """Crear un nuevo usuario"""
-    connection = None
+
+def create_user(nombre_completo, correo, contrasena_plain, id_rol=2):
+    """Create a new user with hashed password. Returns new id or None on error."""
+    conn = None
     try:
-        connection = get_connection()
-        with connection.cursor() as cursor:
-            query = """
-                INSERT INTO usuarios (nombre, correo, contrasena, id_rol, fecha_registro, estado)
-                VALUES (%s, %s, %s, %s, NOW(), 'ACTIVO')
-            """
-            cursor.execute(query, (nombre, correo, contrasena_hash, id_rol))
-            connection.commit()
+        conn = get_connection()
+        if not conn:
+            return None
+        hashed = generate_password_hash(contrasena_plain)
+        with conn.cursor() as cursor:
+            cursor.execute("INSERT INTO usuarios (nombre_completo, correo, contrasena, id_rol) VALUES (%s, %s, %s, %s)",
+                           (nombre_completo, correo, hashed, id_rol))
+            conn.commit()
             return cursor.lastrowid
-    except pymysql.IntegrityError as e:
-        if connection:
-            connection.rollback()
-        print(f"Error de integridad al crear usuario: {e}")
-        return None
-    except Exception as e:
-        if connection:
-            connection.rollback()
-        print(f"Error al crear usuario: {e}")
-        error_db('create_usuario', f'Error: {str(e)}', 'models/usuarios_models.py')
+    except Exception:
         return None
     finally:
-        if connection:
-            connection.close()
+        if conn:
+            conn.close()
 
-def update_usuario(id_usuario, nombre=None, correo=None, id_rol=None, estado=None):
-    """Actualizar información de un usuario"""
-    connection = None
+
+def verify_password(hashed_or_plain, candidate_password):
+    """Verify password: supports hashed values (check_password_hash) and as fallback plain equality.
+    Returns True if match, False otherwise."""
     try:
-        connection = get_connection()
-        with connection.cursor() as cursor:
-            updates = []
+        # If stored value looks like a Werkzeug hash (starts with 'pbkdf2:' or 'sha256:'), use check_password_hash
+        if isinstance(hashed_or_plain, str) and (hashed_or_plain.startswith('pbkdf2:') or hashed_or_plain.startswith('sha256:') or hashed_or_plain.startswith('argon2:')):
+            return check_password_hash(hashed_or_plain, candidate_password)
+        # fallback to direct comparison (for legacy plaintext passwords)
+        return hashed_or_plain == candidate_password
+    except Exception:
+        return False
+
+
+def update_user_role(id_usuario, id_rol):
+    """Update the role of a user. Returns True on success."""
+    conn = None
+    try:
+        conn = get_connection()
+        if not conn:
+            return False
+        with conn.cursor() as cursor:
+            cursor.execute("UPDATE usuarios SET id_rol = %s WHERE id_usuario = %s", (id_rol, id_usuario))
+            conn.commit()
+            return cursor.rowcount > 0
+    except Exception:
+        return False
+    finally:
+        if conn:
+            conn.close()
+
+
+def update_user_estado(id_usuario, estado):
+    """Update the estado (activo/inactivo) of a user. Returns True on success."""
+    conn = None
+    try:
+        conn = get_connection()
+        if not conn:
+            return False
+        with conn.cursor() as cursor:
+            cursor.execute("UPDATE usuarios SET estado = %s WHERE id_usuario = %s", (estado, id_usuario))
+            conn.commit()
+            return cursor.rowcount > 0
+    except Exception:
+        return False
+    finally:
+        if conn:
+            conn.close()
+
+
+def delete_user_by_id(id_usuario):
+    """Delete a user by id. Returns True on success."""
+    conn = None
+    try:
+        conn = get_connection()
+        if not conn:
+            return False
+        with conn.cursor() as cursor:
+            cursor.execute("DELETE FROM usuarios WHERE id_usuario = %s", (id_usuario,))
+            conn.commit()
+            return cursor.rowcount > 0
+    except Exception:
+        return False
+    finally:
+        if conn:
+            conn.close()
+
+
+def delete_user_by_email(correo):
+    """Delete users by email. Returns number of deleted rows or None on error."""
+    conn = None
+    try:
+        conn = get_connection()
+        if not conn:
+            return None
+        with conn.cursor() as cursor:
+            cursor.execute("DELETE FROM usuarios WHERE correo = %s", (correo,))
+            affected = cursor.rowcount
+            conn.commit()
+            return affected
+    except Exception:
+        return None
+    finally:
+        if conn:
+            conn.close()
+
+
+def list_users(limit=None, offset=0):
+    """Return a list of usuarios as dicts for templates.
+
+    Each returned dict contains keys expected by the templates:
+    - id_usuario, nombre, correo, id_rol, rol, estado, tiempo_registro, tiempo_ultimo_acceso
+    """
+    conn = None
+    try:
+        conn = get_connection()
+        if not conn:
+            return []
+        with conn.cursor(DictCursor) as cursor:
+            # `fecha_ultimo_acceso` does not exist in the schema; select only available columns
+            sql = "SELECT id_usuario, nombre_completo, correo, id_rol, estado, fecha_registro FROM usuarios"
             params = []
-            if nombre:
-                updates.append("nombre = %s")
-                params.append(nombre)
-            if correo:
-                updates.append("correo = %s")
-                params.append(correo)
-            if id_rol:
-                updates.append("id_rol = %s")
-                params.append(id_rol)
-            if estado:
-                updates.append("estado = %s")
-                params.append(estado)
-            if not updates:
-                return False
-            params.append(id_usuario)
-            query = f"UPDATE usuarios SET {', '.join(updates)} WHERE id_usuario = %s"
-            cursor.execute(query, params)
-            connection.commit()
-            return cursor.rowcount > 0
-    except Exception as e:
-        if connection:
-            connection.rollback()
-        print(f"Error al actualizar usuario: {e}")
-        error_db('update_usuario', f'Error: {str(e)}', 'models/usuarios_models.py')
-        return False
+            if limit:
+                sql = sql + " LIMIT %s OFFSET %s"
+                params = [limit, offset]
+            cursor.execute(sql, tuple(params) if params else None)
+            rows = cursor.fetchall() or []
+
+            usuarios = []
+            for r in rows:
+                nombre = r.get('nombre_completo') or r.get('nombre') or ''
+                estado = (r.get('estado') or '').upper()
+                id_rol = r.get('id_rol') or 2
+                rol = 'Administrador' if int(id_rol) == 1 else 'Gestor'
+                # Simple human-friendly times (templates expect preformatted strings). Keep raw DB values too.
+                tiempo_registro = ''
+                tiempo_ultimo_acceso = ''
+                fr = r.get('fecha_registro')
+                fa = r.get('fecha_ultimo_acceso')
+                if fr:
+                    tiempo_registro = str(fr)
+                if fa:
+                    tiempo_ultimo_acceso = str(fa)
+
+                usuarios.append({
+                    'id_usuario': r.get('id_usuario'),
+                    'nombre': nombre,
+                    'correo': r.get('correo'),
+                    'id_rol': id_rol,
+                    'rol': rol,
+                    'estado': estado,
+                    'tiempo_registro': tiempo_registro,
+                    'tiempo_ultimo_acceso': tiempo_ultimo_acceso,
+                })
+            return usuarios
+    except Exception:
+        # Return None on error so callers can distinguish "no rows" from "DB error"
+        return None
     finally:
-        if connection:
-            connection.close()
-
-def delete_usuario(id_usuario):
-    """Eliminar un usuario"""
-    connection = None
-    try:
-        connection = get_connection()
-        with connection.cursor() as cursor:
-            query = "DELETE FROM usuarios WHERE id_usuario = %s"
-            cursor.execute(query, (id_usuario,))
-            connection.commit()
-            return cursor.rowcount > 0
-    except Exception as e:
-        if connection:
-            connection.rollback()
-        print(f"Error al eliminar usuario: {e}")
-        error_db('delete_usuario', f'Error: {str(e)}', 'models/usuarios_models.py')
-        return False
-    finally:
-        if connection:
-            connection.close()
-
-def change_estado(id_usuario, nuevo_estado):
-    """Cambiar el estado de un usuario (ACTIVO/INACTIVO/ELIMINADO)"""
-    return update_usuario(id_usuario, estado=nuevo_estado)
-
-def change_rol(id_usuario, nuevo_rol):
-    """Cambiar el rol de un usuario usando id_rol"""
-    return update_usuario(id_usuario, id_rol=nuevo_rol)
-
-def count_by_rol():
-    """Contar usuarios por rol"""
-    connection = None
-    try:
-        connection = get_connection()
-        with connection.cursor() as cursor:
-            query = """
-                SELECT 
-                    r.nombre as rol,
-                    COUNT(*) as total
-                FROM usuarios u
-                LEFT JOIN roles r ON u.id_rol = r.id_rol
-                WHERE u.estado != 'ELIMINADO'
-                GROUP BY r.nombre
-            """
-            cursor.execute(query)
-            results = cursor.fetchall()
-            counts = {'ADMINISTRADOR': 0, 'GESTOR': 0}
-            for row in results:
-                if row['rol']:
-                    counts[row['rol']] = row['total']
-            return counts
-    except Exception as e:
-        print(f"Error al contar usuarios por rol: {e}")
-        return {'ADMINISTRADOR': 0, 'GESTOR': 0}
-    finally:
-        if connection:
-            connection.close()
-
-def count_by_estado():
-    """Contar usuarios por estado"""
-    connection = None
-    try:
-        connection = get_connection()
-        with connection.cursor() as cursor:
-            query = """
-                SELECT 
-                    estado,
-                    COUNT(*) as total
-                FROM usuarios
-                WHERE estado != 'ELIMINADO'
-                GROUP BY estado
-            """
-            cursor.execute(query)
-            results = cursor.fetchall()
-            counts = {'ACTIVO': 0, 'INACTIVO': 0}
-            for row in results:
-                if row['estado'] in counts:
-                    counts[row['estado']] = row['total']
-            return counts
-    except Exception as e:
-        print(f"Error al contar usuarios por estado: {e}")
-        return {'ACTIVO': 0, 'INACTIVO': 0}
-    finally:
-        if connection:
-            connection.close()
-
-def calculate_time_ago(fecha):
-    """Calcular el tiempo transcurrido desde una fecha"""
-    if not fecha:
-        return "Fecha no disponible"
-    now = datetime.now()
-    diff = now - fecha
-    if diff.days > 365:
-        years = diff.days // 365
-        return f"hace {years} año{'s' if years > 1 else ''}"
-    elif diff.days > 30:
-        months = diff.days // 30
-        return f"hace {months} mes{'es' if months > 1 else ''}"
-    elif diff.days > 0:
-        return f"hace {diff.days} día{'s' if diff.days > 1 else ''}"
-    elif diff.seconds > 3600:
-        hours = diff.seconds // 3600
-        return f"hace {hours} hora{'s' if hours > 1 else ''}"
-    elif diff.seconds > 60:
-        minutes = diff.seconds // 60
-        return f"hace {minutes} minuto{'s' if minutes > 1 else ''}"
-    else:
-        return "hace un momento"
+        if conn:
+            conn.close()

@@ -14,15 +14,7 @@
     }
 })();
 </script>
-<style>
-    .sidebar-collapsed-init .sidebar { width: 80px !important; padding: 25px 10px !important; }
-    .sidebar-collapsed-init .sidebar .menu-item a span:not(.menu-badge) { opacity: 0 !important; width: 0 !important; }
-    .sidebar-collapsed-init .sidebar .toggle-text { opacity: 0 !important; width: 0 !important; }
-    .sidebar-collapsed-init .sidebar .menu-badge { position: absolute !important; right: 8px !important; top: 50% !important; transform: translateY(-50%) !important; }
-    .sidebar-collapsed-init .sidebar .menu-item a { justify-content: center !important; }
-    .sidebar-collapsed-init .sidebar .sidebar-toggle { height: 52px !important; gap: 0 !important; }
-    .sidebar-collapsed-init .sidebar .sidebar-toggle i { transform: rotate(180deg) !important; }
-</style>
+ 
 
 <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
 {% endblock %}
@@ -225,7 +217,7 @@
             <h2><i class="fas fa-user-slash"></i> Eliminar Cuenta de Usuario</h2>
             <button class="close-modal" onclick="closeDeleteAccountModal()">&times;</button>
         </div>
-        <form action="{{ url_for('usuarios_bp.eliminar_por_email') }}" method="POST">
+    <form action="{{ url_for('usuarios_bp.eliminar_por_email') }}" method="POST">
             <div class="modal-body">
                 <div class="warning-box">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -233,7 +225,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email_usuario">Correo del usuario *</label>
-                    <input type="email" id="email_usuario" name="email_usuario" required 
+              <input type="email" id="email_usuario" name="correo" required 
                            placeholder="ejemplo@correo.com">
                 </div>
                 <div class="form-group">
