@@ -3,127 +3,75 @@
 {% block title %}Contribuciones{% endblock %}
 
 {% block extra_head %}
+
 <link rel="stylesheet" href="{{ url_for('static', filename='css/contribuciones.css') }}">
+
 {% endblock %}
+
+{% block content %}
 
 
     {% include "components/slider.html" %}
 
 
-{% block content %}
-<div class="dashboard-container">
-    <div class="dashboard-header">
-        <div>
-            <h1>Contribuciones</h1>
-            <div class="muted">Lista de envíos de la comunidad</div>
+<main>
+</main>
+
+<main>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div>
+                <h1>Contribuciones</h1>
+                <div class="muted">Contribuciones enviadas por usuarios (pendientes)</div>
+            </div>
+            <div class="header-info">
+                <div class="user-count">Mostrando {{ contribuciones|length if contribuciones else 0 }}</div>
+            </div>
+        </div>
+
+        <div class="main-card">
+            <div class="card-header">
+                <h2>Contribuciones pendientes</h2>
+            </div>
+            <div class="card-muted">
+                {% if contribuciones and contribuciones|length > 0 %}
+                <div class="contrib-grid">
+                    {% for c in contribuciones %}
+                    <article class="contrib-card" id="contrib-{{ c.id_contribucion }}">
+                        <div class="contrib-left">
+                            <div class="contrib-meta">
+                                <div class="contrib-word">{{ c.palabra_asociada }}</div>
+                                <div class="contrib-desc">{{ c.descripcion[:160] }}{% if c.descripcion|length > 160 %}...{% endif %}</div>
+                                <div class="muted small">Enviado: {{ c.fecha_contribucion }}</div>
+                            </div>
+                        </div>
+                        <div class="contrib-right">
+                            <div class="contrib-media">
+                                {% if c.archivo_video %}
+                                    <a href="{{ c.archivo_video }}" target="_blank" class="btn-link">Ver video</a>
+                                {% else %}
+                                    <span class="muted small">Sin video</span>
+                                {% endif %}
+                            </div>
+                            <div class="contrib-actions">
+                                <form method="POST" action="{{ url_for('web_admin.approve_contribucion', id_contribucion=c.id_contribucion) }}" class="inline-form">
+                                    <button type="submit" class="btn-approve" onclick="return confirm('Aprobar contribución #{{ c.id_contribucion }}?')"><i class="fas fa-check"></i>&nbsp;Aprobar</button>
+                                </form>
+                                <form method="POST" action="{{ url_for('web_admin.delete_contribucion', id_contribucion=c.id_contribucion) }}" class="inline-form">
+                                    <button type="submit" class="btn-delete" onclick="return confirm('Eliminar contribución #{{ c.id_contribucion }}? Esta acción no se puede deshacer.')"><i class="fas fa-trash"></i>&nbsp;Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="no-results muted">No hay contribuciones pendientes.</div>
+                {% endif %}
+            </div>
         </div>
     </div>
+</main>
+</main>
 
-    <div class="main-card">
-        <h2>Contribuciones pendientes <span class="muted">({{ pending_count or 0 }})</span></h2>
-        <div class="card-muted">
-            <table class="table-list" id="contrib-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Palabra</th>
-                        <th>Descripción</th>
-                        <th>Archivo</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if contribuciones and contribuciones|length > 0 %}
-                        {% for c in contribuciones %}
-                        <tr id="contrib-{{ c.id_contribucion }}">
-                            <td>{{ c.id_contribucion }}</td>
-                            <td class="kpi">{{ c.palabra_asociada }}</td>
-                            <td>{{ c.descripcion[:100] }}{% if c.descripcion|length > 100 %}...{% endif %}</td>
-                            <td>{% if c.archivo_video %}<a href="{{ c.archivo_video }}" target="_blank">ver</a>{% else %}-{% endif %}</td>
-                            <td>{{ c.fecha_contribucion }}</td>
-                            <td>
-                                <button class="btn-approve" data-id="{{ c.id_contribucion }}">Aprobar</button>
-                                <button class="btn-delete" data-id="{{ c.id_contribucion }}">Eliminar</button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr><td colspan="6">No hay contribuciones pendientes.</td></tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script>
-    // Build endpoint templates from Flask `url_for` to avoid hard-coded paths
-    // Use a safe integer placeholder (0) when generating the URL, then replace it in JS.
-    const APPROVE_TEMPLATE = "{{ url_for('web_admin.approve_contribucion', id_contribucion=0) }}";
-    const DELETE_TEMPLATE = "{{ url_for('web_admin.delete_contribucion', id_contribucion=0) }}";
-
-    document.addEventListener('click', function(e){
-        // Approve (use closest so clicks on inner elements still work)
-        const approveBtn = e.target.closest ? e.target.closest('.btn-approve') : null;
-        if(approveBtn){
-            const id = approveBtn.dataset.id;
-            if(!confirm('¿Aprobar contribución #' + id + '?')) return;
-            (async ()=>{
-                try{
-                    // url_for generated the URL with a placeholder id `0`; replace that trailing /0 with the real id
-                    const url = APPROVE_TEMPLATE.replace('/0', '/' + id);
-                    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-                    if(!res.ok){
-                        console.error('Approve request failed', res.status, await res.text());
-                        alert('Error al aprobar (código ' + res.status + ')');
-                        return;
-                    }
-                    const j = await res.json();
-                    if(j.status === 'ok'){
-                        // Server updated state successfully — reload to reflect DB state
-                        window.location.reload();
-                    } else {
-                        console.error('Approve response', j);
-                        alert('Error al aprobar');
-                    }
-                }catch(err){
-                    console.error('Network error on approve', err);
-                    alert('Error de red al aprobar');
-                }
-            })();
-            return;
-        }
-
-        // Delete (use closest)
-        const deleteBtn = e.target.closest ? e.target.closest('.btn-delete') : null;
-        if(deleteBtn){
-            const id = deleteBtn.dataset.id;
-            if(!confirm('¿Eliminar contribución #' + id + '? Esta acción no se puede deshacer.')) return;
-            (async ()=>{
-                try{
-                    const url = DELETE_TEMPLATE.replace('/0', '/' + id);
-                    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-                    if(!res.ok){
-                        console.error('Delete request failed', res.status, await res.text());
-                        alert('Error al eliminar (código ' + res.status + ')');
-                        return;
-                    }
-                    const j = await res.json();
-                    if(j.status === 'ok'){
-                        // Server deleted row successfully — reload to reflect DB state
-                        window.location.reload();
-                    } else {
-                        console.error('Delete response', j);
-                        alert('Error al eliminar');
-                    }
-                }catch(err){
-                    console.error('Network error on delete', err);
-                    alert('Error de red al eliminar');
-                }
-            })();
-            return;
-        }
-    });
-    </script>
-
-{% endblock %}
+    {% endblock %}

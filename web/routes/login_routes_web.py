@@ -1,6 +1,11 @@
-# routes/web/login_routes.py
+"""Rutas relacionadas con autenticación (login/logout) en la parte web.
+
+Estas rutas delegan la lógica de autenticación en `UsuarioControllerWeb`.
+"""
+
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from web.controller.UsuarioControllerWeb import UsuarioControllerWeb
+from web.controller.usuario_controller_web import UsuarioControllerWeb
+
 
 web_login = Blueprint("web_login", __name__)
 
@@ -18,6 +23,7 @@ def login_post():
 
     flash(result.get("message", "Inicio de sesión exitoso"), "success")
     return redirect(url_for("web_bp.inicio")) 
+
 
 @web_login.route("/logout")
 def logout():

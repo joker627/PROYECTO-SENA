@@ -1,13 +1,12 @@
-from shared.models.anonimo_model import UsuarioAnonimoModel
-from shared.utils.uuid_utils import generar_uuid_anonimo
+from web.models.anonimo_model import UsuarioAnonimoModel
+from web.utils.uuid_utils import generar_uuid_anonimo
 import re
 
 
 class AnonimoControllerWeb:
-    """Controlador web para flujos que necesiten generar/obtener UUID anónimo
-    en el contexto de vistas web. Esta implementación genera e inserta
-    directamente en la BD usando el modelo, manteniendo la separación
-    frente al controlador API.
+    """Maneja la creación y recuperación de usuarios anónimos. La API web
+    utiliza estos métodos para generar o validar `uuid_anonimo` y delega en el
+    modelo `UsuarioAnonimoModel` para la persistencia.
     """
 
     @staticmethod
