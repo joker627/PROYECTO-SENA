@@ -13,8 +13,8 @@
                 <span>Ir a Inicio</span>
             </a>
         </li>
-        <li class="menu-item {% if request.endpoint == 'web_admin.dashboard' %}active{% endif %}">
-            <a href="{{ url_for('web_admin.dashboard') }}">
+        <li class="menu-item {% if request.endpoint == 'web_admin.admin_dashboard' %}active{% endif %}">
+            <a href="{{ url_for('web_admin.admin_dashboard') }}">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
@@ -26,16 +26,16 @@
                 <span id="sliderSolicitudesBadge" class="menu-badge fixed-badge"></span>
             </a>
         </li>
-        <li class="menu-item {% if request.endpoint == 'web_admin.reportes' %}active{% endif %}">
+        <li class="menu-item menu-reportes {% if request.endpoint == 'web_admin.reportes' %}active{% endif %}">
             <a href="{{ url_for('web_admin.reportes') }}">
                 <i class="fas fa-chart-bar"></i>
                 <span>Reportes</span>
-                <span id="sliderReportesBadge" class="menu-badge fixed-badge"></span>
+                <span id="sliderReportesBadge" class="menu-badge fixed-badge">{% if pending_count is defined and pending_count > 0 %}{{ pending_count }}{% endif %}</span>
             </a>
         </li>
         {# Notificaciones eliminado del slider #}
-        <li class="menu-item {% if request.endpoint == 'web_bp.admin_usuarios' %}active{% endif %}">
-            <a href="#">
+            <li class="menu-item {% if request.endpoint == 'web_admin.admin_usuarios' %}active{% endif %}">
+                <a href="{{ url_for('web_admin.admin_usuarios') }}">
                 <i class="fas fa-users"></i>
                 <span>Usuarios</span>
             </a>

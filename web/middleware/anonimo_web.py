@@ -1,6 +1,6 @@
 # middleware/anonimo_middleware.py
 from flask import request, g, current_app
-from web.controller.AnonimoControllerWeb import AnonimoControllerWeb
+from web.controller.anonimo_controller_web import AnonimoControllerWeb
 
 
 def anonimo_middleware(app):

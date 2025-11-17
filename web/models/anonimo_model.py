@@ -1,6 +1,6 @@
 # models/anonimo_model.py
 from web.config.db import get_db_connection
-from shared.utils.uuid_utils import generar_uuid_anonimo
+from web.utils.uuid_utils import generar_uuid_anonimo
 import datetime
 
 class UsuarioAnonimoModel:

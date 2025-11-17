@@ -473,3 +473,9 @@ main {
         margin-bottom: 20px;
     }
 }
+
+/* Reportes badge uses turquoise to match admin theme */
+.menu-item.menu-reportes .menu-badge {
+    background: linear-gradient(135deg, var(--turquoise-500), var(--turquoise-600));
+    color: var(--white);
+}

@@ -8,8 +8,8 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from web.middleware.anonimo_web import anonimo_middleware
 from web.routes.web_routes import web_bp
-from web.routes.LoginRoutesWeb import web_login
-from web.routes.AdminRoutesWeb import web_admin
+from web.routes.login_routes_web import web_login
+from web.routes.admin_routes_web import web_admin
 
 def create_web_app():
     app = Flask(
@@ -28,6 +28,17 @@ def create_web_app():
 
     # Middleware para web
     anonimo_middleware(app)
+
+    # Context processor: inyecta el conteo de reportes pendientes para el slider
+    @app.context_processor
+    def inject_pending_reportes():
+        try:
+            from web.controller.admin_controller_web import AdminControllerWeb
+            reports = AdminControllerWeb.obtener_reportes('pendiente')
+            pending = len(reports) if reports else 0
+            return {'pending_count': pending}
+        except Exception:
+            return {'pending_count': 0}
 
     return app
 

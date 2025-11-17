@@ -60,7 +60,7 @@
                     </div>
                     <div class="dropdown-divider"></div>
                     {% if session.get('rol') == 1 or session.get('rol') == 3 %}
-                    <a href="{{ url_for('web_admin.dashboard') }}" class="dropdown-item">
+                    <a href="{{ url_for('web_admin.admin_dashboard') }}" class="dropdown-item">
                         <i class="fas fa-cog"></i> Panel Administrador
                     </a>
                     {% elif session.get('rol') == 2 %}
@@ -146,7 +146,7 @@
 
         <div class="mobile-panel-section">
             {% if session.get('rol') == 1 or session.get('rol') == 3 %}
-            <a href="{{ url_for('web_admin.dashboard') }}" class="mobile-panel-link">
+            <a href="{{ url_for('web_admin.admin_dashboard') }}" class="mobile-panel-link">
                 <i class="fas fa-cog"></i> Panel Administrador
             </a>
             {% elif session.get('rol') == 2 %}

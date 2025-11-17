@@ -1,12 +1,12 @@
 # api/middleware/auth_api.py
 from functools import wraps
 from flask import request, jsonify
-from api.middleware.auth_api import JWTUtils
+from api.utils.jwt_utils import JWTUtils
 
 def token_required():
 
-    def decorator(f):
-        @wraps(f)
+    def decorator(func):
+        @wraps(func)
         def decorated(*args, **kwargs):
             # Extraer token del header
             token = JWTUtils.extraer_token(request.headers)
@@ -21,6 +21,6 @@ def token_required():
             # Guardar datos del usuario logueado
             request.user = verificacion["data"]
 
-            return f(*args, **kwargs)
+            return func(*args, **kwargs)
         return decorated
     return decorator

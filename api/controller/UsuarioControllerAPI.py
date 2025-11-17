@@ -1,6 +1,6 @@
 from shared.models.usuario_model import UsuarioModel
 from api.config.db import get_db_api_connection
-from shared.utils.password_utils import hash_password
+from web.utils.password_utils import hash_password
 import datetime
 
 

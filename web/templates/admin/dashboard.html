@@ -1,78 +1,162 @@
 {% extends "base/base.html" %}
 
-{% block title %}Admin Login{% endblock %}
+{% block title %}Dashboard - Estadísticas{% endblock %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
 {% block content %}
-
-
-    {% include "components/slider.html" %}
-
-
+{% include "components/slider.html" %}
 <main>
-    <div class="dashboard-container">
-        <div class="dashboard-header">
-            <div>
-                <h1>Admin Dashboard</h1>
-                <div class="muted">Panel de control — Resumen general</div>
-            </div>
-            <!-- Actions removed: admins should not create contributions from dashboard -->
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div>
+            <h1>Dashboard</h1>
+            <div class="muted">Estadísticas generales del sistema</div>
         </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="label">Total traducciones</div>
-                <div class="value">{{ stats.total_traducciones or 0 }}</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Total contribuciones</div>
-                <div class="value">{{ stats.total_contribuciones or 0 }}</div>
-
-            </div>
-            <div class="stat-card">
-                <div class="label">Señas oficiales</div>
-                <div class="value">{{ stats.senas_oficiales or 0 }}</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Reportes activos</div>
-                <div class="value">{{ stats.reportes_activos or 0 }}</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Contribuciones pendientes</div>
-                <div class="value">{{ stats.contribuciones_pendientes or 0 }}</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Contribuciones aprobadas</div>
-                <div class="value">{{ stats.contribuciones_aprobadas or 0 }}</div>
-                
-            </div>
-            <div class="stat-card">
-                <div class="label">Precisión modelo</div>
-                <div class="value">{{ stats.precision_modelo or 'N/A' }}</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Última actualización</div>
-                <div class="value">{{ stats.fecha_actualizacion or '-' }}</div>
-            </div>
-        </div>
-
-        <div class="main-card">
-            <h2>Actividad reciente</h2>
-            <div class="card-muted">
-                <table class="table-list">
-                    <thead>
-                        <tr><th>Usuario</th><th>Acción</th><th>Fecha</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>anonimo_1</td><td>Contribución enviada</td><td>2025-11-15</td></tr>
-                        <tr><td>usuario@ejemplo.com</td><td>Validó señal</td><td>2025-11-14</td></tr>
-                        <tr><td>anonimo_2</td><td>Reporte creado</td><td>2025-11-13</td></tr>
-                    </tbody>
-                </table>
+        <div class="header-actions">
+            <div class="last-update">
+                <i class="fas fa-sync-alt"></i>
+                Actualizado: {{ stats.fecha_actualizacion.strftime('%H:%M') if stats else 'N/A' }}
             </div>
         </div>
     </div>
-</main>
 
-    {% endblock %}
+    <!-- Tarjetas de Estadísticas -->
+    <div class="stats-grid">
+        <!-- Total Traducciones -->
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-language"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ stats.total_traducciones|default(0) }}</h3>
+                <p>Total Traducciones</p>
+            </div>
+            <div class="stat-trend">
+                <i class="fas fa-arrow-up trend-up"></i>
+            </div>
+        </div>
+
+        <!-- Contribuciones Totales -->
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-hands"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ stats.total_contribuciones|default(0) }}</h3>
+                <p>Contribuciones Totales</p>
+            </div>
+        </div>
+
+        <!-- Contribuciones Pendientes -->
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <h3 class="text-warning">{{ stats.contribuciones_pendientes|default(0) }}</h3>
+                <p>Pendientes de Revisión</p>
+            </div>
+        </div>
+
+        <!-- Contribuciones Aprobadas -->
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+                <h3 class="text-success">{{ stats.contribuciones_aprobadas|default(0) }}</h3>
+                <p>Contribuciones Aprobadas</p>
+            </div>
+        </div>
+
+        <!-- Señas Oficiales -->
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-book"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ stats.senas_oficiales|default(0) }}</h3>
+                <p>Señas en Repositorio</p>
+            </div>
+        </div>
+
+        <!-- Precisión del Modelo -->
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <div class="stat-info">
+                <h3 class="text-info">{{ "%.1f"|format(stats.precision_modelo|default(0)) }}%</h3>
+                <p>Precisión del Modelo IA</p>
+            </div>
+            <div class="stat-trend">
+                {% if stats.precision_modelo and stats.precision_modelo > 85 %}
+                    <i class="fas fa-arrow-up trend-up"></i>
+                {% else %}
+                    <i class="fas fa-arrow-down trend-down"></i>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Reportes Activos -->
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-flag"></i>
+            </div>
+            <div class="stat-info">
+                <h3 class="text-danger">{{ stats.reportes_activos|default(0) }}</h3>
+                <p>Reportes Activos</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Acciones Rápidas -->
+    <div class="quick-actions">
+        <h2>Acciones Rápidas</h2>
+        <div class="actions-grid">
+            <a href="{{ url_for('web_admin.contribuciones') }}" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="action-info">
+                    <h3>Revisar Contribuciones</h3>
+                    <p>{{ stats.contribuciones_pendientes|default(0) }} pendientes</p>
+                </div>
+                <div class="action-arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <a href="{{ url_for('web_admin.reportes') }}" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-flag"></i>
+                </div>
+                <div class="action-info">
+                    <h3>Ver Reportes</h3>
+                    <p>{{ stats.reportes_activos|default(0) }} activos</p>
+                </div>
+                <div class="action-arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <a href="{{ url_for('web_admin.admin_usuarios') }}" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="action-info">
+                    <h3>Gestionar Usuarios</h3>
+                    <p>Administrar colaboradores</p>
+                </div>
+                <div class="action-arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+</main>
+{% endblock %}
+

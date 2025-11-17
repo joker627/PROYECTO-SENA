@@ -1,30 +1,31 @@
+from functools import wraps
 from flask import session, redirect, url_for, flash
 
-def login_required(f):
+def login_required(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
-        if "user_id" not in session:
+        if not session.get("user_id"):
             flash("Debes iniciar sesión primero.", "error")
             return redirect(url_for("web_login.login_post"))
-        return f(*args, **kwargs)
-    wrapper.__name__ = f.__name__
+        return func(*args, **kwargs)
     return wrapper
 
 
 def role_required(roles):
-    def decorator(f):
+    def decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
-            rol = session.get("rol")
+            role = session.get("rol")
 
-            if not rol:
+            if not role:
                 flash("Debes iniciar sesión.", "error")
                 return redirect(url_for("web_login.login_post"))
 
-            if rol not in roles:
+            if role not in roles:
                 flash("No tienes permisos para acceder aquí.", "error")
                 return redirect(url_for("web_bp.inicio"))
 
-            return f(*args, **kwargs)
-        wrapper.__name__ = f.__name__
+            return func(*args, **kwargs)
         return wrapper
     return decorator
 
