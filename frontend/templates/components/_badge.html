@@ -1,3 +1,0 @@
-{%- macro render_badge(count=0, id=None, classes='menu-badge') -%}
-<span{% if id %} id="{{ id }}"{% endif %} class="{{ classes }}{% if count == 0 %} hidden{% endif %}">{{ count }}</span>
-{%- endmacro -%}

@@ -1,0 +1,96 @@
+{% extends "base/base.html" %}
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+
+<style>
+    .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        /* centrar vertical */
+    }
+
+    .login-container {
+        width: 350px;
+        background: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 18px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .login-container h2 {
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-top: 5px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 15px;
+    }
+
+    .benefits {
+        margin-top: 40px;
+        text-align: center;
+    }
+
+    .benefits i {
+        color: #28a745;
+        margin-right: 8px;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-container">
+        <h2>Admin Login</h2>
+
+        <form method="POST" action="{{ url_for('web_login.login_post') }}">
+            <div class="form-group">
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" name="correo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+
+        <div class="benefits">
+            <ul>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>Reconocimiento preciso de gestos LSC</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>Traducción en tiempo real</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>Interfaz amigable e intuitiva</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
