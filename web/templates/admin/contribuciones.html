@@ -1,0 +1,129 @@
+{% extends "base/base.html" %}
+
+{% block title %}Contribuciones{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contribuciones.css') }}">
+{% endblock %}
+
+
+    {% include "components/slider.html" %}
+
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div>
+            <h1>Contribuciones</h1>
+            <div class="muted">Lista de envíos de la comunidad</div>
+        </div>
+    </div>
+
+    <div class="main-card">
+        <h2>Contribuciones pendientes <span class="muted">({{ pending_count or 0 }})</span></h2>
+        <div class="card-muted">
+            <table class="table-list" id="contrib-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Palabra</th>
+                        <th>Descripción</th>
+                        <th>Archivo</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if contribuciones and contribuciones|length > 0 %}
+                        {% for c in contribuciones %}
+                        <tr id="contrib-{{ c.id_contribucion }}">
+                            <td>{{ c.id_contribucion }}</td>
+                            <td class="kpi">{{ c.palabra_asociada }}</td>
+                            <td>{{ c.descripcion[:100] }}{% if c.descripcion|length > 100 %}...{% endif %}</td>
+                            <td>{% if c.archivo_video %}<a href="{{ c.archivo_video }}" target="_blank">ver</a>{% else %}-{% endif %}</td>
+                            <td>{{ c.fecha_contribucion }}</td>
+                            <td>
+                                <button class="btn-approve" data-id="{{ c.id_contribucion }}">Aprobar</button>
+                                <button class="btn-delete" data-id="{{ c.id_contribucion }}">Eliminar</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><td colspan="6">No hay contribuciones pendientes.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+    // Build endpoint templates from Flask `url_for` to avoid hard-coded paths
+    // Use a safe integer placeholder (0) when generating the URL, then replace it in JS.
+    const APPROVE_TEMPLATE = "{{ url_for('web_admin.approve_contribucion', id_contribucion=0) }}";
+    const DELETE_TEMPLATE = "{{ url_for('web_admin.delete_contribucion', id_contribucion=0) }}";
+
+    document.addEventListener('click', function(e){
+        // Approve (use closest so clicks on inner elements still work)
+        const approveBtn = e.target.closest ? e.target.closest('.btn-approve') : null;
+        if(approveBtn){
+            const id = approveBtn.dataset.id;
+            if(!confirm('¿Aprobar contribución #' + id + '?')) return;
+            (async ()=>{
+                try{
+                    // url_for generated the URL with a placeholder id `0`; replace that trailing /0 with the real id
+                    const url = APPROVE_TEMPLATE.replace('/0', '/' + id);
+                    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+                    if(!res.ok){
+                        console.error('Approve request failed', res.status, await res.text());
+                        alert('Error al aprobar (código ' + res.status + ')');
+                        return;
+                    }
+                    const j = await res.json();
+                    if(j.status === 'ok'){
+                        // Server updated state successfully — reload to reflect DB state
+                        window.location.reload();
+                    } else {
+                        console.error('Approve response', j);
+                        alert('Error al aprobar');
+                    }
+                }catch(err){
+                    console.error('Network error on approve', err);
+                    alert('Error de red al aprobar');
+                }
+            })();
+            return;
+        }
+
+        // Delete (use closest)
+        const deleteBtn = e.target.closest ? e.target.closest('.btn-delete') : null;
+        if(deleteBtn){
+            const id = deleteBtn.dataset.id;
+            if(!confirm('¿Eliminar contribución #' + id + '? Esta acción no se puede deshacer.')) return;
+            (async ()=>{
+                try{
+                    const url = DELETE_TEMPLATE.replace('/0', '/' + id);
+                    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+                    if(!res.ok){
+                        console.error('Delete request failed', res.status, await res.text());
+                        alert('Error al eliminar (código ' + res.status + ')');
+                        return;
+                    }
+                    const j = await res.json();
+                    if(j.status === 'ok'){
+                        // Server deleted row successfully — reload to reflect DB state
+                        window.location.reload();
+                    } else {
+                        console.error('Delete response', j);
+                        alert('Error al eliminar');
+                    }
+                }catch(err){
+                    console.error('Network error on delete', err);
+                    alert('Error de red al eliminar');
+                }
+            })();
+            return;
+        }
+    });
+    </script>
+
+{% endblock %}

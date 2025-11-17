@@ -1,0 +1,78 @@
+{% extends "base/base.html" %}
+
+{% block title %}Admin Login{% endblock %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+{% block content %}
+
+
+    {% include "components/slider.html" %}
+
+
+<main>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div>
+                <h1>Admin Dashboard</h1>
+                <div class="muted">Panel de control — Resumen general</div>
+            </div>
+            <!-- Actions removed: admins should not create contributions from dashboard -->
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">Total traducciones</div>
+                <div class="value">{{ stats.total_traducciones or 0 }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Total contribuciones</div>
+                <div class="value">{{ stats.total_contribuciones or 0 }}</div>
+
+            </div>
+            <div class="stat-card">
+                <div class="label">Señas oficiales</div>
+                <div class="value">{{ stats.senas_oficiales or 0 }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Reportes activos</div>
+                <div class="value">{{ stats.reportes_activos or 0 }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Contribuciones pendientes</div>
+                <div class="value">{{ stats.contribuciones_pendientes or 0 }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Contribuciones aprobadas</div>
+                <div class="value">{{ stats.contribuciones_aprobadas or 0 }}</div>
+                
+            </div>
+            <div class="stat-card">
+                <div class="label">Precisión modelo</div>
+                <div class="value">{{ stats.precision_modelo or 'N/A' }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Última actualización</div>
+                <div class="value">{{ stats.fecha_actualizacion or '-' }}</div>
+            </div>
+        </div>
+
+        <div class="main-card">
+            <h2>Actividad reciente</h2>
+            <div class="card-muted">
+                <table class="table-list">
+                    <thead>
+                        <tr><th>Usuario</th><th>Acción</th><th>Fecha</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>anonimo_1</td><td>Contribución enviada</td><td>2025-11-15</td></tr>
+                        <tr><td>usuario@ejemplo.com</td><td>Validó señal</td><td>2025-11-14</td></tr>
+                        <tr><td>anonimo_2</td><td>Reporte creado</td><td>2025-11-13</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+    {% endblock %}
