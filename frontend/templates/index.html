@@ -1,0 +1,384 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Sign Technology{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <span class="badge">Comunicación Accesible para Todos</span>
+            <h1>Traductor de Lenguaje <span class="highlight"> de Señas LSC</span></h1>
+            <p class="lead">Comunicación inclusiva con tecnología de inteligencia artificial</p>
+            <div class="hero-cta">
+                <a href="#" class="btn btn-primary">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                        fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                    Ir al Tutorial
+                </a>
+                <a href="#" class="btn btn-outline">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                        fill="currentColor">
+                        <path d="M12 3v10m0 0l4-4m-4 4l-4-4M5 21h14" stroke="currentColor" stroke-width="1.5"
+                            fill="none" />
+                    </svg>
+                    Descargar la app
+                </a>
+            </div>
+        </div>
+        <div class="hero-media">
+            <div class="video-card">
+                <video controls preload="auto" playsinline>
+                    <source src="{{ url_for('static', filename='video/demo.mp4') }}" type="video/mp4">
+                    Tu navegador no soporta videos HTML5.
+                </video>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="how-it-works">
+    <div class="container">
+        <div class="section-header">
+            <h2>Cómo funciona</h2>
+            <p class="subtitle">Tecnología que rompe barreras</p>
+            <p class="description">Nuestro traductor utiliza inteligencia artificial avanzada para reconocer gestos del
+                Lenguaje de Señas Colombiano (LSC) y convertirlos en texto instantáneamente.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-video">
+                <div class="video-card">
+                    <video controls preload="auto" playsinline>
+                        <source src="{{ url_for('static', filename='video/demo2.mp4') }}" type="video/mp4">
+                        Tu navegador no soporta videos HTML5.
+                    </video>
+                </div>
+            </div>
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                            <circle cx="12" cy="13" r="4" />
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Captura en tiempo real</h3>
+                        <p>La cámara detecta tus movimientos y gestos</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                            <line x1="12" y1="22.08" x2="12" y2="12" />
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Análisis con IA</h3>
+                        <p>Algoritmos interpretan cada señal con precisión</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Traducción instantánea</h3>
+                        <p>Convierte señas a texto en menos de 1 segundo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="benefits">
+    <div class="container">
+        <div class="section-header">
+            <h2>Beneficios de usar Sign Technology</h2>
+            <p class="subtitle">Transformando la comunicación inclusiva</p>
+        </div>
+
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-video">
+                    <video autoplay loop muted playsinline>
+                        <source src="{{ url_for('static', filename='video/demo3.mp4') }}" type="video/mp4">
+                    </video>
+                </div>
+                <div class="benefit-content">
+                    <div class="benefit-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <h3>Accesibilidad Universal</h3>
+                    <p>Facilita la comunicación entre personas sordas y oyentes, eliminando barreras lingüísticas en
+                        cualquier contexto.</p>
+                </div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-video">
+                    <video autoplay loop muted playsinline>
+                        <source src="{{ url_for('static', filename='video/demo5.mp4') }}" type="video/mp4">
+                    </video>
+                </div>
+                <div class="benefit-content">
+                    <div class="benefit-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                        </svg>
+                    </div>
+                    <h3>Rapidez y Precisión</h3>
+                    <p>Traducción instantánea con más del 95% de precisión gracias a nuestros modelos de IA entrenados
+                        específicamente para LSC.</p>
+                </div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-video">
+                    <video autoplay loop muted playsinline>
+                        <source src="{{ url_for('static', filename='video/demo3.mp4') }}" type="video/mp4">
+                    </video>
+                </div>
+                <div class="benefit-content">
+                    <div class="benefit-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                        </svg>
+                    </div>
+                    <h3>Multiplataforma</h3>
+                    <p>Disponible en web, móvil y escritorio. Úsalo donde quieras, cuando quieras, sin complicaciones.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="use-cases">
+    <div class="container">
+        <div class="section-header">
+            <h2>¿Dónde puedes usar Sign Technology?</h2>
+            <p class="subtitle">Soluciones para cada necesidad</p>
+        </div>
+
+        <div class="use-cases-grid">
+            <div class="use-case">
+                <div class="use-case-media">
+                    <div class="video-card">
+                        <video controls preload="metadata" playsinline>
+                            <source src="{{ url_for('static', filename='video/demo2.mp4') }}" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="use-case-content">
+                    <span class="use-case-badge">Educación</span>
+                    <h3>Aulas Inclusivas</h3>
+                    <p>Facilita la comunicación en entornos educativos, permitiendo que estudiantes sordos participen
+                        activamente en clases y actividades.</p>
+                    <ul class="use-case-features">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                            Traducción en vivo durante clases
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                            Material educativo accesible
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                            Interacción estudiante-profesor
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-case reverse">
+                <div class="use-case-media">
+                    <div class="video-card">
+                        <video controls preload="metadata" playsinline>
+                            <source src="{{ url_for('static', filename='video/demo.mp4') }}" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="use-case-content">
+                    <span class="use-case-badge">Servicios</span>
+                    <h3>Atención al Cliente</h3>
+                    <p>Mejora la experiencia de usuarios sordos en bancos, hospitales, tiendas y servicios públicos con
+                        comunicación efectiva.</p>
+                    <ul class="use-case-features">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                            Atención sin intérprete
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                            Reducción de tiempos de espera
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                            Mejor experiencia del usuario
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-case">
+                <div class="use-case-media">
+                    <div class="video-card">
+                        <video controls preload="metadata" playsinline>
+                            <source src="{{ url_for('static', filename='video/demo2.mp4') }}" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="use-case-content">
+                    <span class="use-case-badge">Empresarial</span>
+                    <h3>Entornos Laborales</h3>
+                    <p>Promueve la inclusión laboral permitiendo que empleados sordos se comuniquen efectivamente con
+                        sus equipos de trabajo.</p>
+                    <ul class="use-case-features">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                            Reuniones y videoconferencias
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                            Capacitaciones accesibles
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                            Comunicación diaria fluida
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="impact">
+    <div class="container">
+        <div class="impact-content">
+            <div class="impact-text">
+                <span class="impact-badge">Nuestro Impacto</span>
+                <h2>Rompiendo barreras de comunicación en Colombia</h2>
+                <p>En Colombia hay más de 1.2 millones de personas con discapacidad auditiva. Sign Technology está
+                    transformando la forma en que se comunican con el mundo.</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">1.2M+</div>
+                        <div class="stat-label">Personas sordas en Colombia</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Precisión en traducción</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">&lt;1s</div>
+                        <div class="stat-label">Tiempo de respuesta</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Disponibilidad</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="impact-video">
+                <div class="video-card">
+                    <video controls preload="auto" playsinline>
+                        <source src="{{ url_for('static', filename='video/demo3.mp4') }}" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <div class="cta-video">
+                <div class="video-card">
+                    <video autoplay loop muted playsinline>
+                        <source src="{{ url_for('static', filename='video/demo3.mp4') }}" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+            <div class="cta-text">
+                <h2>¿Listo para romper barreras?</h2>
+                <p>Únete a la revolución de la comunicación inclusiva. Empieza a usar Sign Technology hoy mismo.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"
+                            fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                        Ver Tutorial
+                    </a>
+                    <a href="#" class="btn btn-outline">
+                        Crear Cuenta Gratis
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

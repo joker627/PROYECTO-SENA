@@ -1,5 +1,0 @@
-Flask
-PyMySQL
-PyJWT
-bcrypt
-Flask-CORS
