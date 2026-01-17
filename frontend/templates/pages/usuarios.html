@@ -1,6 +1,7 @@
 {% extends 'base_admin.html' %}
 
 {% block title %}Usuarios - Sign Technology{% endblock %}
+{% block page_id %}usuarios{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/usuarios.css') }}">
@@ -345,8 +346,4 @@
         </form>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/usuarios.js') }}"></script>
 {% endblock %}

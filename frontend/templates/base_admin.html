@@ -24,7 +24,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 
-<body>
+<body data-page="{% block page_id %}{% endblock %}">
     <div class="dashboard-container">
         <!-- Botón Menú Móvil -->
         <button class="mobile-menu-btn" id="mobileMenuBtn">

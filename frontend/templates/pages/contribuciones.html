@@ -1,6 +1,7 @@
 {% extends 'base_admin.html' %}
 
 {% block title %}Contribuciones - Sign Technology{% endblock %}
+{% block page_id %}contribuciones{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/contribuciones.css') }}">
@@ -261,8 +262,4 @@
         class="btn-secondary">Siguiente</a>
         {% endif %}
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/contribuciones.js') }}"></script>
 {% endblock %}

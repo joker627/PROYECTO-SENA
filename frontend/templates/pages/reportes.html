@@ -1,6 +1,7 @@
 {% extends 'base_admin.html' %}
 
 {% block title %}Reportes - Sign Technology{% endblock %}
+{% block page_id %}reportes{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/reportes.css') }}">
@@ -286,8 +287,4 @@
         class="btn-secondary"><span class="material-icons">chevron_right</span></a>
         {% endif %}
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
 {% endblock %}
