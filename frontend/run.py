@@ -427,6 +427,7 @@ def update_avatar():
         
     if file:
         import os
+        import glob
         from werkzeug.utils import secure_filename
         
         # Asegurar directorio de destino
@@ -437,10 +438,19 @@ def update_avatar():
         user = session.get('user')
         id_usuario = user.get('id_usuario')
         
+        #  ELIMINAR FOTO ANTERIOR: Buscar y eliminar todas las fotos antiguas del usuario
+        old_photos = glob.glob(os.path.join(upload_dir, f"user_{id_usuario}_*"))
+        for old_photo in old_photos:
+            try:
+                os.remove(old_photo)
+                print(f" Foto anterior eliminada: {old_photo}")
+            except Exception as e:
+                print(f" No se pudo eliminar foto anterior: {old_photo} - {str(e)}")
+        
         # Generar nombre único con tiempo para forzar sincronización: user_1_162548.jpg/png
         import time
         timestamp = int(time.time())
-        extension = os.path.splitext(file.filename)[1]
+        extension = os.path.splitext(file.filename)[1].lower()
         filename = f"user_{id_usuario}_{timestamp}{extension}"
         file_path = os.path.join(upload_dir, filename)
         
