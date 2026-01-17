@@ -37,23 +37,25 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/general/logo.webp') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/general/logo.webp') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/general/logo.webp') }}">
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#03A69A">
 
-    <!-- Google Fonts -->
+    <!-- Preconnect para recursos externos (mejora velocidad) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <!-- Google Fonts con display=swap para evitar FOIT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- CSS -->
+    <!-- Material Icons - solo Round que es el que se usa -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round&display=swap" rel="stylesheet">
+
+    <!-- CSS Critical -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
@@ -76,9 +78,8 @@
     <!-- Footer -->
     {% include 'components/footer.html' %}
 
-    <!-- JavaScript -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+    <!-- JavaScript Optimizado -->
+    <script src="{{ url_for('static', filename='js/core.js') }}" defer></script>
 
     {% block extra_js %}{% endblock %}
 

@@ -1,137 +1,77 @@
 /**
- * Maneja las interacciones de la página de contribuciones.
+ * Contribuciones - Optimizado
  */
 
-function formatFecha(fechaStr) {
-    if (!fechaStr || fechaStr === 'None') return '-';
-    try {
-        const date = new Date(fechaStr);
-        if (isNaN(date.getTime())) return fechaStr;
-        return date.toLocaleString('es-ES', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    } catch (e) {
-        return fechaStr;
-    }
-}
+const formatFecha = (f) => {
+    if (!f || f === 'None') return '-';
+    try { return new Date(f).toLocaleString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+    catch { return f; }
+};
 
 function openViewModal(btn) {
-    const modal = document.getElementById('viewModal');
+    const d = btn.dataset;
+    
+    document.getElementById('view_avatar').textContent = d.usuario ? d.usuario[0].toUpperCase() : 'U';
+    document.getElementById('view_palabra').textContent = d.palabra;
+    document.getElementById('view_usuario').textContent = `Enviado por: ${d.usuario}`;
+    document.getElementById('view_descripcion').textContent = d.descripcion;
+    document.getElementById('view_fecha').textContent = formatFecha(d.fecha);
 
-    // Extraer datos
-    const usuario = btn.dataset.usuario;
-    const palabra = btn.dataset.palabra;
-    const descripcion = btn.dataset.descripcion;
-    const fecha = btn.dataset.fecha;
-    const estado = btn.dataset.estado;
-    const video = btn.dataset.video;
-    const fecha_gestion = btn.dataset.fecha_gestion;
-    const observaciones = btn.dataset.observaciones;
-
-    // Poblar modal
-    document.getElementById('view_avatar').textContent = usuario ? usuario[0].toUpperCase() : 'U';
-    document.getElementById('view_palabra').textContent = palabra;
-    document.getElementById('view_usuario').textContent = `Enviado por: ${usuario}`;
-    document.getElementById('view_descripcion').textContent = descripcion;
-    document.getElementById('view_fecha').textContent = formatFecha(fecha);
-
-    // Video Path Handling (Directo desde DB)
-    const videoElement = document.getElementById('view_video');
-    const videoSection = videoElement.closest('.view-video-section');
-
-    if (video && video !== 'None' && video !== '') {
-        let videoSrc = video;
-
-        // Si el path no empieza por http y es relativo, asegurar que apunte a static
-        if (!videoSrc.startsWith('http')) {
-            if (!videoSrc.startsWith('/static')) {
-                // Si ya empieza por /, solo anteponer /static
-                if (videoSrc.startsWith('/')) {
-                    videoSrc = '/static' + videoSrc;
-                } else {
-                    videoSrc = '/static/' + videoSrc;
-                }
-            }
+    // Video
+    const video = document.getElementById('view_video');
+    const section = video.closest('.view-video-section');
+    
+    if (d.video && d.video !== 'None') {
+        let src = d.video;
+        if (!src.startsWith('http') && !src.startsWith('/static')) {
+            src = src.startsWith('/') ? '/static' + src : '/static/' + src;
         }
-
-        videoElement.src = videoSrc;
-        videoSection.style.display = 'flex';
-        videoElement.load(); // Forzar recarga del recurso
+        video.src = src;
+        section.style.display = 'flex';
+        video.load();
     } else {
-        // Si no hay video en la DB, ocultar la sección de video por completo
-        videoSection.style.display = 'none';
-        videoElement.src = "";
+        section.style.display = 'none';
+        video.src = '';
     }
 
-    // Badge de estado
-    const container = document.getElementById('view_estado_container');
-    const label = estado.charAt(0).toUpperCase() + estado.slice(1);
-    container.innerHTML = `<span class="badge ${estado}">${label}</span>`;
+    // Estado
+    document.getElementById('view_estado_container').innerHTML = 
+        `<span class="badge ${d.estado}">${d.estado.charAt(0).toUpperCase() + d.estado.slice(1)}</span>`;
 
     // Gestión
-    const gestionItem = document.getElementById('view_gestion_item');
-    if (fecha_gestion && fecha_gestion !== 'None' && fecha_gestion !== '') {
-        document.getElementById('view_fecha_gestion').textContent = formatFecha(fecha_gestion);
-        gestionItem.style.display = 'block';
+    const gestion = document.getElementById('view_gestion_item');
+    if (d.fecha_gestion && d.fecha_gestion !== 'None') {
+        document.getElementById('view_fecha_gestion').textContent = formatFecha(d.fecha_gestion);
+        gestion.style.display = 'block';
     } else {
-        gestionItem.style.display = 'none';
+        gestion.style.display = 'none';
     }
 
     // Observaciones
-    const obsItem = document.getElementById('view_obs_item');
-    if (observaciones && observaciones !== 'None' && observaciones !== '') {
-        document.getElementById('view_observaciones').textContent = observaciones;
-        obsItem.style.display = 'block';
+    const obs = document.getElementById('view_obs_item');
+    if (d.observaciones && d.observaciones !== 'None') {
+        document.getElementById('view_observaciones').textContent = d.observaciones;
+        obs.style.display = 'block';
     } else {
-        obsItem.style.display = 'none';
+        obs.style.display = 'none';
     }
 
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    SignTech.openModal('viewModal');
 }
 
 function openManageModal(btn) {
-    const modal = document.getElementById('manageModal');
-
     document.getElementById('manage_id').value = btn.dataset.id;
     document.getElementById('manage_palabra').textContent = btn.dataset.palabra;
-
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    SignTech.openModal('manageModal');
 }
 
 function closeModal(id) {
-    const modal = document.getElementById(id);
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-
-    // Detener video si es el viewModal
-    if (id === 'viewModal') {
-        const video = document.getElementById('view_video');
-        video.pause();
-        video.src = "";
-    }
+    SignTech.closeModal(id);
 }
 
 function toggleObs(estado) {
     const group = document.getElementById('obs_group');
-    if (estado === 'rechazada') {
-        group.querySelector('label').textContent = 'Motivo del Rechazo (Obligatorio)';
-        group.querySelector('textarea').required = true;
-    } else {
-        group.querySelector('label').textContent = 'Observaciones (Opcional)';
-        group.querySelector('textarea').required = false;
-    }
+    const isRechazada = estado === 'rechazada';
+    group.querySelector('label').textContent = isRechazada ? 'Motivo del Rechazo (Obligatorio)' : 'Observaciones (Opcional)';
+    group.querySelector('textarea').required = isRechazada;
 }
-
-// Cerrar modales con Escape
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const modals = document.querySelectorAll('.modal.active');
-        modals.forEach(m => closeModal(m.id));
-    }
-});
