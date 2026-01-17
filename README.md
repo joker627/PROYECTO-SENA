@@ -1,180 +1,403 @@
-# Sign Technology - Sistema de Traducción de Lenguaje de Señas LSC
+<div align="center">
 
-Sistema completo para la traducción de Lenguaje de Señas Colombiano (LSC) utilizando inteligencia artificial.
+# 🤟 Sign Technology
 
-## 📁 Estructura del Proyecto
+### Sistema de Traducción de Lenguaje de Señas Colombiano (LSC)
+
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Flask](https://img.shields.io/badge/Flask-3.0+-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
+[![License](https://img.shields.io/badge/License-ISC-blue?style=for-the-badge)](LICENSE)
+
+*Plataforma integral para la traducción bidireccional de Lenguaje de Señas Colombiano utilizando inteligencia artificial*
+
+[📖 Documentación](#-documentación-de-la-api) • [🚀 Inicio Rápido](#-inicio-rápido) • [🏗️ Arquitectura](#-arquitectura-del-proyecto) • [🤝 Contribuir](#-contribuidores)
+
+</div>
+
+---
+
+## 📋 Tabla de Contenidos
+
+- [Características](#-características)
+- [Arquitectura del Proyecto](#-arquitectura-del-proyecto)
+- [Requisitos Previos](#-requisitos-previos)
+- [Inicio Rápido](#-inicio-rápido)
+- [Configuración](#️-configuración)
+- [Documentación de la API](#-documentación-de-la-api)
+- [Base de Datos](#️-base-de-datos)
+- [Tecnologías](#-tecnologías-utilizadas)
+- [Seguridad](#-seguridad)
+- [Licencia](#-licencia)
+
+---
+
+## ✨ Características
+
+| Característica | Descripción |
+|----------------|-------------|
+| 🔄 **Traducción Bidireccional** | Conversión de texto a señas y señas a texto |
+| 🤖 **Inteligencia Artificial** | Modelo de IA para reconocimiento y traducción |
+| 👥 **Gestión de Usuarios** | Sistema completo de roles (Admin/Colaborador) |
+| 📊 **Dashboard Analítico** | Estadísticas y métricas en tiempo real |
+| 🤝 **Contribuciones** | Sistema colaborativo para aportar nuevas señas |
+| 📝 **Reportes** | Gestión de errores y mejoras del sistema |
+| 🔐 **Autenticación JWT** | Sistema seguro de autenticación con tokens |
+| 📱 **Diseño Responsivo** | Interfaz adaptable a cualquier dispositivo |
+
+---
+
+## 🏗️ Arquitectura del Proyecto
+
+El proyecto sigue una arquitectura de **microservicios** con separación clara entre backend y frontend:
 
 ```
-PROYECTO/
-├── api/                    # Backend Flask (API REST)
-│   ├── config/            # Configuración (DB, conexiones)
-│   ├── controllers/       # Controladores de rutas
-│   ├── models/           # Modelos de datos
-│   ├── middlewares/      # Middlewares (auth, etc.)
-│   ├── utils/            # Utilidades (JWT, email, password)
-│   └── app_api.py        # Aplicación principal Flask
-├── web/                   # Frontend (HTML/CSS/JS)
-│   ├── assets/           # Recursos estáticos
-│   │   ├── css/          # Estilos
-│   │   ├── js/           # JavaScript
-│   │   ├── img/          # Imágenes
-│   │   └── video/        # Videos
-│   ├── components/       # Componentes HTML reutilizables
-│   ├── pages/            # Páginas HTML
-│   └── index.html        # Página principal
-└── db/                   # Scripts de base de datos
+PROYECTO-SENA/
+│
+├── 📁 fastapi/                    # 🔷 Backend - API REST (FastAPI)
+│   ├── 📁 app/
+│   │   ├── 📁 api/v1/             # Versionado de API
+│   │   │   ├── 📁 endpoints/      # Controladores de rutas
+│   │   │   │   ├── auth.py        # Autenticación
+│   │   │   │   ├── usuarios.py    # Gestión de usuarios
+│   │   │   │   ├── contribuciones.py
+│   │   │   │   ├── reportes.py
+│   │   │   │   └── estadisticas.py
+│   │   │   └── router.py          # Router principal
+│   │   ├── 📁 core/               # Configuración central
+│   │   │   ├── config.py          # Variables de entorno
+│   │   │   ├── database.py        # Conexión MySQL
+│   │   │   └── security.py        # JWT y seguridad
+│   │   ├── 📁 schemas/            # Esquemas Pydantic
+│   │   ├── 📁 services/           # Lógica de negocio
+│   │   └── main.py                # Punto de entrada
+│   └── requirements.txt
+│
+├── 📁 frontend/                   # 🟢 Frontend - Servidor Web (Flask)
+│   ├── 📁 static/
+│   │   ├── 📁 css/                # Estilos organizados
+│   │   │   ├── 📁 components/     # Estilos de componentes
+│   │   │   └── 📁 pages/          # Estilos por página
+│   │   ├── 📁 js/                 # JavaScript modular
+│   │   ├── 📁 img/                # Recursos gráficos
+│   │   └── 📁 video/              # Videos de señas
+│   ├── 📁 templates/
+│   │   ├── 📁 components/         # Componentes reutilizables
+│   │   ├── 📁 pages/              # Páginas de la aplicación
+│   │   ├── base.html              # Template base
+│   │   └── base_admin.html        # Template administración
+│   ├── run.py                     # Servidor Flask
+│   └── requirements.txt
+│
+├── 📁 db/                         # 🗄️ Base de Datos
+│   └── sign_technology.sql        # Script de creación
+│
+└── README.md
 ```
+
+---
+
+## 📦 Requisitos Previos
+
+Asegúrate de tener instalado:
+
+| Requisito | Versión Mínima | Verificar Instalación |
+|-----------|----------------|----------------------|
+| Python | 3.10+ | `python --version` |
+| MySQL | 8.0+ | `mysql --version` |
+| Git | 2.0+ | `git --version` |
+
+---
 
 ## 🚀 Inicio Rápido
 
-### Requisitos Previos
+### 1️⃣ Clonar el Repositorio
 
-- Python 3.8+
-- Node.js 14+
-- MySQL 8.0+
-- npm o yarn
+```bash
+git clone https://github.com/tu-usuario/sign-technology.git
+cd sign-technology
+```
 
-### Backend (API)
+### 2️⃣ Configurar Base de Datos
 
-1. **Instalar dependencias:**
-   ```bash
-   cd api
-   pip install -r requirements.txt
-   ```
+```bash
+# Conectar a MySQL e importar el esquema
+mysql -u root -p < db/sign_technology.sql
+```
 
-2. **Configurar variables de entorno:**
-   Crear archivo `.env` en la raíz del proyecto:
-   ```env
-   DB_HOST=localhost
-   DB_USER=root
-   DB_PASSWORD=tu_password
-   DB_PORT=3306
-   DB_NAME=sign_technology
-   SECRET_KEY=tu_secret_key_segura
-   API_PORT=5001
-   API_HOST=0.0.0.0
-   DEBUG=True
-   FRONTEND_URL=http://localhost:3000
-   
-   # Opcional: Configuración de correo para recuperación de contraseña
-   MAIL_SERVER=smtp.gmail.com
-   MAIL_PORT=587
-   MAIL_USERNAME=tu_email@gmail.com
-   MAIL_PASSWORD=tu_app_password
-   ```
+### 3️⃣ Configurar Backend (FastAPI)
 
-3. **Configurar base de datos:**
-   ```bash
-   mysql -u root -p < db/sign_technology.sql
-   ```
+```bash
+# Navegar al directorio del backend
+cd fastapi
 
-4. **Ejecutar la API:**
-   ```bash
-   cd api
-   python app_api.py
-   ```
+# Crear entorno virtual
+python -m venv venv
 
-   La API estará disponible en: `http://localhost:5001`
+# Activar entorno virtual
+# Windows:
+venv\Scripts\activate
+# Linux/Mac:
+source venv/bin/activate
 
-### Frontend (Web)
+# Instalar dependencias
+pip install -r requirements.txt
 
-1. **Instalar dependencias:**
-   ```bash
-   cd web
-   npm install
-   ```
+# Crear archivo .env (ver sección de configuración)
 
-2. **Compilar CSS (modo desarrollo con watch):**
-   ```bash
-   npm run dev
-   ```
+# Ejecutar servidor de desarrollo
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
 
-3. **Compilar CSS (producción):**
-   ```bash
-   npm run build
-   ```
+### 4️⃣ Configurar Frontend (Flask)
 
-4. **Iniciar servidor local:**
-   ```bash
-   npm run server
-   ```
+```bash
+# En otra terminal, navegar al frontend
+cd frontend
 
-   El frontend estará disponible en: `http://localhost:3000` (o el puerto que asigne `serve`)
+# Crear entorno virtual
+python -m venv venv
 
-## 📚 Endpoints de la API
+# Activar entorno virtual
+# Windows:
+venv\Scripts\activate
+# Linux/Mac:
+source venv/bin/activate
 
-### Autenticación (`/api/auth`)
-- `POST /api/auth/login` - Iniciar sesión
-- `GET /api/auth/verificar-token` - Verificar token JWT
-- `POST /api/auth/logout` - Cerrar sesión
-- `POST /api/auth/forgot-password` - Solicitar recuperación de contraseña
-- `POST /api/auth/reset-password` - Restablecer contraseña
-- `POST /api/auth/verify-reset-token` - Verificar token de recuperación
+# Instalar dependencias
+pip install -r requirements.txt
 
-### Administración (`/api/admin`)
-- `GET /api/admin/stats/estadisticas` - Estadísticas del dashboard
-- `GET /api/admin/usuarios` - Listar usuarios (solo admin)
-- `POST /api/admin/usuarios` - Crear usuario (solo admin)
-- `GET /api/admin/perfil` - Obtener perfil del usuario actual
-- `PUT /api/admin/perfil` - Actualizar perfil
-- `GET /api/admin/reportes` - Listar reportes
-- `GET /api/admin/contribuciones` - Listar contribuciones
+# Ejecutar servidor
+python run.py
+```
 
-Ver `api/app_api.py` para la lista completa de endpoints.
+### 5️⃣ Acceder a la Aplicación
+
+| Servicio | URL | Descripción |
+|----------|-----|-------------|
+| 🌐 Frontend | http://localhost:5000 | Interfaz de usuario |
+| 🔷 API | http://localhost:8000 | Backend REST |
+| 📚 Swagger UI | http://localhost:8000/docs | Documentación interactiva |
+| 📖 ReDoc | http://localhost:8000/redoc | Documentación alternativa |
+
+---
+
+## ⚙️ Configuración
+
+### Variables de Entorno (.env)
+
+Crear archivo `.env` en el directorio `fastapi/`:
+
+```env
+# ═══════════════════════════════════════════════════════════
+# 🗄️ BASE DE DATOS
+# ═══════════════════════════════════════════════════════════
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=tu_password_seguro
+DB_NAME=sign_technology
+
+# ═══════════════════════════════════════════════════════════
+# 🔐 SEGURIDAD JWT
+# ═══════════════════════════════════════════════════════════
+SECRET_KEY=tu_clave_secreta_muy_segura_cambiar_en_produccion
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE=30
+
+# ═══════════════════════════════════════════════════════════
+# 🌐 CORS
+# ═══════════════════════════════════════════════════════════
+CORS_ORIGINS=http://localhost:5000,http://localhost:3000
+```
+
+> ⚠️ **Importante:** Nunca subas el archivo `.env` al repositorio. Asegúrate de incluirlo en `.gitignore`.
+
+---
+
+## 📖 Documentación de la API
+
+### Prefijo Base: `/api/v1`
+
+### 🔐 Autenticación
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `POST` | `/auth/login` | Iniciar sesión |
+
+### 📊 Estadísticas
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/estadisticas` | Obtener métricas del sistema |
+
+### 👥 Usuarios
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/usuarios` | Listar usuarios |
+| `POST` | `/usuarios` | Crear usuario |
+| `GET` | `/usuarios/{id}` | Obtener usuario |
+| `PUT` | `/usuarios/{id}` | Actualizar usuario |
+| `DELETE` | `/usuarios/{id}` | Eliminar usuario |
+
+### 🤝 Contribuciones
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/contribuciones` | Listar contribuciones |
+| `POST` | `/contribuciones` | Crear contribución |
+| `PUT` | `/contribuciones/{id}` | Gestionar contribución |
+
+### 📝 Reportes
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `GET` | `/reportes` | Listar reportes |
+| `POST` | `/reportes` | Crear reporte |
+| `PUT` | `/reportes/{id}` | Actualizar reporte |
+
+> 📚 **Documentación Completa:** Accede a `/docs` o `/redoc` cuando el servidor esté en ejecución.
+
+---
+
+## 🗄️ Base de Datos
+
+### Diagrama de Entidades Principales
+
+```
+┌──────────────┐     ┌──────────────────────┐     ┌─────────────────────────┐
+│    roles     │────<│      usuarios        │────<│  contribuciones_senas   │
+└──────────────┘     └──────────────────────┘     └─────────────────────────┘
+                              │                              │
+                              │                              ▼
+                              │                  ┌─────────────────────────┐
+                              │                  │ repositorio_senas_oficial│
+                              │                  └─────────────────────────┘
+                              │
+                              ▼
+                     ┌──────────────────┐
+                     │   traducciones   │
+                     └──────────────────┘
+                              │
+                              ▼
+                     ┌──────────────────┐
+                     │ reportes_errores │
+                     └──────────────────┘
+```
+
+### Tablas Principales
+
+| Tabla | Descripción |
+|-------|-------------|
+| `roles` | Roles del sistema (Administrador, Colaborador) |
+| `usuarios` | Usuarios registrados |
+| `usuarios_anonimos` | Visitantes no registrados |
+| `contribuciones_senas` | Aportes de la comunidad |
+| `repositorio_senas_oficial` | Señas validadas y aprobadas |
+| `traducciones` | Historial de traducciones |
+| `reportes_errores` | Reportes de fallos |
+| `rendimiento_modelo` | Métricas del modelo IA |
+| `tokens_recuperacion` | Tokens para recuperar contraseña |
+
+### Vistas
+
+- `vista_estadisticas` - Resumen estadístico del sistema
+
+### Eventos Automáticos
+
+- `ev_desactivar_usuarios_inactivos` - Inactiva colaboradores tras 1 año
+- `ev_limpieza_tokens_expirados` - Limpia tokens expirados cada hora
+
+---
 
 ## 🛠️ Tecnologías Utilizadas
 
 ### Backend
-- **Flask** - Framework web
-- **PyMySQL** - Cliente MySQL
-- **JWT** - Autenticación
-- **bcrypt** - Hash de contraseñas
-- **Flask-CORS** - Manejo de CORS
+
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white) | 0.104.1 | Framework API REST |
+| ![Uvicorn](https://img.shields.io/badge/Uvicorn-499848?style=flat&logo=uvicorn&logoColor=white) | 0.24.0 | Servidor ASGI |
+| ![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=flat&logo=pydantic&logoColor=white) | 2.5.2 | Validación de datos |
+| ![PyMySQL](https://img.shields.io/badge/PyMySQL-4479A1?style=flat&logo=mysql&logoColor=white) | 1.1.0 | Conector MySQL |
+| ![JWT](https://img.shields.io/badge/JWT-000000?style=flat&logo=jsonwebtokens&logoColor=white) | - | Autenticación |
+| ![bcrypt](https://img.shields.io/badge/bcrypt-003B57?style=flat&logoColor=white) | 4.0.1 | Hash de contraseñas |
 
 ### Frontend
-- **HTML5/CSS3** - Estructura y estilos
-- **Tailwind CSS** - Framework CSS utility-first
-- **JavaScript (Vanilla)** - Lógica del frontend
-- **Font Awesome** - Iconos
 
-## 📝 Notas de Desarrollo
-
-### Estructura de Archivos JavaScript
-
-- `assets/js/services/` - Servicios (API, etc.)
-- `assets/js/controllers/` - Controladores de páginas
-- `assets/js/components/` - Componentes reutilizables
-- `assets/js/utils/` - Utilidades y helpers
-- `assets/js/pages/` - Scripts específicos de páginas
-
-### Autenticación
-
-El sistema utiliza JWT (JSON Web Tokens) para la autenticación. Los tokens deben enviarse en el header:
-```
-Authorization: Bearer <token>
-```
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| ![Flask](https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white) | 3.0.0 | Servidor de templates |
+| ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white) | 5 | Estructura |
+| ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white) | 3 | Estilos |
+| ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) | ES6+ | Lógica frontend |
+| ![Jinja2](https://img.shields.io/badge/Jinja2-B41717?style=flat&logo=jinja&logoColor=white) | - | Motor de templates |
 
 ### Base de Datos
 
-El esquema de la base de datos está en `db/sign_technology.sql`. Las tablas principales son:
-- `usuarios` - Usuarios del sistema
-- `roles` - Roles (Administrador, Colaborador)
-- `contribuciones_senas` - Contribuciones de señas
-- `reportes_errores` - Reportes de errores
-- `traducciones` - Historial de traducciones
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white) | 8.0+ | RDBMS principal |
+
+---
 
 ## 🔒 Seguridad
 
-- Las contraseñas se hashean con bcrypt
-- Los tokens JWT tienen expiración
-- Validación de roles en endpoints sensibles
-- CORS configurado (ajustar para producción)
+### Medidas Implementadas
+
+| Medida | Implementación |
+|--------|----------------|
+| 🔐 **Hashing de Contraseñas** | bcrypt con salt automático |
+| 🎫 **Autenticación** | JWT con expiración configurable |
+| 🛡️ **Autorización** | Validación de roles por endpoint |
+| 🌐 **CORS** | Configuración estricta de orígenes |
+| 🔒 **SQL Injection** | Queries parametrizadas |
+| ✅ **Validación** | Schemas Pydantic estrictos |
+
+### Buenas Prácticas
+
+```python
+# ✅ Ejemplo de autenticación segura
+Authorization: Bearer <token>
+```
+
+> 🔴 **Producción:** Recuerda cambiar `SECRET_KEY`, configurar HTTPS y restringir CORS.
+
+---
+
+## 🤝 Contribuidores
+
+<div align="center">
+
+### Sign Technology Team
+
+*Desarrollado con ❤️ para la comunidad sorda colombiana*
+
+</div>
+
+---
 
 ## 📄 Licencia
 
-ISC
+Este proyecto está bajo la Licencia **ISC**.
 
-## 👥 Contribuidores
+```
+ISC License
 
-Sign Technology Team
+Copyright (c) 2026 Sign Technology Team
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+```
+
+---
+
+<div align="center">
+
+**[⬆ Volver arriba](#-sign-technology)**
+
+</div>
 
