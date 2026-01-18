@@ -29,17 +29,17 @@
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon green"><span class="material-icons">check_circle</span></div>
+        <div class="stat-icon orange"><span class="material-icons">visibility</span></div>
         <div class="stat-info">
-            <p>Resueltos</p>
-            <div class="stat-value">{{ stats.resueltos }}</div>
+            <p>En Revisión</p>
+            <div class="stat-value">{{ stats.en_revision }}</div>
         </div>
     </div>
     <div class="stat-card">
         <div class="stat-icon red"><span class="material-icons">warning</span></div>
         <div class="stat-info">
-            <p>Urgentes</p>
-            <div class="stat-value">{{ stats.urgentes }}</div>
+            <p>Alta Prioridad</p>
+            <div class="stat-value">{{ stats.alta_prioridad }}</div>
         </div>
     </div>
 </div>
@@ -59,8 +59,6 @@
                 </option>
                 <option value="en_revision" {% if filter_estado=='en_revision' %}selected{% endif %}>En
                     Revisión</option>
-                <option value="resuelto" {% if filter_estado=='resuelto' %}selected{% endif %}>Resuelto
-                </option>
             </select>
         </div>
         <div class="form-group">
@@ -70,8 +68,6 @@
                 <option value="baja" {% if filter_prioridad=='baja' %}selected{% endif %}>Baja</option>
                 <option value="media" {% if filter_prioridad=='media' %}selected{% endif %}>Media</option>
                 <option value="alta" {% if filter_prioridad=='alta' %}selected{% endif %}>Alta</option>
-                <option value="urgente" {% if filter_prioridad=='urgente' %}selected{% endif %}>Urgente
-                </option>
             </select>
         </div>
     </form>
@@ -96,8 +92,8 @@
                 <tr>
                     <td data-label="Prioridad">
                         <span class="priority-badge {{ rep.prioridad }}">
-                            {% if rep.prioridad == 'urgente' %}<span class="material-icons"
-                                style="font-size:16px;">error</span>{% endif %}
+                            {% if rep.prioridad == 'alta' %}<span class="material-icons"
+                                style="font-size:16px;">warning</span>{% endif %}
                             {{ rep.prioridad|capitalize }}
                         </span>
                     </td>
@@ -124,21 +120,25 @@
                                 <span class="material-icons">visibility</span>
                             </button>
 
-                            <button class="btn-icon check" title="Gestionar Estado" onclick="openManageModal(this)"
-                                data-id="{{ rep.id_reporte }}" data-estado="{{ rep.estado }}">
-                                <span class="material-icons">settings</span>
-                            </button>
-
-                            {% if rep.estado != 'resuelto' %}
+                            {% if rep.estado == 'pendiente' %}
                             <form action="{{ url_for('update_reporte') }}" method="POST" style="display:inline;">
                                 <input type="hidden" name="id_reporte" value="{{ rep.id_reporte }}">
-                                <input type="hidden" name="nuevo_estado" value="resuelto">
-                                <button type="submit" class="btn-icon check" title="Resolver Rápido"
-                                    style="color: var(--success); border-color: var(--success); opacity: 0.7;">
-                                    <span class="material-icons">check_circle</span>
+                                <input type="hidden" name="nuevo_estado" value="en_revision">
+                                <button type="submit" class="btn-icon" title="Marcar En Revisión"
+                                    style="color: var(--warning); border-color: var(--warning);">
+                                    <span class="material-icons">pending</span>
                                 </button>
                             </form>
                             {% endif %}
+
+                            <form action="{{ url_for('resolver_reporte') }}" method="POST" style="display:inline;"
+                                onsubmit="return confirm('¿Marcar como resuelto? El reporte será eliminado permanentemente.');">
+                                <input type="hidden" name="id_reporte" value="{{ rep.id_reporte }}">
+                                <button type="submit" class="btn-icon" title="Resolver y Eliminar"
+                                    style="color: var(--success); border-color: var(--success);">
+                                    <span class="material-icons">check_circle</span>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -220,46 +220,6 @@
         <div class="modal-footer">
             <button class="btn-secondary" onclick="closeModal('viewModal')">Cerrar</button>
         </div>
-    </div>
-</div>
-
-<!-- Modal: Gestionar Reporte -->
-<div class="modal" id="manageModal">
-    <div class="modal-content" style="max-width: 450px;">
-        <div class="modal-header">
-            <h2>Gestionar Reporte #<span id="manage_id_display"></span></h2>
-            <button class="btn-icon" onclick="closeModal('manageModal')"><span
-                    class="material-icons">close</span></button>
-        </div>
-        <form action="{{ url_for('update_reporte') }}" method="POST">
-            <div class="modal-body">
-                <input type="hidden" name="id_reporte" id="manage_id">
-
-                <div class="form-group">
-                    <label>Nuevo Estado</label>
-                    <select name="nuevo_estado" id="manage_estado" required>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="en_revision">En Revisión</option>
-                        <option value="resuelto">Resuelto</option>
-                    </select>
-                </div>
-
-                <div class="form-group" style="margin-top: 1.5rem;">
-                    <label>Prioridad (Opcional)</label>
-                    <select name="nueva_prioridad">
-                        <option value="">Sin cambios</option>
-                        <option value="baja">Baja</option>
-                        <option value="media">Media</option>
-                        <option value="alta">Alta</option>
-                        <option value="urgente">Urgente</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-secondary" onclick="closeModal('manageModal')">Cancelar</button>
-                <button type="submit" class="btn-primary">Actualizar Reporte</button>
-            </div>
-        </form>
     </div>
 </div>
 

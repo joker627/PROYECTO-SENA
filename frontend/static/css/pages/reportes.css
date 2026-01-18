@@ -67,6 +67,10 @@
     background: linear-gradient(135deg, #d97706, #f59e0b);
 }
 
+.stat-icon.orange {
+    background: linear-gradient(135deg, #ea580c, #f97316);
+}
+
 .stat-icon.green {
     background: linear-gradient(135deg, #059669, #10b981);
 }
@@ -172,10 +176,6 @@ tbody td {
 }
 
 .priority-badge.alta {
-    color: #ea580c;
-}
-
-.priority-badge.urgente {
     color: #dc2626;
 }
 

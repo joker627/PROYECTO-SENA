@@ -27,7 +27,23 @@ def get_reportes(
 
 @router.put("/{id_reporte}/gestion")
 def update_report_gestion(id_reporte: int, estado: str = None, prioridad: str = None):
-    exito = reporte_service.actualizar_gestion_reporte(id_reporte, estado, prioridad)
-    if not exito:
+    resultado = reporte_service.actualizar_gestion_reporte(id_reporte, estado, prioridad)
+    
+    if resultado is None:
         raise HTTPException(status_code=404, detail="Reporte no encontrado")
+    if resultado is False:
+        raise HTTPException(status_code=500, detail="Error al actualizar reporte en la base de datos")
+    
     return {"message": "Reporte actualizado exitosamente"}
+
+@router.delete("/{id_reporte}")
+def resolver_reporte(id_reporte: int):
+    """Resuelve un reporte eliminándolo de la base de datos"""
+    resultado = reporte_service.eliminar_reporte(id_reporte)
+    
+    if resultado is None:
+        raise HTTPException(status_code=404, detail="Reporte no encontrado")
+    if resultado is False:
+        raise HTTPException(status_code=500, detail="Error al eliminar reporte")
+    
+    return {"message": "Reporte resuelto y eliminado exitosamente"}

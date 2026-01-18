@@ -1,5 +1,25 @@
 from app.core.database import get_connection
 
+def eliminar_reporte(id_reporte: int):
+    """Elimina un reporte de la base de datos (cuando se resuelve)"""
+    conn = get_connection()
+    try:
+        with conn.cursor() as cursor:
+            # Verificar que existe
+            cursor.execute("SELECT id_reporte FROM reportes_errores WHERE id_reporte = %s", (id_reporte,))
+            if not cursor.fetchone():
+                return None  # No encontrado
+            
+            # Eliminar
+            cursor.execute("DELETE FROM reportes_errores WHERE id_reporte = %s", (id_reporte,))
+            conn.commit()
+            return True
+    except Exception as e:
+        print(f"Error eliminando reporte {id_reporte}: {e}")
+        return False
+    finally:
+        conn.close()
+
 def obtener_reportes(estado: str = None, prioridad: str = None, query: str = None, skip: int = 0, limit: int = 100):
     conn = get_connection()
     try:
@@ -50,6 +70,11 @@ def actualizar_gestion_reporte(id_reporte: int, estado: str = None, prioridad: s
     conn = get_connection()
     try:
         with conn.cursor() as cursor:
+            # Verificar que el reporte existe
+            cursor.execute("SELECT id_reporte FROM reportes_errores WHERE id_reporte = %s", (id_reporte,))
+            if not cursor.fetchone():
+                return None  # Reporte no encontrado
+            
             updates = []
             params = []
             if estado:
@@ -60,14 +85,17 @@ def actualizar_gestion_reporte(id_reporte: int, estado: str = None, prioridad: s
                 params.append(prioridad)
             
             if not updates:
-                return True
+                return True  # Sin cambios pero válido
                 
             sql = f"UPDATE reportes_errores SET {', '.join(updates)} WHERE id_reporte = %s"
             params.append(id_reporte)
             
             cursor.execute(sql, tuple(params))
             conn.commit()
-            return cursor.rowcount > 0
+            return True  # Éxito
+    except Exception as e:
+        print(f"Error actualizando reporte {id_reporte}: {e}")
+        return False  # Error de DB
     finally:
         conn.close()
 
@@ -79,8 +107,8 @@ def obtener_stats_reportes():
             SELECT 
                 COUNT(*) as total,
                 SUM(CASE WHEN estado = 'pendiente' THEN 1 ELSE 0 END) as pendientes,
-                SUM(CASE WHEN estado = 'resuelto' THEN 1 ELSE 0 END) as resueltos,
-                SUM(CASE WHEN prioridad = 'urgente' THEN 1 ELSE 0 END) as urgentes
+                SUM(CASE WHEN estado = 'en_revision' THEN 1 ELSE 0 END) as en_revision,
+                SUM(CASE WHEN prioridad = 'alta' THEN 1 ELSE 0 END) as alta_prioridad
             FROM reportes_errores
             """
             cursor.execute(sql)
@@ -88,8 +116,8 @@ def obtener_stats_reportes():
             return {
                 "total": result.get('total', 0) or 0,
                 "pendientes": int(result.get('pendientes', 0) or 0),
-                "resueltos": int(result.get('resueltos', 0) or 0),
-                "urgentes": int(result.get('urgentes', 0) or 0)
+                "en_revision": int(result.get('en_revision', 0) or 0),
+                "alta_prioridad": int(result.get('alta_prioridad', 0) or 0)
             }
     finally:
         conn.close()

@@ -1,36 +1,26 @@
 /**
- * Sign Technology - Core JavaScript ÚNICO
- * Versión: 3.0 - Todo consolidado en un archivo
+ * Sign Technology - Core JavaScript
+ * Sistema de gestión frontend para traducción LSC
  */
-
 (function() {
     'use strict';
 
-    // ═══════════════════════════════════════════════════════════
-    // UTILIDADES
-    // ═══════════════════════════════════════════════════════════
-    
-    const $ = (s) => document.querySelector(s);
-    const $$ = (s) => document.querySelectorAll(s);
-    const $id = (id) => document.getElementById(id);
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+    const $id = id => document.getElementById(id);
 
-    // ═══════════════════════════════════════════════════════════
-    // SISTEMA GLOBAL - SignTech
-    // ═══════════════════════════════════════════════════════════
-    
+    /** Sistema global SignTech */
     window.SignTech = {
-        formatDate: (d) => {
+        formatDate: d => {
             if (!d || d === 'None') return '-';
             try { return new Date(d).toLocaleString('es-CO', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }); }
             catch { return d; }
         },
-
-        openModal: (id) => {
+        openModal: id => {
             const m = $id(id);
             if (m) { m.classList.add('active'); document.body.style.overflow = 'hidden'; }
         },
-
-        closeModal: (id) => {
+        closeModal: id => {
             const m = $id(id);
             if (m) {
                 m.classList.remove('active');
@@ -41,13 +31,9 @@
         }
     };
 
-    // Alias global
     window.closeModal = SignTech.closeModal;
 
-    // ═══════════════════════════════════════════════════════════
-    // NAVBAR - Menú público
-    // ═══════════════════════════════════════════════════════════
-    
+    /** Navbar - Menú público */
     function initNavbar() {
         const hamburger = $id('hamburger');
         const mobileMenu = $id('mobileMenu');
@@ -67,9 +53,8 @@
         if (closeMobile) closeMobile.onclick = () => toggleMobile(false);
         if (mobileOverlay) mobileOverlay.onclick = () => toggleMobile(false);
 
-        // Dropdown usuario
         if (userMenuBtn && dropdownMenu) {
-            userMenuBtn.onclick = (e) => {
+            userMenuBtn.onclick = e => {
                 e.stopPropagation();
                 const open = dropdownMenu.style.display !== 'block';
                 dropdownMenu.style.display = open ? 'block' : 'none';
@@ -86,10 +71,7 @@
         }
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // SIDEBAR - Panel admin
-    // ═══════════════════════════════════════════════════════════
-    
+    /** Sidebar - Panel admin */
     function initSidebar() {
         const btn = $id('mobileMenuBtn');
         const sidebar = $('.sidebar');
@@ -117,10 +99,7 @@
         window.addEventListener('resize', () => { if (window.innerWidth > 1024) toggle(false); }, { passive: true });
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // LINKS ACTIVOS
-    // ═══════════════════════════════════════════════════════════
-    
+    /** Links activos */
     function setActiveLinks() {
         const path = window.location.pathname;
         $$('.navbar-link, .mobile-menu-link, .nav-link').forEach(l => {
@@ -128,10 +107,7 @@
         });
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // DASHBOARD
-    // ═══════════════════════════════════════════════════════════
-    
+    /** Dashboard */
     function initDashboard() {
         const dt = $id('currentDateTime');
         if (dt) {
@@ -146,10 +122,7 @@
         if (refresh) refresh.onclick = () => { refresh.classList.add('loading'); location.reload(); };
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // LOGIN
-    // ═══════════════════════════════════════════════════════════
-    
+    /** Login */
     function initLogin() {
         const toggle = $('.toggle-password');
         if (toggle) {
@@ -163,10 +136,7 @@
         }
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // PERFIL - Preview avatar
-    // ═══════════════════════════════════════════════════════════
-    
+    /** Perfil - Preview avatar */
     function initPerfil() {
         const input = $id('avatarInput');
         const img = $('.profile-avatar img');
@@ -174,18 +144,15 @@
             input.onchange = function() {
                 if (this.files?.[0]) {
                     const r = new FileReader();
-                    r.onload = (e) => img.src = e.target.result;
+                    r.onload = e => img.src = e.target.result;
                     r.readAsDataURL(this.files[0]);
                 }
             };
         }
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // USUARIOS - Modales
-    // ═══════════════════════════════════════════════════════════
-    
-    window.openEditModal = (btn) => {
+    /** Modales - Usuarios */
+    window.openEditModal = btn => {
         const d = btn.dataset;
         $id('edit_id_usuario').value = d.id;
         $id('edit_nombre').value = d.nombre;
@@ -196,12 +163,15 @@
     };
 
     window.closeEditModal = () => SignTech.closeModal('editUserModal');
+    window.openCreateModal = () => SignTech.openModal('createUserModal');
+    window.closeCreateModal = () => SignTech.closeModal('createUserModal');
+    window.closeViewModal = () => { SignTech.closeModal('viewUserModal'); SignTech.closeModal('viewModal'); };
 
-    window.openViewModal = (btn) => {
+    /** Modal Ver - Multiplataforma */
+    window.openViewModal = btn => {
         const d = btn.dataset;
         const page = document.body.dataset.page;
 
-        // USUARIOS
         if (page === 'usuarios') {
             $id('view_avatar_circle').textContent = d.nombre?.[0]?.toUpperCase() || 'U';
             $id('view_nombre_title').textContent = d.nombre;
@@ -214,7 +184,6 @@
             $id('view_estado_container').innerHTML = `<span class="badge ${d.estado}">${d.estado.charAt(0).toUpperCase() + d.estado.slice(1)}</span>`;
             SignTech.openModal('viewUserModal');
         }
-        // CONTRIBUCIONES
         else if (page === 'contribuciones') {
             $id('view_avatar').textContent = d.usuario?.[0]?.toUpperCase() || 'U';
             $id('view_palabra').textContent = d.palabra;
@@ -255,7 +224,6 @@
 
             SignTech.openModal('viewModal');
         }
-        // REPORTES
         else if (page === 'reportes') {
             $id('view_id').textContent = d.id;
             $id('view_descripcion').textContent = d.descripcion;
@@ -287,26 +255,15 @@
         }
     };
 
-    window.closeViewModal = () => { SignTech.closeModal('viewUserModal'); SignTech.closeModal('viewModal'); };
-    window.openCreateModal = () => SignTech.openModal('createUserModal');
-    window.closeCreateModal = () => SignTech.closeModal('createUserModal');
-
-    window.openManageModal = (btn) => {
+    /** Modal Gestionar - Contribuciones */
+    window.openManageModal = btn => {
         const d = btn.dataset;
-        const page = document.body.dataset.page;
-
-        if (page === 'contribuciones') {
-            $id('manage_id').value = d.id;
-            $id('manage_palabra').textContent = d.palabra;
-        } else if (page === 'reportes') {
-            $id('manage_id').value = d.id;
-            $id('manage_id_display').textContent = d.id;
-            $id('manage_estado').value = d.estado;
-        }
+        $id('manage_id').value = d.id;
+        $id('manage_palabra').textContent = d.palabra;
         SignTech.openModal('manageModal');
     };
 
-    window.toggleObs = (estado) => {
+    window.toggleObs = estado => {
         const group = $id('obs_group');
         if (group) {
             const isRechazada = estado === 'rechazada';
@@ -315,24 +272,18 @@
         }
     };
 
-    // ═══════════════════════════════════════════════════════════
-    // CERRAR MODALES - Click fuera y Escape
-    // ═══════════════════════════════════════════════════════════
-    
-    document.addEventListener('keydown', (e) => {
+    /** Eventos globales - Cerrar modales */
+    document.addEventListener('keydown', e => {
         if (e.key === 'Escape') $$('.modal.active').forEach(m => SignTech.closeModal(m.id));
     });
 
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', e => {
         if (e.target.classList.contains('modal') && e.target.classList.contains('active')) {
             SignTech.closeModal(e.target.id);
         }
     });
 
-    // ═══════════════════════════════════════════════════════════
-    // INICIALIZACIÓN
-    // ═══════════════════════════════════════════════════════════
-    
+    /** Inicialización */
     function init() {
         initNavbar();
         initSidebar();
@@ -347,5 +298,4 @@
     } else {
         init();
     }
-
 })();
