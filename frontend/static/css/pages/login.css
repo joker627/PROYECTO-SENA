@@ -19,6 +19,7 @@
     box-shadow: 0 20px 60px rgba(16, 24, 40, 0.15);
     overflow: hidden;
     min-height: 600px;
+    animation: fadeInUp 0.6s ease forwards;
 }
 
 /* Left Side - Branding */
@@ -33,9 +34,23 @@
     overflow: hidden;
 }
 
+.login-left::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+}
+
 .login-branding {
     position: relative;
     z-index: 2;
+    animation: fadeInLeft 0.8s ease forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
 }
 
 .brand-logo {
@@ -91,6 +106,9 @@
 .login-form-wrapper {
     width: 100%;
     max-width: 420px;
+    animation: fadeInRight 0.8s ease forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
 }
 
 .form-header {
@@ -153,6 +171,7 @@
     outline: none;
     border-color: var(--teal-500);
     box-shadow: 0 0 0 3px rgba(3, 166, 152, 0.1);
+    transform: translateY(-1px);
 }
 
 .password-input-wrapper {

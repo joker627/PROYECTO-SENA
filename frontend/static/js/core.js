@@ -83,9 +83,15 @@
         function toggle(open) {
             sidebar.classList.toggle('open', open);
             overlay?.classList.toggle('active', open);
+            // Cambiar icono del botón
+            if (btn) {
+                const icon = btn.querySelector('.material-icons');
+                if (icon) icon.textContent = open ? 'close' : 'menu';
+                btn.classList.toggle('active', open);
+            }
         }
 
-        if (btn) btn.onclick = () => toggle(true);
+        if (btn) btn.onclick = () => toggle(!sidebar.classList.contains('open'));
         if (overlay) overlay.onclick = () => toggle(false);
 
         if (collapse) {
@@ -136,15 +142,21 @@
         }
     }
 
-    /** Perfil - Preview avatar */
+    /** Perfil - Preview avatar y submit */
     function initPerfil() {
         const input = $id('avatarInput');
         const img = $('.profile-avatar img');
-        if (input && img) {
+        const form = $id('avatarForm');
+        if (input && img && form) {
             input.onchange = function() {
                 if (this.files?.[0]) {
+                    // Preview
                     const r = new FileReader();
-                    r.onload = e => img.src = e.target.result;
+                    r.onload = e => {
+                        img.src = e.target.result;
+                        // Enviar formulario después del preview
+                        form.submit();
+                    };
                     r.readAsDataURL(this.files[0]);
                 }
             };

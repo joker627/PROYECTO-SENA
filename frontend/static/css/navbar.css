@@ -141,12 +141,33 @@
     box-shadow: var(--shadow-sm);
     transition: all var(--transition-base);
     display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-login::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
 }
 
 .btn-login:hover {
     box-shadow: var(--shadow-lg);
     background: linear-gradient(135deg, var(--teal-300) 0%, var(--teal-400) 100%);
     transform: translateY(-2px);
+}
+
+.btn-login:hover::before {
+    left: 100%;
+}
+
+.btn-login:active {
+    transform: translateY(0) scale(0.98);
 }
 
 /* ===== USER DROPDOWN ===== */
@@ -228,6 +249,8 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
     overflow: hidden;
     z-index: 50;
+    animation: fadeInDown 0.2s ease;
+    transform-origin: top right;
 }
 
 .dropdown-header {
@@ -262,7 +285,7 @@
     padding: 0.625rem 1rem;
     color: var(--gray-700);
     text-decoration: none;
-    transition: background-color var(--transition-fast);
+    transition: all var(--transition-fast);
     width: 100%;
     border: none;
     background: none;
@@ -276,10 +299,16 @@
 .dropdown-item .material-icons {
     color: var(--teal-600);
     font-size: 16px;
+    transition: transform var(--transition-fast);
 }
 
 .dropdown-item:hover {
     background-color: var(--teal-50);
+    padding-left: 1.25rem;
+}
+
+.dropdown-item:hover .material-icons {
+    transform: scale(1.1);
 }
 
 .dropdown-logout {

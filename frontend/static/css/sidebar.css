@@ -134,14 +134,35 @@
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     border-radius: 10px;
-    transition: all 0.2s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+}
+
+.sidebar-link::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
 }
 
 .sidebar-link:hover {
     background: rgba(255, 255, 255, 0.12);
     color: white;
+    transform: translateX(4px);
+}
+
+.sidebar-link:hover::after {
+    transform: translateX(100%);
+}
+
+.sidebar-link:hover .material-icons {
+    transform: scale(1.1);
 }
 
 .sidebar-link.active {

@@ -365,6 +365,14 @@ def update_avatar():
         return redirect(url_for('perfil'))
         
     file = request.files['avatar']
+    
+    # Validar tipo de archivo
+    allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
+    extension = os.path.splitext(file.filename)[1].lower()
+    if extension not in allowed_extensions:
+        flash('Formato no válido. Use JPG, PNG, GIF o WEBP', 'error')
+        return redirect(url_for('perfil'))
+    
     user = session.get('user')
     id_usuario = user.get('id_usuario')
     
@@ -379,21 +387,31 @@ def update_avatar():
             pass
     
     # Guardar nueva foto
-    extension = os.path.splitext(file.filename)[1].lower()
     filename = f"user_{id_usuario}_{int(time.time())}{extension}"
+    filepath = os.path.join(upload_dir, filename)
     
     try:
-        file.save(os.path.join(upload_dir, filename))
-        response = requests.put(f'{API_URL}/api/v1/usuarios/{id_usuario}', json={"imagen_perfil": filename}, timeout=5)
+        file.save(filepath)
+        
+        response = requests.put(
+            f'{API_URL}/api/v1/usuarios/{id_usuario}', 
+            json={"imagen_perfil": filename}, 
+            timeout=10
+        )
         
         if response.status_code == 200:
-            session['user'] = response.json()
+            user_response = requests.get(f'{API_URL}/api/v1/usuarios/{id_usuario}', timeout=5)
+            if user_response.status_code == 200:
+                session['user'] = user_response.json()
+            else:
+                session['user']['imagen_perfil'] = filename
             session.modified = True
-            flash('Imagen actualizada', 'success')
+            flash('Imagen actualizada correctamente', 'success')
         else:
-            flash('Error al registrar imagen', 'error')
+            flash('Error al registrar imagen en el servidor', 'error')
     except:
-        flash('Error al guardar imagen', 'error')
+        flash('Error al guardar la imagen', 'error')
+    
     return redirect(url_for('perfil'))
 
 @app.route('/perfil/password', methods=['POST'])

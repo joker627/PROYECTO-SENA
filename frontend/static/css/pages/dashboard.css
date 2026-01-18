@@ -59,7 +59,7 @@
 /* Cuadrícula de Tarjetas (Dashboard Widgets) */
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -69,6 +69,8 @@
     border-radius: 16px;
     padding: 1.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    min-width: 0;
 }
 
 .info-card-header {
@@ -127,12 +129,18 @@
 .info-item label {
     font-size: 0.875rem;
     color: #64748b;
+    flex-shrink: 0;
 }
 
 .info-item span {
     font-size: 0.875rem;
     font-weight: 600;
     color: #1e293b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 60%;
+    text-align: right;
 }
 
 /* Acciones Rápidas */
@@ -318,5 +326,53 @@
     
     .datetime-badge {
         display: none;
+    }
+
+    .info-item {
+        flex-direction: column;
+        gap: 0.25rem;
+        align-items: flex-start;
+    }
+
+    .info-item span {
+        max-width: 100%;
+        text-align: left;
+        word-break: break-all;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-card {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .info-card-header {
+        margin-bottom: 1rem;
+    }
+
+    .info-card-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .info-card-title h3 {
+        font-size: 0.9rem;
+    }
+
+    .info-card-title p {
+        font-size: 0.75rem;
+    }
+
+    .info-item {
+        padding: 0.75rem 0;
+    }
+
+    .info-item label {
+        font-size: 0.75rem;
+    }
+
+    .info-item span {
+        font-size: 0.8rem;
     }
 }
