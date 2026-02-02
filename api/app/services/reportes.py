@@ -1,9 +1,20 @@
+"""Servicios de gestión de reportes de errores.
+
+Capa de lógica de negocio para operaciones CRUD de reportes,
+con manejo robusto de excepciones y transacciones."""
+
+import pymysql
+from fastapi import HTTPException, status
 from app.core.database import get_connection
+from app.core.logger import logger
+
 
 def eliminar_reporte(id_reporte: int):
-    """Elimina un reporte de la base de datos (cuando se resuelve)"""
-    conn = get_connection()
+    """Elimina un reporte de la base de datos (cuando se resuelve)."""
+    conn = None
     try:
+        conn = get_connection()
+        
         with conn.cursor() as cursor:
             # Verificar que existe
             cursor.execute("SELECT id_reporte FROM reportes_errores WHERE id_reporte = %s", (id_reporte,))
@@ -13,16 +24,38 @@ def eliminar_reporte(id_reporte: int):
             # Eliminar
             cursor.execute("DELETE FROM reportes_errores WHERE id_reporte = %s", (id_reporte,))
             conn.commit()
+            logger.info(f"Reporte {id_reporte} eliminado exitosamente")
             return True
+            
+    except pymysql.MySQLError as e:
+        if conn:
+            conn.rollback()
+        logger.error(f"Error de BD eliminando reporte {id_reporte}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error al eliminar reporte"
+        )
     except Exception as e:
-        print(f"Error eliminando reporte {id_reporte}: {e}")
-        return False
+        if conn:
+            conn.rollback()
+        logger.error(f"Error inesperado eliminando reporte {id_reporte}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error interno del servidor"
+        )
     finally:
-        conn.close()
+        if conn:
+            try:
+                conn.close()
+            except Exception as e:
+                logger.warning(f"Error cerrando conexión: {e}")
 
 def obtener_reportes(estado: str = None, prioridad: str = None, query: str = None, skip: int = 0, limit: int = 100):
-    conn = get_connection()
+    """Obtiene lista paginada de reportes con filtros opcionales."""
+    conn = None
     try:
+        conn = get_connection()
+        
         with conn.cursor() as cursor:
             # Base Queries
             sql = """
@@ -63,12 +96,32 @@ def obtener_reportes(estado: str = None, prioridad: str = None, query: str = Non
             data = cursor.fetchall()
             
             return {"total": total, "data": data}
+            
+    except pymysql.MySQLError as e:
+        logger.error(f"Error de BD en obtener_reportes: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error al consultar reportes"
+        )
+    except Exception as e:
+        logger.error(f"Error inesperado en obtener_reportes: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error interno del servidor"
+        )
     finally:
-        conn.close()
+        if conn:
+            try:
+                conn.close()
+            except Exception as e:
+                logger.warning(f"Error cerrando conexión: {e}")
 
 def actualizar_gestion_reporte(id_reporte: int, estado: str = None, prioridad: str = None):
-    conn = get_connection()
+    """Actualiza el estado y/o prioridad de un reporte."""
+    conn = None
     try:
+        conn = get_connection()
+        
         with conn.cursor() as cursor:
             # Verificar que el reporte existe
             cursor.execute("SELECT id_reporte FROM reportes_errores WHERE id_reporte = %s", (id_reporte,))
@@ -92,16 +145,38 @@ def actualizar_gestion_reporte(id_reporte: int, estado: str = None, prioridad: s
             
             cursor.execute(sql, tuple(params))
             conn.commit()
-            return True  # Éxito
+            logger.info(f"Reporte {id_reporte} actualizado: estado={estado}, prioridad={prioridad}")
+            return True
+            
+    except pymysql.MySQLError as e:
+        if conn:
+            conn.rollback()
+        logger.error(f"Error de BD actualizando reporte {id_reporte}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error al actualizar reporte"
+        )
     except Exception as e:
-        print(f"Error actualizando reporte {id_reporte}: {e}")
-        return False  # Error de DB
+        if conn:
+            conn.rollback()
+        logger.error(f"Error inesperado actualizando reporte {id_reporte}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error interno del servidor"
+        )
     finally:
-        conn.close()
+        if conn:
+            try:
+                conn.close()
+            except Exception as e:
+                logger.warning(f"Error cerrando conexión: {e}")
 
 def obtener_stats_reportes():
-    conn = get_connection()
+    """Obtiene estadísticas agregadas de reportes."""
+    conn = None
     try:
+        conn = get_connection()
+        
         with conn.cursor() as cursor:
             sql = """
             SELECT 
@@ -113,11 +188,29 @@ def obtener_stats_reportes():
             """
             cursor.execute(sql)
             result = cursor.fetchone()
+            
             return {
                 "total": result.get('total', 0) or 0,
                 "pendientes": int(result.get('pendientes', 0) or 0),
                 "en_revision": int(result.get('en_revision', 0) or 0),
                 "alta_prioridad": int(result.get('alta_prioridad', 0) or 0)
             }
+            
+    except pymysql.MySQLError as e:
+        logger.error(f"Error de BD en obtener_stats_reportes: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error al obtener estadísticas de reportes"
+        )
+    except Exception as e:
+        logger.error(f"Error inesperado en obtener_stats_reportes: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error interno del servidor"
+        )
     finally:
-        conn.close()
+        if conn:
+            try:
+                conn.close()
+            except Exception as e:
+                logger.warning(f"Error cerrando conexión: {e}")
