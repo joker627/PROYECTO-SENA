@@ -22,18 +22,16 @@ def login(form_data: UserLoginSchema):
     Raises:
         HTTPException 401: Si las credenciales son incorrectas.
     """
-    result = authenticate_user(form_data.correo, form_data.contrasena)
+    token = authenticate_user(form_data.correo, form_data.contrasena)
     
-    if not result:
+    if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Correo o contraseña incorrecta"
         )
-
-    token, user_info = result
     
     return {
         "access_token": token,
-        "user": user_info
+        "token_type": "bearer"
     }
 

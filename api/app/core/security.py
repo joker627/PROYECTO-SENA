@@ -42,14 +42,15 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def create_access_token(data: dict) -> str:
     """Genera un token JWT para autenticación.
     
-    El token contiene la información del usuario y tiene un tiempo
-    de expiración definido en la configuración.
+    Según mejores prácticas de seguridad, el token solo debe contener
+    datos mínimos necesarios para identificación (sub, email, role).
+    El perfil completo se obtiene mediante endpoint protegido.
     
     Args:
-        data: Datos a incluir en el token (correo, id_usuario, etc.).
+        data: Datos mínimos (sub: user_id, email, role).
         
     Returns:
-        Token JWT codificado.
+        Token JWT codificado con tiempo de expiración.
     """
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE)

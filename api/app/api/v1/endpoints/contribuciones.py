@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from typing import List, Optional
 from app.schemas.contribuciones import ContribucionResponse, ContribucionPaginated
 from app.services import contribuciones as contrib_service
@@ -10,7 +10,12 @@ def get_contribution_stats():
     return contrib_service.obtener_stats_contribuciones()
 
 @router.get("/", response_model=ContribucionPaginated)
-def get_contribuciones(estado: Optional[str] = None, query: Optional[str] = None, skip: int = 0, limit: int = 100):
+def get_contribuciones(
+    estado: Optional[str] = None, 
+    query: Optional[str] = None, 
+    skip: int = Query(0, ge=0, description="Número de registros a saltar"), 
+    limit: int = Query(100, ge=1, le=1000, description="Número máximo de registros a retornar")
+):
     result = contrib_service.obtener_contribuciones(estado, query, skip, limit)
     return {
         "total": result["total"],
