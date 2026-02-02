@@ -1,6 +1,7 @@
-# Endpoints para la Gestión de Usuarios
+"""Endpoints de gestión de usuarios."""
+
 from fastapi import APIRouter, HTTPException, status, Query, Depends
-from typing import List, Optional
+from typing import Optional
 from app.schemas.usuarios import UsuarioResponse, UsuarioCreate, UsuarioUpdate, UsuarioPaginated
 from app.services import usuarios as user_service
 from app.core.dependencies import get_current_user_id
@@ -9,17 +10,7 @@ router = APIRouter()
 
 @router.get("/me", response_model=UsuarioResponse)
 def get_current_user_profile(user_id: int = Depends(get_current_user_id)):
-    """Obtiene el perfil del usuario autenticado.
-    
-    Este endpoint usa el token JWT para identificar al usuario
-    y retornar su información completa de perfil.
-    
-    Headers:
-        Authorization: Bearer <token>
-        
-    Returns:
-        Perfil completo del usuario autenticado.
-    """
+    """Obtiene el perfil del usuario autenticado desde el token JWT."""
     user = user_service.obtener_usuario_por_id(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
@@ -27,18 +18,18 @@ def get_current_user_profile(user_id: int = Depends(get_current_user_id)):
 
 @router.get("/stats")
 def get_user_stats():
-    """Obtiene estadísticas generales de los usuarios (total, roles, estados)."""
+    """Estadísticas de usuarios: total, roles y estados."""
     return user_service.obtener_stats_usuarios()
 
 @router.get("/", response_model=UsuarioPaginated)
 def get_users(
-    skip: int = Query(0, ge=0, description="Número de registros a saltar"), 
-    limit: int = Query(100, ge=1, le=1000, description="Número máximo de registros a retornar"), 
+    skip: int = Query(0, ge=0), 
+    limit: int = Query(100, ge=1, le=1000), 
     rol: Optional[int] = None, 
     estado: Optional[str] = None, 
     query: Optional[str] = None
 ):
-    """Obtiene una lista paginada de usuarios con soporte para filtros."""
+    """Lista paginada de usuarios con filtros."""
     result = user_service.obtener_usuarios(skip=skip, limit=limit, rol=rol, estado=estado, query=query)
     return {
         "total": result["total"],
@@ -49,7 +40,7 @@ def get_users(
 
 @router.post("/", response_model=dict)
 def create_user(usuario: UsuarioCreate):
-    """Registra un nuevo usuario en el sistema."""
+    """Registra un nuevo usuario."""
     user_id = user_service.crear_usuario(usuario)
     if not user_id:
         raise HTTPException(status_code=400, detail="Error creando usuario")
@@ -57,7 +48,7 @@ def create_user(usuario: UsuarioCreate):
 
 @router.get("/{id_usuario}", response_model=UsuarioResponse)
 def get_user(id_usuario: int):
-    """Obtiene la información detallada de un usuario por su ID."""
+    """Obtiene un usuario por ID."""
     user = user_service.obtener_usuario_por_id(id_usuario)
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
@@ -65,17 +56,15 @@ def get_user(id_usuario: int):
 
 @router.put("/{id_usuario}", response_model=UsuarioResponse)
 def update_user(id_usuario: int, usuario: UsuarioUpdate):
-    """Actualiza la información de un usuario existente."""
+    """Actualiza un usuario existente."""
     exito = user_service.actualizar_usuario(id_usuario, usuario)
     if not exito:
         raise HTTPException(status_code=404, detail="Usuario no encontrado o no modificado")
-    
-    updated_user = user_service.obtener_usuario_por_id(id_usuario)
-    return updated_user
+    return user_service.obtener_usuario_por_id(id_usuario)
 
 @router.delete("/{id_usuario}", response_model=dict)
 def delete_user(id_usuario: int):
-    """Elimina permanentemente un usuario del sistema."""
+    """Elimina un usuario."""
     exito = user_service.eliminar_usuario(id_usuario)
     if not exito:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")

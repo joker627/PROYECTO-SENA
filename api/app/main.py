@@ -1,10 +1,4 @@
-"""Punto de entrada principal de la API SignTechnology.
-
-Gestiona el ciclo de vida de la aplicación, incluyendo:
-- Inicialización del pool de conexiones a la base de datos
-- Configuración de CORS para permitir peticiones cross-origin
-- Registro de rutas bajo el prefijo /api/v1
-"""
+"""API SignTechnology - Sistema de gestión para Lengua de Señas Colombiana."""
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,22 +10,16 @@ from app.core.logger import logger
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Gestiona el ciclo de vida de la aplicación.
-    
-    Startup: Inicializa el pool de conexiones a MySQL.
-    Shutdown: Cierra todas las conexiones del pool y libera recursos.
-    """
-    # Inicializar pool de conexiones al arrancar
+    """Maneja inicio y cierre de la aplicación."""
     logger.info("Iniciando aplicación SignTechnology...")
     init_pool()
-    logger.info("Pool de conexiones inicializado correctamente")
+    logger.info("Pool de conexiones inicializado")
     
     yield
     
-    # Cerrar pool de conexiones al detener
     logger.info("Cerrando aplicación...")
     close_pool()
-    logger.info("Aplicación cerrada correctamente")
+    logger.info("Aplicación cerrada")
 
 app = FastAPI(
     title="SIGNTECHNOLOGY API",
@@ -40,7 +28,6 @@ app = FastAPI(
     description="API REST para la gestión del sistema SignTechnology - SENA"
 )
 
-# Configurar CORS para permitir peticiones desde el frontend
 origins = settings.CORS_ORIGINS.split(",")
 
 app.add_middleware(
@@ -61,7 +48,6 @@ def health_check():
         "redoc": "/redoc"
     }
 
-# Incluir el router v1 bajo el prefijo estándar '/api/v1'
 app.include_router(v1_router, prefix="/api/v1")
 
 # uvicorn app.main:app --host 192.168.1.40 --port 8000 --reload

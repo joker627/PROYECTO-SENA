@@ -1,4 +1,4 @@
-"""Endpoints de autenticación de usuarios."""
+"""Endpoints de autenticación."""
 
 from fastapi import APIRouter, HTTPException, status
 from app.schemas.auth import UserLoginSchema, TokenResponse
@@ -6,22 +6,9 @@ from app.services.auth import authenticate_user
 
 router = APIRouter()
 
-
 @router.post("/login", response_model=TokenResponse)
 def login(form_data: UserLoginSchema):
-    """Procesa el inicio de sesión del usuario.
-    
-    Verifica las credenciales y genera un token de acceso JWT.
-    
-    Args:
-        form_data: Credenciales del usuario (correo y contraseña).
-        
-    Returns:
-        Token de acceso y datos del usuario autenticado.
-        
-    Raises:
-        HTTPException 401: Si las credenciales son incorrectas.
-    """
+    """Inicia sesión y genera token JWT."""
     token = authenticate_user(form_data.correo, form_data.contrasena)
     
     if not token:

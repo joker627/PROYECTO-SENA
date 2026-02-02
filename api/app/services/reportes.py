@@ -1,30 +1,24 @@
-"""Servicios de gestión de reportes de errores.
-
-Capa de lógica de negocio para operaciones CRUD de reportes,
-con manejo robusto de excepciones y transacciones."""
+"""Servicios de gestión de reportes de errores."""
 
 import pymysql
 from fastapi import HTTPException, status
 from app.core.database import get_connection
 from app.core.logger import logger
 
-
 def eliminar_reporte(id_reporte: int):
-    """Elimina un reporte de la base de datos (cuando se resuelve)."""
+    """Elimina un reporte resuelto."""
     conn = None
     try:
         conn = get_connection()
         
         with conn.cursor() as cursor:
-            # Verificar que existe
             cursor.execute("SELECT id_reporte FROM reportes_errores WHERE id_reporte = %s", (id_reporte,))
             if not cursor.fetchone():
-                return None  # No encontrado
+                return None
             
-            # Eliminar
             cursor.execute("DELETE FROM reportes_errores WHERE id_reporte = %s", (id_reporte,))
             conn.commit()
-            logger.info(f"Reporte {id_reporte} eliminado exitosamente")
+            logger.info(f"Reporte {id_reporte} eliminado")
             return True
             
     except pymysql.MySQLError as e:
@@ -51,13 +45,12 @@ def eliminar_reporte(id_reporte: int):
                 logger.warning(f"Error cerrando conexión: {e}")
 
 def obtener_reportes(estado: str = None, prioridad: str = None, query: str = None, skip: int = 0, limit: int = 100):
-    """Obtiene lista paginada de reportes con filtros opcionales."""
+    """Lista paginada de reportes con filtros opcionales."""
     conn = None
     try:
         conn = get_connection()
         
         with conn.cursor() as cursor:
-            # Base Queries
             sql = """
             SELECT r.*, u.nombre_completo as nombre_usuario 
             FROM reportes_errores r
@@ -83,11 +76,9 @@ def obtener_reportes(estado: str = None, prioridad: str = None, query: str = Non
                 count_sql += " AND (r.descripcion_error LIKE %s OR u.nombre_completo LIKE %s)"
                 params.extend([search_term, search_term])
             
-            # Count
             cursor.execute(count_sql, tuple(params))
             total = cursor.fetchone()['total']
             
-            # Data
             sql += " ORDER BY r.fecha_reporte DESC LIMIT %s OFFSET %s"
             data_params = params.copy()
             data_params.extend([limit, skip])
@@ -117,16 +108,15 @@ def obtener_reportes(estado: str = None, prioridad: str = None, query: str = Non
                 logger.warning(f"Error cerrando conexión: {e}")
 
 def actualizar_gestion_reporte(id_reporte: int, estado: str = None, prioridad: str = None):
-    """Actualiza el estado y/o prioridad de un reporte."""
+    """Actualiza estado y/o prioridad de un reporte."""
     conn = None
     try:
         conn = get_connection()
         
         with conn.cursor() as cursor:
-            # Verificar que el reporte existe
             cursor.execute("SELECT id_reporte FROM reportes_errores WHERE id_reporte = %s", (id_reporte,))
             if not cursor.fetchone():
-                return None  # Reporte no encontrado
+                return None
             
             updates = []
             params = []
@@ -138,14 +128,14 @@ def actualizar_gestion_reporte(id_reporte: int, estado: str = None, prioridad: s
                 params.append(prioridad)
             
             if not updates:
-                return True  # Sin cambios pero válido
+                return True
                 
             sql = f"UPDATE reportes_errores SET {', '.join(updates)} WHERE id_reporte = %s"
             params.append(id_reporte)
             
             cursor.execute(sql, tuple(params))
             conn.commit()
-            logger.info(f"Reporte {id_reporte} actualizado: estado={estado}, prioridad={prioridad}")
+            logger.info(f"Reporte {id_reporte} actualizado")
             return True
             
     except pymysql.MySQLError as e:

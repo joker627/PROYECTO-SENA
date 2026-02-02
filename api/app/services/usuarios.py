@@ -1,7 +1,4 @@
-"""Servicios de gestión de usuarios.
-
-Capa de lógica de negocio para operaciones CRUD de usuarios,
-con manejo robusto de excepciones y transacciones."""
+"""Servicios de gestión de usuarios."""
 
 import pymysql
 from fastapi import HTTPException, status
@@ -10,21 +7,18 @@ from app.core.logger import logger
 from app.schemas.usuarios import UsuarioCreate, UsuarioUpdate
 from app.core.security import hash_password
 
-# Whitelist de campos permitidos para actualización
 ALLOWED_FIELDS = {
     'nombre_completo', 'correo', 'contrasena', 
     'tipo_documento', 'numero_documento', 'imagen_perfil', 
     'id_rol', 'estado'
 }
 
-
 def obtener_usuarios(skip: int = 0, limit: int = 100, rol: int = None, estado: str = None, query: str = None):
-    """Obtiene lista paginada de usuarios con filtros opcionales."""
+    """Lista paginada de usuarios con filtros opcionales."""
     conn = None
     try:
         conn = get_connection()
         with conn.cursor() as cursor:
-            # Base query
             sql = "SELECT u.*, r.nombre_rol FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol WHERE 1=1"
             count_sql = "SELECT COUNT(*) as total FROM usuarios u WHERE 1=1"
             params = []
@@ -45,11 +39,9 @@ def obtener_usuarios(skip: int = 0, limit: int = 100, rol: int = None, estado: s
                 count_sql += " AND (u.nombre_completo LIKE %s OR u.correo LIKE %s OR u.numero_documento LIKE %s)"
                 params.extend([search_term, search_term, search_term])
 
-            # Get Total
             cursor.execute(count_sql, tuple(params))
             total = cursor.fetchone()['total']
             
-            # Get Data
             sql += " ORDER BY u.fecha_registro DESC LIMIT %s OFFSET %s"
             data_params = params.copy()
             data_params.extend([limit, skip])
