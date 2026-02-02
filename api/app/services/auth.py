@@ -1,12 +1,27 @@
+"""Servicio de autenticación de usuarios."""
+
 from app.core.database import get_connection
 from app.core.security import verify_password, create_access_token
 
 
 def authenticate_user(correo: str, contrasena: str):
-    """Autentica al usuario leyendo directamente de la base de datos."""
+    """Autentica un usuario validando sus credenciales.
+    
+    Busca el usuario por correo, verifica la contraseña y genera un token JWT.
+    
+    Args:
+        correo: Correo electrónico del usuario.
+        contrasena: Contraseña en texto plano.
+        
+    Returns:
+        tuple: (token, user_info) si la autenticación es exitosa.
+        None: Si las credenciales son incorrectas.
+    """
     conn = get_connection()
+    
     try:
         with conn.cursor() as cursor:
+            # Buscar usuario y su rol
             cursor.execute(
                 "SELECT u.id_usuario, u.nombre_completo, u.correo, u.contrasena, u.tipo_documento, "
                 "u.numero_documento, u.imagen_perfil, u.id_rol, u.estado, u.fecha_registro, r.nombre_rol "
@@ -19,11 +34,17 @@ def authenticate_user(correo: str, contrasena: str):
         if not user:
             return None
 
+        # Verificar contraseña
         if not verify_password(contrasena, user["contrasena"]):
             return None
 
-        token = create_access_token({"token": user["correo"], "user_id": user["id_usuario"]})
+        # Generar token JWT
+        token = create_access_token({
+            "token": user["correo"], 
+            "user_id": user["id_usuario"]
+        })
 
+        # Preparar información del usuario (sin la contraseña)
         user_info = {
             "id_usuario": user.get("id_usuario"),
             "nombre_completo": user.get("nombre_completo"),
@@ -38,8 +59,10 @@ def authenticate_user(correo: str, contrasena: str):
         }
 
         return token, user_info
+        
     except Exception as e:
-        print("Error autenticando usuario:", e)
+        print(f"Error autenticando usuario: {e}")
         return None
+        
     finally:
         conn.close()
