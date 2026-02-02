@@ -8,6 +8,7 @@ import pymysql
 from pymysql.cursors import DictCursor
 from dbutils.pooled_db import PooledDB
 from app.core.config import settings
+from app.core.logger import logger
 
 connection_pool = None
 
@@ -19,14 +20,15 @@ def init_pool():
     global connection_pool
     
     if connection_pool is None:
+        max_conn = settings.DB_POOL_SIZE + settings.DB_MAX_OVERFLOW
         connection_pool = PooledDB(
             creator=pymysql,
-            maxconnections=settings.DB_POOL_SIZE + settings.DB_MAX_OVERFLOW,
-            mincached=5,
-            maxcached=settings.DB_POOL_SIZE,
-            maxshared=settings.DB_POOL_SIZE,
+            maxconnections=max_conn,
+            mincached=10,                # Más conexiones en cache para picos de tráfico
+            maxcached=max_conn,          # Cachear todas las conexiones creadas
+            maxshared=0,                 # No compartir conexiones entre threads (más seguro)
             blocking=True,
-            maxusage=None,
+            maxusage=1000,               # Reciclar conexión después de 1000 usos
             setsession=[],
             ping=1 if settings.DB_POOL_PRE_PING else 0,
             host=settings.DB_HOST,
@@ -35,9 +37,10 @@ def init_pool():
             database=settings.DB_NAME,
             port=settings.DB_PORT,
             cursorclass=DictCursor,
-            autocommit=True,
+            autocommit=False,            # Usar transacciones manuales para control ACID
             charset='utf8mb4'
         )
+        logger.info(f"Pool de conexiones inicializado: max={max_conn}, cached={10}")
     return connection_pool
 
 def get_connection():
@@ -54,7 +57,7 @@ def get_connection():
             init_pool()
         return connection_pool.connection()
     except pymysql.MySQLError as e:
-        print(f"Error conectando a MySQL: {e}")
+        logger.error(f"Error conectando a MySQL: {e}", exc_info=True)
         raise
 
 def close_pool():
@@ -65,5 +68,9 @@ def close_pool():
     global connection_pool
     
     if connection_pool is not None:
-        connection_pool.close()
-        connection_pool = None
+        try:
+            connection_pool.close()
+            connection_pool = None
+            logger.info("Pool de conexiones cerrado correctamente")
+        except Exception as e:
+            logger.error(f"Error cerrando pool de conexiones: {e}", exc_info=True)

@@ -1,10 +1,29 @@
 # Endpoints para la Gestión de Usuarios
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Query, Depends
 from typing import List, Optional
 from app.schemas.usuarios import UsuarioResponse, UsuarioCreate, UsuarioUpdate, UsuarioPaginated
 from app.services import usuarios as user_service
+from app.core.dependencies import get_current_user_id
 
 router = APIRouter()
+
+@router.get("/me", response_model=UsuarioResponse)
+def get_current_user_profile(user_id: int = Depends(get_current_user_id)):
+    """Obtiene el perfil del usuario autenticado.
+    
+    Este endpoint usa el token JWT para identificar al usuario
+    y retornar su información completa de perfil.
+    
+    Headers:
+        Authorization: Bearer <token>
+        
+    Returns:
+        Perfil completo del usuario autenticado.
+    """
+    user = user_service.obtener_usuario_por_id(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    return user
 
 @router.get("/stats")
 def get_user_stats():
@@ -13,8 +32,8 @@ def get_user_stats():
 
 @router.get("/", response_model=UsuarioPaginated)
 def get_users(
-    skip: int = 0, 
-    limit: int = 100, 
+    skip: int = Query(0, ge=0, description="Número de registros a saltar"), 
+    limit: int = Query(100, ge=1, le=1000, description="Número máximo de registros a retornar"), 
     rol: Optional[int] = None, 
     estado: Optional[str] = None, 
     query: Optional[str] = None

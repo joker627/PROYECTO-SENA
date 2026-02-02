@@ -8,22 +8,22 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 [![License](https://img.shields.io/badge/License-ISC-blue?style=for-the-badge)](LICENSE)
 
-**Plataforma integral para la traducción bidireccional de Lenguaje de Señas Colombiano utilizando inteligencia artificial**
+Plataforma integral para la traducción bidireccional de Lenguaje de Señas Colombiano utilizando inteligencia artificial
 
-[📖 Documentación](#-documentación-de-la-api) • [🚀 Inicio Rápido](#-inicio-rápido) • [🏗️ Arquitectura](#-arquitectura-del-proyecto) • [🤝 Contribuir](#-contribuidores)
+[📖 Documentación](#-documentación-de-la-api) • [🚀 Inicio Rápido](#-inicio-rápido) • [🏗️ Arquitectura](#️-arquitectura-del-proyecto) • [🤝 Contribuir](#-contribuidores)
 
 ---
 
 ## 📋 Tabla de Contenidos
 
 - [Características](#-características)
-- [Arquitectura del Proyecto](#-arquitectura-del-proyecto)
+- [Arquitectura del Proyecto](#️-arquitectura-del-proyecto)
 - [Requisitos Previos](#-requisitos-previos)
 - [Inicio Rápido](#-inicio-rápido)
 - [Configuración](#️-configuración)
 - [Documentación de la API](#-documentación-de-la-api)
 - [Base de Datos](#️-base-de-datos)
-- [Tecnologías](#-tecnologías-utilizadas)
+- [Tecnologías](#️-tecnologías-utilizadas)
 - [Seguridad](#-seguridad)
 - [Licencia](#-licencia)
 
@@ -32,7 +32,7 @@
 ## ✨ Características
 
 | Característica | Descripción |
-|----------------|-------------|
+| -------------- | ----------- |
 | 🔄 **Traducción Bidireccional** | Conversión de texto a señas y señas a texto |
 | 🤖 **Inteligencia Artificial** | Modelo de IA para reconocimiento y traducción |
 | 👥 **Gestión de Usuarios** | Sistema completo de roles (Admin/Colaborador) |
@@ -99,7 +99,7 @@ PROYECTO-SENA/
 Asegúrate de tener instalado:
 
 | Requisito | Versión Mínima | Verificar Instalación |
-|-----------|----------------|----------------------|
+| --------- | -------------- | --------------------- |
 | Python | 3.10+ | `python --version` |
 | MySQL | 8.0+ | `mysql --version` |
 | Git | 2.0+ | `git --version` |
@@ -171,7 +171,7 @@ python run.py
 ### 5️⃣ Acceder a la Aplicación
 
 | Servicio | URL | Descripción |
-|----------|-----|-------------|
+| -------- | --- | ----------- |
 | 🌐 Frontend | <http://localhost:5000> | Interfaz de usuario |
 | 🔷 API | <http://localhost:8000> | Backend REST |
 | 📚 Swagger UI | <http://localhost:8000/docs> | Documentación interactiva |
@@ -219,19 +219,19 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 ### 🔐 Autenticación
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+| ------ | ------------ | ----------- |
 | `POST` | `/auth/login` | Iniciar sesión |
 
 ### 📊 Estadísticas
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+| ------ | --------------- | ---------------------------- |
 | `GET` | `/estadisticas` | Obtener métricas del sistema |
 
 ### 👥 Usuarios
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+| -------- | ------------------ | ------------------ |
 | `GET` | `/usuarios` | Listar usuarios |
 | `POST` | `/usuarios` | Crear usuario |
 | `GET` | `/usuarios/{id}` | Obtener usuario |
@@ -241,7 +241,7 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 ### 🤝 Contribuciones
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+| -------- | ------------------------ | ----------------------- |
 | `GET` | `/contribuciones` | Listar contribuciones |
 | `POST` | `/contribuciones` | Crear contribución |
 | `PUT` | `/contribuciones/{id}` | Gestionar contribución |
@@ -249,7 +249,7 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 ### 📝 Reportes
 
 | Método | Endpoint | Descripción |
-|--------|----------|-------------|
+| -------- | -------------------- | ------------------- |
 | `GET` | `/reportes` | Listar reportes |
 | `POST` | `/reportes` | Crear reporte |
 | `PUT` | `/reportes/{id}` | Actualizar reporte |
@@ -286,7 +286,7 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 ### Tablas Principales
 
 | Tabla | Descripción |
-|-------|-------------|
+| ----- | ----------- |
 | `roles` | Roles del sistema (Administrador, Colaborador) |
 | `usuarios` | Usuarios registrados |
 | `usuarios_anonimos` | Visitantes no registrados |
@@ -313,7 +313,7 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 ### Backend
 
 | Tecnología | Versión | Propósito |
-|------------|---------|-----------|
+| ---------- | ------- | -------------------- |
 | ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white) | 0.104.1 | Framework API REST |
 | ![Uvicorn](https://img.shields.io/badge/Uvicorn-499848?style=flat&logo=uvicorn&logoColor=white) | 0.24.0 | Servidor ASGI |
 | ![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=flat&logo=pydantic&logoColor=white) | 2.5.2 | Validación de datos |
@@ -324,7 +324,7 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 ### Frontend
 
 | Tecnología | Versión | Propósito |
-|------------|---------|-----------|
+| ---------- | ------- | --------------------- |
 | ![Flask](https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white) | 3.0.0 | Servidor de templates |
 | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white) | 5 | Estructura |
 | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white) | 3 | Estilos |
@@ -334,7 +334,7 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 ### Base de Datos
 
 | Tecnología | Versión | Propósito |
-|------------|---------|-----------|
+| ---------- | ------- | --------------- |
 | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white) | 8.0+ | RDBMS principal |
 
 ---
@@ -344,7 +344,7 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 ### Medidas Implementadas
 
 | Medida | Implementación |
-|--------|----------------|
+| ------ | ------------------------------ |
 | 🔐 **Hashing de Contraseñas** | bcrypt con salt automático |
 | 🎫 **Autenticación** | JWT con expiración configurable |
 | 🛡️ **Autorización** | Validación de roles por endpoint |
@@ -365,11 +365,9 @@ Authorization: Bearer <token>
 
 ## 🤝 Contribuidores
 
-<div align="center">
-
 ### Sign Technology Team
 
-**Desarrollado con ❤️ para la comunidad sorda colombiana**
+Desarrollado con ❤️ para la comunidad sorda colombiana
 
 ---
 
@@ -390,4 +388,3 @@ copyright notice and this permission notice appear in all copies.
 ---
 
 **[⬆ Volver arriba](#-sign-technology)**
-

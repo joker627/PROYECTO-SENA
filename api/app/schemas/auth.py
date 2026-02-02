@@ -22,6 +22,10 @@ class UserInfoSchema(BaseModel):
 
 
 class TokenResponse(BaseModel):
+    """Respuesta del login con token JWT.
+    
+    Según mejores prácticas, solo retorna el token.
+    El perfil completo se obtiene con GET /usuarios/me usando el token.
+    """
     access_token: str
     token_type: str = "bearer"
-    user: UserInfoSchema

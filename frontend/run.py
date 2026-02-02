@@ -26,6 +26,14 @@ def login_required(f):
     return decorated
 
 
+def get_auth_headers():
+    """Obtiene los headers de autorización con el token JWT."""
+    token = session.get('token')
+    if token:
+        return {'Authorization': f'Bearer {token}'}
+    return {}
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # RUTAS PÚBLICAS
 # ══════════════════════════════════════════════════════════════════════════════
@@ -64,23 +72,58 @@ def login_post():
         return redirect(url_for('login_page'))
     
     try:
-        response = requests.post(f'{API_URL}/api/v1/auth/login', json={'correo': correo, 'contrasena': contrasena}, timeout=10)
-        data = response.json()
-
-        if response.status_code == 200:
-            session['user'] = data.get('user')
-            session['token'] = data.get('access_token')
-            session.permanent = remember
-            flash(f"¡Bienvenido {session['user'].get('nombre_completo', 'Usuario')}!", 'success')
-            return redirect(url_for('dashboard') if session['user'].get('rol') in ['admin', 'Administrador'] else url_for('inicio'))
-        else:
+        # Paso 1: Autenticar y obtener token
+        response = requests.post(
+            f'{API_URL}/api/v1/auth/login', 
+            json={'correo': correo, 'contrasena': contrasena}, 
+            timeout=10
+        )
+        
+        if response.status_code != 200:
+            data = response.json()
             flash(data.get('detail', 'Credenciales inválidas'), 'error')
             return redirect(url_for('login_page'))
+        
+        data = response.json()
+        token = data.get('access_token')
+        
+        if not token:
+            flash('Error al obtener token de acceso', 'error')
+            return redirect(url_for('login_page'))
+        
+        # Paso 2: Obtener perfil del usuario con el token
+        profile_response = requests.get(
+            f'{API_URL}/api/v1/usuarios/me',
+            headers={'Authorization': f'Bearer {token}'},
+            timeout=10
+        )
+        
+        if profile_response.status_code != 200:
+            flash('Error al obtener información del perfil', 'error')
+            return redirect(url_for('login_page'))
+        
+        user_profile = profile_response.json()
+        
+        # Guardar en sesión
+        session['token'] = token
+        session['user'] = user_profile
+        session.permanent = remember
+        
+        flash(f"¡Bienvenido {user_profile.get('nombre_completo', 'Usuario')}!", 'success')
+        
+        # Redirigir según rol
+        if user_profile.get('id_rol') == 1:  # Administrador
+            return redirect(url_for('dashboard'))
+        else:
+            return redirect(url_for('inicio'))
             
     except requests.exceptions.ConnectionError:
         flash('Error de conexión con el servidor', 'error')
         return redirect(url_for('login_page'))
-    except Exception:
+    except requests.exceptions.Timeout:
+        flash('Tiempo de espera agotado', 'error')
+        return redirect(url_for('login_page'))
+    except Exception as e:
         flash('Error al procesar la solicitud', 'error')
         return redirect(url_for('login_page'))
 
@@ -158,7 +201,12 @@ def create_usuario():
     }
     
     try:
-        response = requests.post(f'{API_URL}/api/v1/usuarios/', json=datos, timeout=5)
+        response = requests.post(
+            f'{API_URL}/api/v1/usuarios/', 
+            json=datos, 
+            headers=get_auth_headers(),
+            timeout=5
+        )
         if response.status_code == 200:
             flash('Usuario creado correctamente', 'success')
         else:
@@ -179,7 +227,12 @@ def update_usuario():
     }
     
     try:
-        response = requests.put(f'{API_URL}/api/v1/usuarios/{id_usuario}', json=datos, timeout=5)
+        response = requests.put(
+            f'{API_URL}/api/v1/usuarios/{id_usuario}', 
+            json=datos, 
+            headers=get_auth_headers(),
+            timeout=5
+        )
         flash('Usuario actualizado' if response.status_code == 200 else 'Error al actualizar', 'success' if response.status_code == 200 else 'error')
     except:
         flash('Error de conexión', 'error')
@@ -190,7 +243,11 @@ def update_usuario():
 def delete_usuario():
     id_usuario = request.form.get('id_usuario')
     try:
-        response = requests.delete(f'{API_URL}/api/v1/usuarios/{id_usuario}', timeout=5)
+        response = requests.delete(
+            f'{API_URL}/api/v1/usuarios/{id_usuario}', 
+            headers=get_auth_headers(),
+            timeout=5
+        )
         flash('Usuario eliminado' if response.status_code == 200 else 'Error al eliminar', 'success' if response.status_code == 200 else 'error')
     except:
         flash('Error de conexión', 'error')
@@ -327,9 +384,12 @@ def resolver_reporte():
 @login_required
 def perfil():
     """Muestra el perfil del usuario actual."""
-    user = session.get('user')
     try:
-        response = requests.get(f"{API_URL}/api/v1/usuarios/{user.get('id_usuario')}", timeout=5)
+        response = requests.get(
+            f"{API_URL}/api/v1/usuarios/me", 
+            headers=get_auth_headers(),
+            timeout=5
+        )
         if response.status_code == 200:
             session['user'] = response.json()
             session.modified = True
@@ -345,10 +405,22 @@ def update_perfil():
     datos = {"nombre_completo": request.form.get('nombre_completo')}
     
     try:
-        response = requests.put(f"{API_URL}/api/v1/usuarios/{user.get('id_usuario')}", json=datos, timeout=5)
+        response = requests.put(
+            f"{API_URL}/api/v1/usuarios/{user.get('id_usuario')}", 
+            json=datos, 
+            headers=get_auth_headers(),
+            timeout=5
+        )
         if response.status_code == 200:
-            session['user'] = response.json()
-            session.modified = True
+            # Actualizar sesión con datos frescos desde /usuarios/me
+            profile_response = requests.get(
+                f"{API_URL}/api/v1/usuarios/me",
+                headers=get_auth_headers(),
+                timeout=5
+            )
+            if profile_response.status_code == 200:
+                session['user'] = profile_response.json()
+                session.modified = True
             flash('Perfil actualizado', 'success')
         else:
             flash('Error al actualizar', 'error')
@@ -396,11 +468,17 @@ def update_avatar():
         response = requests.put(
             f'{API_URL}/api/v1/usuarios/{id_usuario}', 
             json={"imagen_perfil": filename}, 
+            headers=get_auth_headers(),
             timeout=10
         )
         
         if response.status_code == 200:
-            user_response = requests.get(f'{API_URL}/api/v1/usuarios/{id_usuario}', timeout=5)
+            # Obtener datos actualizados desde /usuarios/me
+            user_response = requests.get(
+                f'{API_URL}/api/v1/usuarios/me', 
+                headers=get_auth_headers(),
+                timeout=5
+            )
             if user_response.status_code == 200:
                 session['user'] = user_response.json()
             else:
@@ -424,14 +502,23 @@ def update_password():
     
     try:
         # Verificar contraseña actual
-        login_response = requests.post(f'{API_URL}/api/v1/auth/login', json={'correo': user.get('correo'), 'contrasena': current_password}, timeout=5)
+        login_response = requests.post(
+            f'{API_URL}/api/v1/auth/login', 
+            json={'correo': user.get('correo'), 'contrasena': current_password}, 
+            timeout=5
+        )
         
         if login_response.status_code != 200:
             flash('Contraseña actual incorrecta', 'error')
             return redirect(url_for('perfil'))
             
         # Actualizar contraseña
-        response = requests.put(f"{API_URL}/api/v1/usuarios/{user.get('id_usuario')}", json={'contrasena': new_password}, timeout=5)
+        response = requests.put(
+            f"{API_URL}/api/v1/usuarios/{user.get('id_usuario')}", 
+            json={'contrasena': new_password}, 
+            headers=get_auth_headers(),
+            timeout=5
+        )
         flash('Contraseña cambiada' if response.status_code == 200 else 'Error al cambiar contraseña', 'success' if response.status_code == 200 else 'error')
     except:
         flash('Error de conexión', 'error')

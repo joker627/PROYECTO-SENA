@@ -1,6 +1,9 @@
-"""Servicio de autenticación de usuarios."""
+"""Servicio de autenticación de usuarios con manejo robusto de errores."""
 
+import pymysql
+from fastapi import HTTPException, status
 from app.core.database import get_connection
+from app.core.logger import logger
 from app.core.security import verify_password, create_access_token
 
 
@@ -17,11 +20,12 @@ def authenticate_user(correo: str, contrasena: str):
         tuple: (token, user_info) si la autenticación es exitosa.
         None: Si las credenciales son incorrectas.
     """
-    conn = get_connection()
+    conn = None
     
     try:
+        conn = get_connection()
+        
         with conn.cursor() as cursor:
-            # Buscar usuario y su rol
             cursor.execute(
                 "SELECT u.id_usuario, u.nombre_completo, u.correo, u.contrasena, u.tipo_documento, "
                 "u.numero_documento, u.imagen_perfil, u.id_rol, u.estado, u.fecha_registro, r.nombre_rol "
@@ -32,37 +36,39 @@ def authenticate_user(correo: str, contrasena: str):
             user = cursor.fetchone()
 
         if not user:
+            logger.warning(f"Intento de login con correo inexistente: {correo}")
             return None
 
         # Verificar contraseña
         if not verify_password(contrasena, user["contrasena"]):
+            logger.warning(f"Intento de login con contraseña incorrecta para: {correo}")
             return None
 
-        # Generar token JWT
+        # Generar token JWT solo con datos mínimos (mejores prácticas de seguridad)
         token = create_access_token({
-            "token": user["correo"], 
-            "user_id": user["id_usuario"]
+            "sub": user["id_usuario"],  # subject (ID del usuario)
+            "email": user["correo"],
+            "role": user["id_rol"]
         })
 
-        # Preparar información del usuario (sin la contraseña)
-        user_info = {
-            "id_usuario": user.get("id_usuario"),
-            "nombre_completo": user.get("nombre_completo"),
-            "correo": user.get("correo"),
-            "id_rol": user.get("id_rol"),
-            "nombre_rol": user.get("nombre_rol"),
-            "estado": user.get("estado"),
-            "fecha_registro": str(user.get("fecha_registro")),
-            "tipo_documento": user.get("tipo_documento"),
-            "numero_documento": user.get("numero_documento"),
-            "imagen_perfil": user.get("imagen_perfil") or "user.svg"
-        }
-
-        return token, user_info
+        logger.info(f"Login exitoso para usuario: {correo}")
+        return token
         
+    except pymysql.MySQLError as e:
+        logger.error(f"Error de BD en authenticate_user: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error al autenticar usuario"
+        )
     except Exception as e:
-        print(f"Error autenticando usuario: {e}")
-        return None
-        
+        logger.error(f"Error inesperado en authenticate_user: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error interno del servidor"
+        )
     finally:
-        conn.close()
+        if conn:
+            try:
+                conn.close()
+            except Exception as e:
+                logger.warning(f"Error cerrando conexión: {e}")

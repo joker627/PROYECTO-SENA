@@ -12,6 +12,7 @@ from contextlib import asynccontextmanager
 from app.api.v1.router import router as v1_router
 from app.core.config import settings
 from app.core.database import init_pool, close_pool
+from app.core.logger import logger
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -21,16 +22,16 @@ async def lifespan(app: FastAPI):
     Shutdown: Cierra todas las conexiones del pool y libera recursos.
     """
     # Inicializar pool de conexiones al arrancar
-    print("Inicializando pool de conexiones...")
+    logger.info("Iniciando aplicación SignTechnology...")
     init_pool()
-    print("Pool de conexiones inicializado")
+    logger.info("Pool de conexiones inicializado correctamente")
     
     yield
     
     # Cerrar pool de conexiones al detener
-    print("Cerrando pool de conexiones...")
+    logger.info("Cerrando aplicación...")
     close_pool()
-    print("Pool cerrado correctamente")
+    logger.info("Aplicación cerrada correctamente")
 
 app = FastAPI(
     title="SIGNTECHNOLOGY API",
