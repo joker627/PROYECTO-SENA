@@ -1,8 +1,6 @@
-<div align="center">
-
 # 🤟 Sign Technology
 
-### Sistema de Traducción de Lenguaje de Señas Colombiano (LSC)
+## Sistema de Traducción de Lenguaje de Señas Colombiano (LSC)
 
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
@@ -10,11 +8,9 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 [![License](https://img.shields.io/badge/License-ISC-blue?style=for-the-badge)](LICENSE)
 
-*Plataforma integral para la traducción bidireccional de Lenguaje de Señas Colombiano utilizando inteligencia artificial*
+**Plataforma integral para la traducción bidireccional de Lenguaje de Señas Colombiano utilizando inteligencia artificial**
 
 [📖 Documentación](#-documentación-de-la-api) • [🚀 Inicio Rápido](#-inicio-rápido) • [🏗️ Arquitectura](#-arquitectura-del-proyecto) • [🤝 Contribuir](#-contribuidores)
-
-</div>
 
 ---
 
@@ -52,7 +48,7 @@
 
 El proyecto sigue una arquitectura de **microservicios** con separación clara entre backend y frontend:
 
-```
+```text
 PROYECTO-SENA/
 │
 ├── 📁 fastapi/                    # 🔷 Backend - API REST (FastAPI)
@@ -176,10 +172,10 @@ python run.py
 
 | Servicio | URL | Descripción |
 |----------|-----|-------------|
-| 🌐 Frontend | http://localhost:5000 | Interfaz de usuario |
-| 🔷 API | http://localhost:8000 | Backend REST |
-| 📚 Swagger UI | http://localhost:8000/docs | Documentación interactiva |
-| 📖 ReDoc | http://localhost:8000/redoc | Documentación alternativa |
+| 🌐 Frontend | <http://localhost:5000> | Interfaz de usuario |
+| 🔷 API | <http://localhost:8000> | Backend REST |
+| 📚 Swagger UI | <http://localhost:8000/docs> | Documentación interactiva |
+| 📖 ReDoc | <http://localhost:8000/redoc> | Documentación alternativa |
 
 ---
 
@@ -266,7 +262,7 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 
 ### Diagrama de Entidades Principales
 
-```
+```text
 ┌──────────────┐     ┌──────────────────────┐     ┌─────────────────────────┐
 │    roles     │────<│      usuarios        │────<│  contribuciones_senas   │
 └──────────────┘     └──────────────────────┘     └─────────────────────────┘
@@ -373,9 +369,7 @@ Authorization: Bearer <token>
 
 ### Sign Technology Team
 
-*Desarrollado con ❤️ para la comunidad sorda colombiana*
-
-</div>
+**Desarrollado con ❤️ para la comunidad sorda colombiana**
 
 ---
 
@@ -383,7 +377,7 @@ Authorization: Bearer <token>
 
 Este proyecto está bajo la Licencia **ISC**.
 
-```
+```text
 ISC License
 
 Copyright (c) 2026 Sign Technology Team
@@ -395,9 +389,5 @@ copyright notice and this permission notice appear in all copies.
 
 ---
 
-<div align="center">
-
 **[⬆ Volver arriba](#-sign-technology)**
-
-</div>
 
