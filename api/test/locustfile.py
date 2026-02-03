@@ -24,10 +24,11 @@ class SignTechnologyUser(HttpUser):
             self.client.headers = {"Authorization": f"Bearer {self.token}"}
         else:
             logger.error(
-                f"Login failed with status code {response.status_code}: {response.text}"
+                f"Login failed with status code {response.status_code}. "
+                "Unable to authenticate user for load testing."
             )
             # Stop this user to prevent subsequent failed requests
-            self.environment.runner.quit()
+            self.stop()
     
     @task(3)
     def get_estadisticas(self):
