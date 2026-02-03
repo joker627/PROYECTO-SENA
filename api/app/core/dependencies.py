@@ -11,13 +11,16 @@ def get_current_user_id(credentials: HTTPAuthorizationCredentials = Depends(secu
     """Extrae el ID del usuario desde el token JWT."""
     try:
         payload = decode_token(credentials.credentials)
-        user_id = payload.get("sub")
+        user_id = payload.get("user_id")
         if user_id is None:
+            logger.warning("Token inválido: falta user_id en el payload")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token inválido: falta subject"
+                detail="Token inválido: falta user_id"
             )
         return int(user_id)
+    except HTTPException:
+        raise
     except Exception as e:
         logger.warning(f"Token inválido: {e}")
         raise HTTPException(

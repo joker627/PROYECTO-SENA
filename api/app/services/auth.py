@@ -22,22 +22,13 @@ def authenticate_user(correo: str, contrasena: str):
         if not verify_password(contrasena, user["contrasena"]):
             return None
 
-        token = create_access_token({"token": user["correo"], "user_id": user["id_usuario"]})
+        # Token solo con información mínima necesaria
+        token = create_access_token({
+            "sub": user["correo"],
+            "user_id": user["id_usuario"]
+        })
 
-        user_info = {
-            "id_usuario": user.get("id_usuario"),
-            "nombre_completo": user.get("nombre_completo"),
-            "correo": user.get("correo"),
-            "id_rol": user.get("id_rol"),
-            "nombre_rol": user.get("nombre_rol"),
-            "estado": user.get("estado"),
-            "fecha_registro": str(user.get("fecha_registro")),
-            "tipo_documento": user.get("tipo_documento"),
-            "numero_documento": user.get("numero_documento"),
-            "imagen_perfil": user.get("imagen_perfil") or "user.svg"
-        }
-
-        return token, user_info
+        return token
     except Exception as e:
         print("Error autenticando usuario:", e)
         return None
