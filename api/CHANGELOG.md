@@ -107,8 +107,8 @@ POST /api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "user@example.com",
-  "password": "your_password"
+  "correo": "user@example.com",
+  "contrasena": "your_password"
 }
 ```
 
