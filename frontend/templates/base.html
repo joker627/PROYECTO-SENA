@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sign Technology{% endblock %}</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="{% block description %}Traductor de Lenguaje de Señas Colombiano (LSC) con inteligencia artificial. Comunicación inclusiva y accesible en tiempo real.{% endblock %}">
+    <meta name="keywords"
+        content="lenguaje de señas, LSC, traductor de señas, inteligencia artificial, accesibilidad, comunicación inclusiva, Sign Technology">
+    <meta name="author" content="Sign Technology">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta Tags (Facebook, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Sign Technology">
+    <meta property="og:title"
+        content="{% block og_title %}Sign Technology - Traductor de Lenguaje de Señas LSC{% endblock %}">
+    <meta property="og:description"
+        content="{% block og_description %}Comunicación inclusiva con tecnología de inteligencia artificial. Traduce el Lenguaje de Señas Colombiano a texto instantáneamente.{% endblock %}">
+    <meta property="og:image"
+        content="{% block og_image %}{{ url_for('static', filename='img/general/logo.webp', _external=True) }}{% endblock %}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:locale" content="es_CO">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title"
+        content="{% block twitter_title %}Sign Technology - Traductor de Lenguaje de Señas LSC{% endblock %}">
+    <meta name="twitter:description"
+        content="{% block twitter_description %}Comunicación inclusiva con tecnología de inteligencia artificial. Traduce el Lenguaje de Señas Colombiano a texto instantáneamente.{% endblock %}">
+    <meta name="twitter:image"
+        content="{% block twitter_image %}{{ url_for('static', filename='img/general/twitter-card.jpg', _external=True) }}{% endblock %}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/general/logo.webp') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/general/logo.webp') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/general/logo.webp') }}">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#03A69A">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Navbar -->
+    {% include 'components/navbar.html' %}
+
+    <!-- Flash Messages -->
+    {% include 'components/flash_messages.html' %}
+
+    <!-- Contenido principal -->
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    {% include 'components/footer.html' %}
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+
+    {% block extra_js %}{% endblock %}
+
+
+</body>
+
+</html>

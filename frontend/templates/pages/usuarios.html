@@ -1,0 +1,352 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Usuarios - Sign Technology{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/usuarios.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Gestión de Usuarios</h1>
+        <p>Administra los usuarios del sistema</p>
+    </div>
+    <button class="btn-primary" onclick="openCreateModal()">
+        <span class="material-icons">person_add</span>Nuevo Usuario
+    </button>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon blue"><span class="material-icons">groups</span></div>
+        <div class="stat-info">
+            <p>Total Usuarios</p>
+            <div class="stat-value">{{ stats.total }}</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon purple"><span class="material-icons">admin_panel_settings</span></div>
+        <div class="stat-info">
+            <p>Administradores</p>
+            <div class="stat-value">{{ stats.administradores }}</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon teal"><span class="material-icons">group</span></div>
+        <div class="stat-info">
+            <p>Colaboradores</p>
+            <div class="stat-value">{{ stats.colaboradores }}</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><span class="material-icons">check_circle</span></div>
+        <div class="stat-info">
+            <p>Activos</p>
+            <div class="stat-value">{{ stats.activos }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="filters-card">
+    <form action="{{ url_for('usuarios') }}" method="GET" class="filters-grid">
+        <div class="form-group">
+            <label>Buscar</label>
+            <input type="text" name="query" placeholder="Nombre, correo o documento..."
+                value="{{ filter_query or '' }}">
+        </div>
+        <div class="form-group">
+            <label>Rol</label>
+            <select name="rol" onchange="this.form.submit()">
+                <option value="">Todos</option>
+                <option value="1" {% if filter_rol=='1' %}selected{% endif %}>Administrador</option>
+                <option value="2" {% if filter_rol=='2' %}selected{% endif %}>Colaborador</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Estado</label>
+            <select name="estado" onchange="this.form.submit()">
+                <option value="">Todos</option>
+                <option value="activo" {% if filter_estado=='activo' %}selected{% endif %}>Activo</option>
+                <option value="inactivo" {% if filter_estado=='inactivo' %}selected{% endif %}>Inactivo
+                </option>
+            </select>
+        </div>
+    </form>
+</div>
+
+<div class="table-card">
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Correo</th>
+                    <th>Documento</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if users %}
+                {% for user in users %}
+                <tr>
+                    <td data-label="Usuario">
+                        <div class="user-cell">
+                            <div class="avatar">{{ user.nombre_completo.split()[0][0] if
+                                user.nombre_completo else 'U' }}</div>
+                            <div class="name">
+                                <div>{{ user.nombre_completo }}</div>
+                                <small style="color:#666; font-size:0.8em">{{ user.correo }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-label="Correo">{{ user.correo }}</td>
+                    <td data-label="Documento">{{ user.numero_documento }}</td>
+                    <td data-label="Rol">
+                        {% if user.id_rol == 1 %}
+                        <span class="badge admin">Administrador</span>
+                        {% else %}
+                        <span class="badge colaborador">Colaborador</span>
+                        {% endif %}
+                    </td>
+                    <td data-label="Estado">
+                        <span class="badge {{ user.estado }}">{{ user.estado|capitalize }}</span>
+                    </td>
+                    <td data-label="Acciones">
+                        <div class="actions-cell">
+                            <button class="btn-icon view" title="Ver detalles" data-nombre="{{ user.nombre_completo }}"
+                                data-correo="{{ user.correo }}" data-documento="{{ user.numero_documento }}"
+                                data-rol="{{ 'Administrador' if user.id_rol == 1 else 'Colaborador' }}"
+                                data-estado="{{ user.estado }}" data-fecha="{{ user.fecha_registro[:10] }}"
+                                onclick="openViewModal(this)">
+                                <span class="material-icons">visibility</span>
+                            </button>
+                            <button class="btn-icon edit" title="Editar usuario" data-id="{{ user.id_usuario }}"
+                                data-nombre="{{ user.nombre_completo }}" data-correo="{{ user.correo }}"
+                                data-rol="{{ user.id_rol }}" data-estado="{{ user.estado }}"
+                                onclick="openEditModal(this)">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <form action="{{ url_for('delete_usuario') }}" method="POST" style="display:inline;"
+                                onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
+                                <input type="hidden" name="id_usuario" value="{{ user.id_usuario }}">
+                                <button type="submit" class="btn-icon delete" title="Eliminar usuario">
+                                    <span class="material-icons">delete</span>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 2rem;">No hay usuarios registrados
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('usuarios', page=page-1, query=filter_query, rol=filter_rol, estado=filter_estado) }}"
+            class="btn-secondary">
+            <span class="material-icons" style="font-size: 18px;">chevron_left</span>
+        </a>
+        {% endif %}
+
+        <div class="page-numbers">
+            {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('usuarios', page=p, query=filter_query, rol=filter_rol, estado=filter_estado) }}"
+                class="page-link {{ 'active' if p == page else '' }}">
+                {{ p }}
+            </a>
+            {% endfor %}
+        </div>
+
+        {% if page < total_pages %} <a
+            href="{{ url_for('usuarios', page=page+1, query=filter_query, rol=filter_rol, estado=filter_estado) }}"
+            class="btn-secondary">
+            <span class="material-icons" style="font-size: 18px;">chevron_right</span>
+            </a>
+            {% endif %}
+    </div>
+</div>
+
+<!-- Modal de Creación de Usuario -->
+<div class="modal" id="createUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Nuevo Usuario</h2>
+            <button type="button" class="btn-close" onclick="closeCreateModal()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <form action="{{ url_for('create_usuario') }}" method="POST">
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="create_nombre">Nombre Completo</label>
+                        <input type="text" id="create_nombre" name="nombre_completo" placeholder="Ej. Juan Pérez"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_correo">Correo Electrónico</label>
+                        <input type="email" id="create_correo" name="correo" placeholder="correo@ejemplo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_contrasena">Contraseña</label>
+                        <input type="password" id="create_contrasena" name="contrasena" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="create_tipo_doc">Tipo de Documento</label>
+                        <select id="create_tipo_doc" name="tipo_documento" required>
+                            <option value="CC">Cédula de Ciudadanía</option>
+                            <option value="TI">Tarjeta de Identidad</option>
+                            <option value="CE">Cédula de Extranjería</option>
+                            <option value="PAS">Pasaporte</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_numero_doc">Número de Documento</label>
+                        <input type="text" id="create_numero_doc" name="numero_documento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_rol">Rol</label>
+                        <select id="create_rol" name="id_rol" required>
+                            <option value="2" selected>Colaborador</option>
+                            <option value="1">Administrador</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_estado">Estado</label>
+                        <select id="create_estado" name="estado" required>
+                            <option value="activo" selected>Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeCreateModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary">
+                    <span class="material-icons">person_add</span>
+                    Crear Usuario
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de Visualización de Usuario -->
+<div class="modal" id="viewUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Detalles del Usuario</h2>
+            <button type="button" class="btn-close" onclick="closeViewModal()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="view-header">
+                <div class="view-avatar" id="view_avatar_circle">U</div>
+                <div class="view-main-info">
+                    <h3 id="view_nombre_title">-</h3>
+                    <p id="view_correo_subtitle">-</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="view-item">
+                    <label><span class="material-icons">badge</span> Nombre Completo</label>
+                    <p id="view_nombre" class="view-value">-</p>
+                </div>
+                <div class="view-item">
+                    <label><span class="material-icons">email</span> Correo Electrónico</label>
+                    <p id="view_correo" class="view-value">-</p>
+                </div>
+                <div class="view-item">
+                    <label><span class="material-icons">fingerprint</span> Documento</label>
+                    <p id="view_documento" class="view-value">-</p>
+                </div>
+                <div class="view-item">
+                    <label><span class="material-icons">settings_accessibility</span> Rol</label>
+                    <p id="view_rol" class="view-value">-</p>
+                </div>
+                <div class="view-item">
+                    <label><span class="material-icons">info</span> Estado</label>
+                    <div id="view_estado_container">
+                        <!-- Badge se insertará aquí via JS -->
+                    </div>
+                </div>
+                <div class="view-item">
+                    <label><span class="material-icons">calendar_today</span> Fecha de Registro</label>
+                    <p id="view_fecha" class="view-value">-</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeViewModal()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Edición de Usuario -->
+<div class="modal" id="editUserModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Editar Usuario</h2>
+            <button type="button" class="btn-close" onclick="closeEditModal()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <form action="{{ url_for('update_usuario') }}" method="POST">
+            <div class="modal-body">
+                <input type="hidden" name="id_usuario" id="edit_id_usuario">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="edit_nombre">Nombre Completo</label>
+                        <input type="text" id="edit_nombre" name="nombre_completo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_correo">Correo Electrónico</label>
+                        <input type="email" id="edit_correo" name="correo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_rol">Rol</label>
+                        <select id="edit_rol" name="id_rol" required>
+                            <option value="1">Administrador</option>
+                            <option value="2">Colaborador</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_estado">Estado</label>
+                        <select id="edit_estado" name="estado" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary">
+                    <span class="material-icons">save</span>
+                    Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/usuarios.js') }}"></script>
+{% endblock %}

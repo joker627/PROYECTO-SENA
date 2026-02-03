@@ -1,0 +1,293 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Reportes - Sign Technology{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/reportes.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Gestión de Reportes</h1>
+    <p>Administración y seguimiento de reportes del sistema</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon blue"><span class="material-icons">description</span></div>
+        <div class="stat-info">
+            <p>Total</p>
+            <div class="stat-value">{{ stats.total }}</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon yellow"><span class="material-icons">schedule</span></div>
+        <div class="stat-info">
+            <p>Pendientes</p>
+            <div class="stat-value">{{ stats.pendientes }}</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><span class="material-icons">check_circle</span></div>
+        <div class="stat-info">
+            <p>Resueltos</p>
+            <div class="stat-value">{{ stats.resueltos }}</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon red"><span class="material-icons">warning</span></div>
+        <div class="stat-info">
+            <p>Urgentes</p>
+            <div class="stat-value">{{ stats.urgentes }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="filters-card">
+    <div class="filters-title"><span class="material-icons">filter_list</span>Filtros</div>
+    <form action="{{ url_for('reportes') }}" method="GET" class="filters-grid">
+        <div class="form-group">
+            <label>Buscar</label>
+            <input type="text" name="query" placeholder="Descripción o usuario..." value="{{ filter_query or '' }}">
+        </div>
+        <div class="form-group">
+            <label>Estado</label>
+            <select name="estado" onchange="this.form.submit()">
+                <option value="todos" {% if filter_estado=='todos' %}selected{% endif %}>Todos</option>
+                <option value="pendiente" {% if filter_estado=='pendiente' %}selected{% endif %}>Pendiente
+                </option>
+                <option value="en_revision" {% if filter_estado=='en_revision' %}selected{% endif %}>En
+                    Revisión</option>
+                <option value="resuelto" {% if filter_estado=='resuelto' %}selected{% endif %}>Resuelto
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Prioridad</label>
+            <select name="prioridad" onchange="this.form.submit()">
+                <option value="todas" {% if filter_prioridad=='todas' %}selected{% endif %}>Todas</option>
+                <option value="baja" {% if filter_prioridad=='baja' %}selected{% endif %}>Baja</option>
+                <option value="media" {% if filter_prioridad=='media' %}selected{% endif %}>Media</option>
+                <option value="alta" {% if filter_prioridad=='alta' %}selected{% endif %}>Alta</option>
+                <option value="urgente" {% if filter_prioridad=='urgente' %}selected{% endif %}>Urgente
+                </option>
+            </select>
+        </div>
+    </form>
+</div>
+
+<div class="table-card">
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Prioridad</th>
+                    <th>Reporte</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if reports %}
+                {% for rep in reports %}
+                <tr>
+                    <td data-label="Prioridad">
+                        <span class="priority-badge {{ rep.prioridad }}">
+                            {% if rep.prioridad == 'urgente' %}<span class="material-icons"
+                                style="font-size:16px;">error</span>{% endif %}
+                            {{ rep.prioridad|capitalize }}
+                        </span>
+                    </td>
+                    <td data-label="Reporte">
+                        <div style="max-width:300px;">
+                            <div style="font-weight:600;">#{{ rep.id_reporte }}</div>
+                            <div style="font-size:0.875rem; color:#64748b;">{{ rep.descripcion_error }}
+                            </div>
+                        </div>
+                    </td>
+                    <td data-label="Usuario">{{ rep.nombre_usuario or 'Anónimo' }}</td>
+                    <td data-label="Fecha">{{ rep.fecha_reporte[:10] }}</td>
+                    <td data-label="Estado">
+                        <span class="badge {{ rep.estado }}">{{ rep.estado|replace('_', ' ')|capitalize
+                            }}</span>
+                    </td>
+                    <td data-label="Acciones">
+                        <div class="actions-cell">
+                            <button class="btn-icon view" title="Ver Detalles" onclick="openViewModal(this)"
+                                data-id="{{ rep.id_reporte }}" data-descripcion="{{ rep.descripcion_error }}"
+                                data-usuario="{{ rep.nombre_usuario }}" data-fecha="{{ rep.fecha_reporte[:10] }}"
+                                data-estado="{{ rep.estado }}" data-prioridad="{{ rep.prioridad }}"
+                                data-tipo="{{ rep.tipo_traduccion }}" data-evidencia="{{ rep.evidencia_url }}">
+                                <span class="material-icons">visibility</span>
+                            </button>
+
+                            <button class="btn-icon check" title="Gestionar Estado" onclick="openManageModal(this)"
+                                data-id="{{ rep.id_reporte }}" data-estado="{{ rep.estado }}">
+                                <span class="material-icons">settings</span>
+                            </button>
+
+                            {% if rep.estado != 'resuelto' %}
+                            <form action="{{ url_for('update_reporte') }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="id_reporte" value="{{ rep.id_reporte }}">
+                                <input type="hidden" name="nuevo_estado" value="resuelto">
+                                <button type="submit" class="btn-icon check" title="Resolver Rápido"
+                                    style="color: var(--success); border-color: var(--success); opacity: 0.7;">
+                                    <span class="material-icons">check_circle</span>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                        <span class="material-icons"
+                            style="font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.2;">search_off</span>
+                        No hay reportes registrados con los filtros seleccionados
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal: Ver Detalles -->
+<div class="modal" id="viewModal">
+    <div class="modal-content" style="max-width: 900px;">
+        <div class="modal-header">
+            <h2>Detalle del Reporte #<span id="view_id"></span></h2>
+            <button class="btn-icon" onclick="closeModal('viewModal')"><span
+                    class="material-icons">close</span></button>
+        </div>
+        <div class="view-modal-grid">
+            <!-- Columna Izquierda: Multimedia -->
+            <div class="view-evidence-section" id="evidence_section">
+                <div class="evidence-wrapper">
+                    <img id="view_img_evidencia" src="" alt="Evidencia"
+                        style="display:none; width:100%; height:100%; object-fit: contain; border-radius:12px;">
+                    <video id="view_video_evidencia" controls
+                        style="display:none; width:100%; height:100%; border-radius:12px;"></video>
+                    <div id="no_evidence_msg" class="empty-evidence" style="display:none;">
+                        <span class="material-icons">attachment_off</span>
+                        <p>No se adjuntó evidencia visual.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Información -->
+            <div class="view-info-section">
+                <div class="view-item">
+                    <label><span class="material-icons">description</span> Descripción del Error</label>
+                    <p id="view_descripcion" class="view-value"
+                        style="background: #f8fafc; padding: 1rem; border-radius: 12px; border: 1px solid var(--border);">
+                        -</p>
+                </div>
+
+                <div class="view-meta-stats">
+                    <div class="view-item">
+                        <label><span class="material-icons">person</span> Reportado por</label>
+                        <p id="view_usuario" class="view-value">-</p>
+                    </div>
+                    <div class="view-item">
+                        <label><span class="material-icons">calendar_today</span> Fecha Registro</label>
+                        <p id="view_fecha" class="view-value">-</p>
+                    </div>
+                </div>
+
+                <div class="view-item">
+                    <label><span class="material-icons">translate</span> Tipo de Traducción</label>
+                    <p id="view_tipo" class="view-value">-</p>
+                </div>
+
+                <div class="view-meta-stats">
+                    <div class="view-item">
+                        <label><span class="material-icons">flag</span> Prioridad</label>
+                        <div id="view_prioridad_container"></div>
+                    </div>
+                    <div class="view-item">
+                        <label><span class="material-icons">info</span> Estado Actual</label>
+                        <div id="view_estado_container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('viewModal')">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Gestionar Reporte -->
+<div class="modal" id="manageModal">
+    <div class="modal-content" style="max-width: 450px;">
+        <div class="modal-header">
+            <h2>Gestionar Reporte #<span id="manage_id_display"></span></h2>
+            <button class="btn-icon" onclick="closeModal('manageModal')"><span
+                    class="material-icons">close</span></button>
+        </div>
+        <form action="{{ url_for('update_reporte') }}" method="POST">
+            <div class="modal-body">
+                <input type="hidden" name="id_reporte" id="manage_id">
+
+                <div class="form-group">
+                    <label>Nuevo Estado</label>
+                    <select name="nuevo_estado" id="manage_estado" required>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en_revision">En Revisión</option>
+                        <option value="resuelto">Resuelto</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label>Prioridad (Opcional)</label>
+                    <select name="nueva_prioridad">
+                        <option value="">Sin cambios</option>
+                        <option value="baja">Baja</option>
+                        <option value="media">Media</option>
+                        <option value="alta">Alta</option>
+                        <option value="urgente">Urgente</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeModal('manageModal')">Cancelar</button>
+                <button type="submit" class="btn-primary">Actualizar Reporte</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="pagination">
+    {% if page > 1 %}
+    <a href="{{ url_for('reportes', page=page-1, estado=filter_estado, prioridad=filter_prioridad, query=filter_query) }}"
+        class="btn-secondary"><span class="material-icons">chevron_left</span></a>
+    {% endif %}
+
+    <div class="page-numbers">
+        {% for p in range(1, total_pages + 1) %}
+        {% if p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %} <a
+            href="{{ url_for('reportes', page=p, estado=filter_estado, prioridad=filter_prioridad, query=filter_query) }}"
+            class="page-link {{ 'active' if p == page else '' }}">
+            {{ p }}
+            </a>
+            {% elif p == 2 or p == total_pages - 1 %}
+            <span class="page-link" style="cursor:default">...</span>
+            {% endif %}
+            {% endfor %}
+    </div>
+
+    {% if page < total_pages %} <a
+        href="{{ url_for('reportes', page=page+1, estado=filter_estado, prioridad=filter_prioridad, query=filter_query) }}"
+        class="btn-secondary"><span class="material-icons">chevron_right</span></a>
+        {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
+{% endblock %}

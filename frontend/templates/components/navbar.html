@@ -1,0 +1,169 @@
+﻿<nav class="navbar">
+    <div class="navbar-container">
+        <!-- Brand -->
+        <a href="{{ url_for('inicio') }}" class="navbar-brand">
+            <img src="{{ url_for('static', filename='img/general/logo.webp') }}" alt="Logo de Sign Technology"
+                class="navbar-logo">
+            <div class="navbar-brand-text">
+                <span class="navbar-title">Sign Technology</span>
+                <span class="navbar-subtitle">INNOVACIÓN DIGITAL</span>
+            </div>
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="navbar-desktop">
+            <ul class="navbar-menu">
+                <li class="navbar-menu-item">
+                    <a href="{{ url_for('inicio') }}" class="navbar-link">
+                        Inicio
+                    </a>
+                </li>
+                <li class="navbar-menu-item">
+                    <a href="{{ url_for('nosotros') }}" class="navbar-link">
+                        Nosotros
+                    </a>
+                </li>
+                <li class="navbar-menu-item">
+                    <a href="{{ url_for('tutoriales') }}" class="navbar-link">
+                        Tutoriales
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Auth Section -->
+            <div class="navbar-auth" id="authSection">
+                {% if session.get('user') %}
+                <!-- User dropdown (shown when logged in) -->
+                <div class="user-dropdown" id="userDropdown">
+                    <button class="user-menu-btn" id="userMenuBtn">
+                        <div class="user-avatar" id="userAvatar">
+                            <img src="{{ url_for('static', filename='img/profiles/' + (session.user.imagen_perfil or 'user.svg')) }}"
+                                alt="{{ session.user.nombre_completo }}"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name" id="userName">{{ session.user.nombre_completo }}</span>
+                            <span class="user-role">{{ session.user.rol }}</span>
+                        </div>
+                        <span class="material-icons chevron-icon" id="chevronIcon">expand_more</span>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div class="dropdown-menu" id="dropdownMenu" style="display: none;">
+                        <div class="dropdown-header">
+                            <p class="dropdown-name" id="dropdownUserName">{{ session.user.nombre_completo }}</p>
+                            <p class="dropdown-email" id="dropdownUserEmail">{{ session.user.correo }}</p>
+                        </div>
+                        <div class="dropdown-body">
+                            <a href="{{ url_for('dashboard') }}" class="dropdown-item">
+                                <span class="material-icons">dashboard</span>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span class="material-icons">person</span>
+                                <span>Mi Perfil</span>
+                            </a>
+                            <a href="{{ url_for('logout') }}" class="dropdown-item dropdown-logout" id="logoutBtn">
+                                <span class="material-icons">logout</span>
+                                <span>Cerrar sesión</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <!-- Login button (shown when not logged in) -->
+                <a href="{{ url_for('login_page') }}" class="btn-login" id="loginBtn">
+                    Acceder
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Hamburger Button -->
+        <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="mobile-menu-content">
+        <div class="mobile-menu-header">
+            <a href="{{ url_for('inicio') }}" class="navbar-brand">
+                <img src="{{ url_for('static', filename='img/general/logo.webp') }}" alt="Logo" class="navbar-logo">
+                <div class="navbar-brand-text">
+                    <span class="navbar-title">Sign Technology</span>
+                    <span class="navbar-subtitle">INNOVACIÓN DIGITAL</span>
+                </div>
+            </a>
+            <button class="close-mobile" id="closeMobile" aria-label="Cerrar menú">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+
+        <nav class="mobile-menu-nav">
+            <ul class="mobile-menu-list">
+                <li>
+                    <a href="{{ url_for('inicio') }}" class="mobile-menu-link">
+                        <span class="material-icons">home</span>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('nosotros') }}" class="mobile-menu-link">
+                        <span class="material-icons">groups</span>
+                        <span>Nosotros</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('tutoriales') }}" class="mobile-menu-link">
+                        <span class="material-icons">play_circle</span>
+                        <span>Tutoriales</span>
+                    </a>
+                </li>
+                {% if session.get('user') %}
+                <li>
+                    <a href="{{ url_for('dashboard') }}" class="mobile-menu-link highlight">
+                        <span class="material-icons">dashboard</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <div class="mobile-auth" id="mobileAuthSection">
+                {% if session.get('user') %}
+                <!-- User section for mobile -->
+                <div class="mobile-user-section" id="mobileUserSection">
+                    <div class="mobile-user-info">
+                        <div class="user-avatar" id="mobileUserAvatar">
+                            <img src="{{ url_for('static', filename='img/profiles/' + (session.user.imagen_perfil or 'user.svg')) }}"
+                                alt="{{ session.user.nombre_completo }}"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        </div>
+                        <div class="user-details">
+                            <p class="user-name" id="mobileUserName">{{ session.user.nombre_completo }}</p>
+                            <p class="user-email" id="mobileUserEmail">{{ session.user.correo }}</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('logout') }}" class="btn-mobile-logout" id="mobileLogoutBtn">
+                        <span class="material-icons">logout</span>
+                        <span>Cerrar sesión</span>
+                    </a>
+                </div>
+                {% else %}
+                <!-- Login button for mobile -->
+                <a href="{{ url_for('login_page') }}" class="btn-mobile-login" id="mobileLoginBtn">
+                    Acceder
+                </a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+</div>
+
+<!-- Overlay -->
+<div class="mobile-overlay" id="mobileOverlay" aria-hidden="true"></div>
