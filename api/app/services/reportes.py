@@ -135,7 +135,11 @@ def actualizar_gestion_reporte(id_reporte: int, estado: str = None, prioridad: s
             
             cursor.execute(sql, tuple(params))
             conn.commit()
-            logger.info(f"Reporte {id_reporte} actualizado")
+            logger.info(
+                f"Reporte {id_reporte} actualizado: "
+                f"estado={estado if estado is not None else 'sin cambio'}, "
+                f"prioridad={prioridad if prioridad is not None else 'sin cambio'}"
+            )
             return True
             
     except pymysql.MySQLError as e:
