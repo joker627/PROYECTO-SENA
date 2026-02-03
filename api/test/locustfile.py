@@ -2,6 +2,9 @@
 
 from locust import HttpUser, task, between
 import random
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SignTechnologyUser(HttpUser):
     """Usuario simulado para pruebas de carga."""
@@ -19,6 +22,13 @@ class SignTechnologyUser(HttpUser):
         if response.status_code == 200:
             self.token = response.json()["access_token"]
             self.client.headers = {"Authorization": f"Bearer {self.token}"}
+        else:
+            logger.error(
+                f"Login failed with status code {response.status_code}. "
+                "Unable to authenticate user for load testing."
+            )
+            # Stop this user to prevent subsequent failed requests
+            self.stop()
     
     @task(3)
     def get_estadisticas(self):
