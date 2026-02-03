@@ -2,6 +2,7 @@
 
 from locust import HttpUser, task, between
 import random
+import os
 
 class SignTechnologyUser(HttpUser):
     """Usuario simulado para pruebas de carga."""
@@ -11,9 +12,19 @@ class SignTechnologyUser(HttpUser):
     
     def on_start(self):
         """Se ejecuta al iniciar cada usuario - hace login."""
+        # Obtener credenciales desde variables de entorno
+        test_email = os.getenv("TEST_USER_EMAIL")
+        test_password = os.getenv("TEST_USER_PASSWORD")
+        
+        if not test_email or not test_password:
+            raise ValueError(
+                "Las variables de entorno TEST_USER_EMAIL y TEST_USER_PASSWORD "
+                "deben estar configuradas para ejecutar las pruebas de carga."
+            )
+        
         response = self.client.post("/api/v1/auth/login", json={
-            "correo": "jorgemanuelsantanablanco2@gmail.com",
-            "contrasena": "manueldev"
+            "correo": test_email,
+            "contrasena": test_password
         })
         
         if response.status_code == 200:
