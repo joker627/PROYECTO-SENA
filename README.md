@@ -216,45 +216,50 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 
 ### Prefijo Base: `/api/v1`
 
+> ⚠️ **Importante:** Muchos endpoints requieren autenticación JWT y/o rol de administrador. Consulta el [CHANGELOG](api/CHANGELOG.md) para detalles completos.
+
 ### 🔐 Autenticación
 
 | Método | Endpoint | Descripción |
 | ------ | ------------ | ----------- |
 | `POST` | `/auth/login` | Iniciar sesión |
+| `GET` | `/usuarios/me` | Perfil del usuario autenticado |
 
 ### 📊 Estadísticas
 
-| Método | Endpoint | Descripción |
-| ------ | --------------- | ---------------------------- |
-| `GET` | `/estadisticas` | Obtener métricas del sistema |
+| Método | Endpoint | Descripción | Autenticación |
+| ------ | --------------- | ---------------------------- | ------------- |
+| `GET` | `/estadisticas` | Obtener métricas del sistema | 🔐 Requerida |
 
 ### 👥 Usuarios
 
-| Método | Endpoint | Descripción |
-| -------- | ------------------ | ------------------ |
-| `GET` | `/usuarios` | Listar usuarios |
-| `POST` | `/usuarios` | Crear usuario |
-| `GET` | `/usuarios/{id}` | Obtener usuario |
-| `PUT` | `/usuarios/{id}` | Actualizar usuario |
-| `DELETE` | `/usuarios/{id}` | Eliminar usuario |
+| Método | Endpoint | Descripción | Autenticación |
+| -------- | ------------------ | ------------------ | ------------- |
+| `GET` | `/usuarios` | Listar usuarios | 👑 Admin |
+| `POST` | `/usuarios` | Crear usuario | 👑 Admin |
+| `GET` | `/usuarios/{id}` | Obtener usuario | 👑 Admin |
+| `PUT` | `/usuarios/{id}` | Actualizar usuario | 👑 Admin |
+| `DELETE` | `/usuarios/{id}` | Eliminar usuario | 👑 Admin |
 
 ### 🤝 Contribuciones
 
-| Método | Endpoint | Descripción |
-| -------- | ------------------------ | ----------------------- |
-| `GET` | `/contribuciones` | Listar contribuciones |
-| `POST` | `/contribuciones` | Crear contribución |
-| `PUT` | `/contribuciones/{id}` | Gestionar contribución |
+| Método | Endpoint | Descripción | Autenticación |
+| -------- | ------------------------ | ----------------------- | ------------- |
+| `GET` | `/contribuciones` | Listar contribuciones | 🔐 Requerida |
+| `POST` | `/contribuciones` | Crear contribución | - |
+| `PUT` | `/contribuciones/{id}/estado` | Gestionar contribución | 👑 Admin |
 
 ### 📝 Reportes
 
-| Método | Endpoint | Descripción |
-| -------- | -------------------- | ------------------- |
-| `GET` | `/reportes` | Listar reportes |
-| `POST` | `/reportes` | Crear reporte |
-| `PUT` | `/reportes/{id}` | Actualizar reporte |
+| Método | Endpoint | Descripción | Autenticación |
+| -------- | -------------------- | ------------------- | ------------- |
+| `GET` | `/reportes` | Listar reportes | 🔐 Requerida |
+| `POST` | `/reportes` | Crear reporte | - |
+| `PUT` | `/reportes/{id}/gestion` | Gestionar reporte | 👑 Admin |
+| `DELETE` | `/reportes/{id}` | Resolver reporte | 👑 Admin |
 
-> 📚 **Documentación Completa:** Accede a `/docs` o `/redoc` cuando el servidor esté en ejecución.
+> 📚 **Documentación Completa:** Accede a `/docs` o `/redoc` cuando el servidor esté en ejecución.  
+> 📋 **Cambios en la API:** Consulta el [CHANGELOG](api/CHANGELOG.md) para ver cambios importantes y breaking changes.
 
 ---
 
