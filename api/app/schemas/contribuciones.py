@@ -1,5 +1,6 @@
+"""Schemas de contribuciones."""
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class ContribucionBase(BaseModel):
@@ -20,12 +21,11 @@ class ContribucionResponse(ContribucionBase):
     fecha_contribucion: datetime
     fecha_gestion: Optional[datetime] = None
     observaciones_gestion: Optional[str] = None
-    nombre_usuario: Optional[str] = None # Para mostrar quién contribuyó
+    nombre_usuario: Optional[str] = None
 
     class Config:
         from_attributes = True
 
-from typing import List
 class ContribucionPaginated(BaseModel):
     total: int
     page: int

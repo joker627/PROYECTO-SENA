@@ -1,5 +1,6 @@
+"""Schemas de reportes."""
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class ReporteBase(BaseModel):
@@ -24,7 +25,6 @@ class ReporteResponse(ReporteBase):
     class Config:
         from_attributes = True
 
-from typing import List
 class ReportePaginated(BaseModel):
     total: int
     page: int

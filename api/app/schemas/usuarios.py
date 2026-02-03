@@ -1,5 +1,7 @@
+"""Schemas de usuarios."""
+
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class UsuarioBase(BaseModel):
@@ -32,7 +34,6 @@ class UsuarioResponse(UsuarioBase):
     class Config:
         from_attributes = True
 
-from typing import List
 class UsuarioPaginated(BaseModel):
     total: int
     page: int

@@ -1,7 +1,4 @@
-"""Servicios de estadísticas del sistema.
-
-Capa de lógica de negocio para obtención de estadísticas agregadas,
-con manejo robusto de excepciones."""
+"""Servicios de estadísticas del sistema."""
 
 import pymysql
 from datetime import datetime
@@ -9,9 +6,8 @@ from fastapi import HTTPException, status
 from app.core.database import get_connection
 from app.core.logger import logger
 
-
 def obtener_estadisticas():
-    """Obtiene las estadísticas generales desde la vista de la base de datos."""
+    """Obtiene estadísticas generales del sistema."""
     conn = None
     try:
         conn = get_connection()
@@ -20,9 +16,8 @@ def obtener_estadisticas():
             cursor.execute("SELECT * FROM vista_estadisticas")
             result = cursor.fetchone()
             
-            # Si no hay resultado, devolver valores por defecto
             if not result:
-                logger.warning("No se encontraron estadísticas en vista_estadisticas")
+                logger.warning("No se encontraron estadísticas")
                 return {
                     "total_traducciones": 0,
                     "total_contribuciones": 0,
@@ -34,7 +29,6 @@ def obtener_estadisticas():
                     "fecha_actualizacion": None
                 }
             
-            # Asegurar que no haya valores NULL
             return {
                 "total_traducciones": result.get("total_traducciones") or 0,
                 "total_contribuciones": result.get("total_contribuciones") or 0,

@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, status, Query, Depends
 from typing import Optional
 from app.schemas.usuarios import UsuarioResponse, UsuarioCreate, UsuarioUpdate, UsuarioPaginated
 from app.services import usuarios as user_service
-from app.core.dependencies import get_current_user_id
+from app.core.dependencies import get_current_user_id, require_role
 
 router = APIRouter()
 
@@ -17,7 +17,7 @@ def get_current_user_profile(user_id: int = Depends(get_current_user_id)):
     return user
 
 @router.get("/stats")
-def get_user_stats():
+def get_user_stats(user_id: int = Depends(require_role(1))):
     """Estadísticas de usuarios: total, roles y estados."""
     return user_service.obtener_stats_usuarios()
 
@@ -27,7 +27,8 @@ def get_users(
     limit: int = Query(100, ge=1, le=1000), 
     rol: Optional[int] = None, 
     estado: Optional[str] = None, 
-    query: Optional[str] = None
+    query: Optional[str] = None,
+    user_id: int = Depends(require_role(1))
 ):
     """Lista paginada de usuarios con filtros."""
     result = user_service.obtener_usuarios(skip=skip, limit=limit, rol=rol, estado=estado, query=query)
@@ -39,15 +40,15 @@ def get_users(
     }
 
 @router.post("/", response_model=dict)
-def create_user(usuario: UsuarioCreate):
-    """Registra un nuevo usuario."""
-    user_id = user_service.crear_usuario(usuario)
-    if not user_id:
+def create_user(usuario: UsuarioCreate, user_id: int = Depends(require_role(1))):
+    """Crea un nuevo usuario (solo admin)."""
+    nuevo_usuario_id = user_service.crear_usuario(usuario)
+    if not nuevo_usuario_id:
         raise HTTPException(status_code=400, detail="Error creando usuario")
-    return {"message": "Usuario creado exitosamente", "id_usuario": user_id}
+    return {"message": "Usuario creado exitosamente", "id_usuario": nuevo_usuario_id}
 
 @router.get("/{id_usuario}", response_model=UsuarioResponse)
-def get_user(id_usuario: int):
+def get_user(id_usuario: int, user_id: int = Depends(require_role(1))):
     """Obtiene un usuario por ID."""
     user = user_service.obtener_usuario_por_id(id_usuario)
     if not user:
@@ -55,7 +56,7 @@ def get_user(id_usuario: int):
     return user
 
 @router.put("/{id_usuario}", response_model=UsuarioResponse)
-def update_user(id_usuario: int, usuario: UsuarioUpdate):
+def update_user(id_usuario: int, usuario: UsuarioUpdate, user_id: int = Depends(require_role(1))):
     """Actualiza un usuario existente."""
     exito = user_service.actualizar_usuario(id_usuario, usuario)
     if not exito:
@@ -63,7 +64,7 @@ def update_user(id_usuario: int, usuario: UsuarioUpdate):
     return user_service.obtener_usuario_por_id(id_usuario)
 
 @router.delete("/{id_usuario}", response_model=dict)
-def delete_user(id_usuario: int):
+def delete_user(id_usuario: int, user_id: int = Depends(require_role(1))):
     """Elimina un usuario."""
     exito = user_service.eliminar_usuario(id_usuario)
     if not exito:

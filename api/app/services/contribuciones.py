@@ -1,16 +1,12 @@
-"""Servicios de gestión de contribuciones de señas.
-
-Capa de lógica de negocio para operaciones CRUD de contribuciones,
-con manejo robusto de excepciones y transacciones."""
+"""Servicios de gestión de contribuciones de señas."""
 
 import pymysql
 from fastapi import HTTPException, status
 from app.core.database import get_connection
 from app.core.logger import logger
 
-
 def obtener_contribuciones(estado: str = None, query: str = None, skip: int = 0, limit: int = 100):
-    """Obtiene lista paginada de contribuciones con filtros opcionales."""
+    """Lista paginada de contribuciones con filtros."""
     conn = None
     try:
         conn = get_connection()
@@ -41,11 +37,9 @@ def obtener_contribuciones(estado: str = None, query: str = None, skip: int = 0,
                 count_sql += " AND (c.palabra_asociada LIKE %s OR c.descripcion LIKE %s OR u.nombre_completo LIKE %s)"
                 params.extend([search_term, search_term, search_term])
                 
-            # Count
             cursor.execute(count_sql, tuple(params))
             total = cursor.fetchone()['total']
             
-            # Data
             sql += " ORDER BY c.fecha_contribucion DESC LIMIT %s OFFSET %s"
             data_params = params.copy()
             data_params.extend([limit, skip])
@@ -76,7 +70,7 @@ def obtener_contribuciones(estado: str = None, query: str = None, skip: int = 0,
 
 
 def actualizar_estado_contribucion(id_contribucion: int, estado: str, observaciones: str = None):
-    """Actualiza el estado de una contribución (aprobar/rechazar)."""
+    """Actualiza estado de una contribución."""
     conn = None
     try:
         conn = get_connection()
