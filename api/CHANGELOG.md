@@ -47,14 +47,18 @@ All API endpoints now require JWT authentication. The following authorization ch
 1. **Obtain JWT Token**: All API requests now require authentication. Call `POST /api/v1/auth/login` with valid credentials to obtain a JWT token.
 
    ```bash
+   # Development example (use HTTPS in production)
    curl -X POST "http://localhost:8000/api/v1/auth/login" \
      -H "Content-Type: application/json" \
      -d '{"correo": "user@example.com", "contrasena": "password"}'
    ```
 
+   > ⚠️ **Security Note**: Always use HTTPS in production environments. Never hardcode credentials - use environment variables or secure credential management systems.
+
 2. **Include Authorization Header**: Add the JWT token to all subsequent requests:
 
    ```bash
+   # Development example (use HTTPS in production)
    curl -X GET "http://localhost:8000/api/v1/usuarios/" \
      -H "Authorization: Bearer YOUR_JWT_TOKEN"
    ```
