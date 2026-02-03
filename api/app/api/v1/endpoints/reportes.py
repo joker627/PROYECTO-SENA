@@ -22,7 +22,14 @@ def get_reportes(
     limit: int = 100,
     user_id: int = Depends(get_current_user_id)
 ):
-    """Lista paginada de reportes."""
+    """
+    Lista paginada de reportes.
+
+    Nota: Este endpoint ahora requiere autenticación mediante `get_current_user_id`.
+    Este cambio es intencional y constituye un cambio incompatible con versiones
+    anteriores (breaking change), ya que antes permitía acceso sin autenticación.
+    Ver API changelog para más detalles de la migración.
+    """
     result = reporte_service.obtener_reportes(estado, prioridad, query, skip, limit)
     return {
         "total": result["total"],
