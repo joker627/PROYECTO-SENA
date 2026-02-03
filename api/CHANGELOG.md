@@ -128,10 +128,15 @@ Previously open endpoints that now require admin privileges:
 
 #### Endpoints Still Public
 
-The following endpoints remain publicly accessible:
+The following endpoints remain publicly accessible without authentication:
 
 - **POST** `/api/v1/auth/login` - User login
-- **GET** `/api/v1/usuarios/me` - Get current user profile (requires authentication, but available to any authenticated user)
+
+#### Endpoints Available to Authenticated Users (Not Admin-Only)
+
+The following endpoints require authentication but are available to any authenticated user:
+
+- **GET** `/api/v1/usuarios/me` - Get current user profile (no change, was always authenticated)
 
 ### Security Rationale
 
