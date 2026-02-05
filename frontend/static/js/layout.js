@@ -41,4 +41,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
+    // User menu dropdown
+    const userCardBtn = document.querySelector('.user-card-btn');
+    const userDropdown = document.getElementById('userDropdown');
+
+    if (userCardBtn && userDropdown) {
+        userCardBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userCardBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.remove('show');
+            }
+        });
+    }
+
+    // Password visibility toggles
+    const passwordToggles = document.querySelectorAll('.password-toggle');
+    passwordToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const targetId = toggle.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = toggle.querySelector('img');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.src = icon.src.replace('visibility.svg', 'visibility-off.svg');
+            } else {
+                input.type = 'password';
+                icon.src = icon.src.replace('visibility-off.svg', 'visibility.svg');
+            }
+        });
+    });
 });

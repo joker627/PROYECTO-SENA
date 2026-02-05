@@ -1,4 +1,5 @@
 from app.core.database import get_connection
+from app.core.logger import logger
 
 def obtener_reportes(estado: str = None, prioridad: str = None, query: str = None, skip: int = 0, limit: int = 100):
     conn = get_connection()
@@ -42,7 +43,11 @@ def obtener_reportes(estado: str = None, prioridad: str = None, query: str = Non
             cursor.execute(sql, tuple(data_params))
             data = cursor.fetchall()
             
+            logger.info(f"Reportes obtenidos: {len(data)} resultados, filtros aplicados")
             return {"total": total, "data": data}
+    except Exception as e:
+        logger.error(f"Error obteniendo reportes: {e}")
+        raise
     finally:
         conn.close()
 
@@ -67,7 +72,15 @@ def actualizar_gestion_reporte(id_reporte: int, estado: str = None, prioridad: s
             
             cursor.execute(sql, tuple(params))
             conn.commit()
-            return cursor.rowcount > 0
+            updated = cursor.rowcount > 0
+            if updated:
+                logger.info(f"Reporte actualizado: ID {id_reporte}, cambios: {', '.join(updates)}")
+            else:
+                logger.warning(f"No se encontró reporte para actualizar: ID {id_reporte}")
+            return updated
+    except Exception as e:
+        logger.error(f"Error actualizando reporte {id_reporte}: {e}")
+        raise
     finally:
         conn.close()
 

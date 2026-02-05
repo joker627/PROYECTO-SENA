@@ -8,6 +8,28 @@ app.secret_key = 'sign-technology-2026-secret-key-change-in-production'
 # Configuración de la API
 API_URL = 'http://localhost:8000'
 
+# Helper para peticiones con autenticación
+def get_auth_headers():
+    """Retorna headers con el token de autenticación si existe."""
+    token = session.get('token')
+    if token:
+        return {'Authorization': f'Bearer {token}'}
+    return {}
+
+def api_request(method, endpoint, **kwargs):
+    """Wrapper para peticiones a la API con autenticación automática."""
+    headers = kwargs.pop('headers', {})
+    headers.update(get_auth_headers())
+    
+    url = f'{API_URL}{endpoint}'
+    response = requests.request(method, url, headers=headers, **kwargs)
+    
+    # Si retorna 401, limpiar sesión y redirigir
+    if response.status_code == 401:
+        session.clear()
+    
+    return response
+
 # Decorador para rutas protegidas
 def login_required(f):
     @wraps(f)
@@ -42,13 +64,12 @@ def login_post():
     try:
         correo = request.form.get('correo')
         contrasena = request.form.get('contrasena')
-        remember = request.form.get('remember') == 'on'
         
         if not correo or not contrasena:
             flash('Por favor completa todos los campos', 'error')
             return redirect(url_for('login_page'))
         
-        # Llamar a la API de autenticación (FastAPI v1)
+        # 1. Llamar a la API de autenticación (FastAPI v1)
         response = requests.post(
             f'{API_URL}/api/v1/auth/login',
             json={'correo': correo, 'contrasena': contrasena},
@@ -58,23 +79,42 @@ def login_post():
         data = response.json()
 
         if response.status_code == 200:
-            # Guardar datos en sesión según el formato de la API FastAPI
-            session['user'] = data.get('user')
-            session['token'] = data.get('access_token')
-            session.permanent = remember
-
-            nombre = session['user'].get('nombre_completo') if session['user'] else 'Usuario'
-            flash(f"¡Bienvenido {nombre}!", 'success')
-
-            # Redirigir según el rol si existe
-            rol = None
-            if session['user']:
-                rol = session['user'].get('rol') or session['user'].get('id_rol')
-
-            if rol in ['admin', 'Administrador']:
-                return redirect(url_for('dashboard'))
-            else:
-                return redirect(url_for('inicio'))
+            # 2. Guardar el token
+            token = data.get('access_token')
+            session['token'] = token
+            
+            # 3. Obtener datos del usuario usando el endpoint /me
+            try:
+                headers = {'Authorization': f'Bearer {token}'}
+                user_response = requests.get(
+                    f'{API_URL}/api/v1/usuarios/me',
+                    headers=headers,
+                    timeout=5
+                )
+                
+                if user_response.status_code == 200:
+                    user_data = user_response.json()
+                    session['user'] = user_data
+                    
+                    nombre = user_data.get('nombre_completo', 'Usuario')
+                    flash(f"¡Bienvenido {nombre}!", 'success')
+                    
+                    # Redirigir según el rol
+                    rol = user_data.get('id_rol')
+                    if rol == 1:  # Admin
+                        return redirect(url_for('dashboard'))
+                    else:
+                        return redirect(url_for('inicio'))
+                else:
+                    flash('Error al obtener datos del usuario', 'error')
+                    session.clear()
+                    return redirect(url_for('login_page'))
+                    
+            except Exception as e:
+                print(f"Error obteniendo perfil: {str(e)}")
+                flash('Error al cargar datos del usuario', 'error')
+                session.clear()
+                return redirect(url_for('login_page'))
         else:
             # Intentar obtener mensaje de error de la API
             msg = data.get('detail') if isinstance(data, dict) else 'Credenciales inválidas'
@@ -100,13 +140,15 @@ def logout():
 def dashboard():
     stats = {}
     try:
-        response = requests.get(f'{API_URL}/api/v1/estadisticas/', timeout=5)
+        response = api_request('GET', '/api/v1/estadisticas/', timeout=5)
         if response.status_code == 200:
             stats = response.json()
     except:
         flash('Error al cargar estadísticas', 'error')
         
-    return render_template("pages/dashboard.html", user=session.get('user'), stats=stats)
+    from datetime import datetime
+    current_time = datetime.now()
+    return render_template("pages/dashboard.html", user=session.get('user'), stats=stats, current_time=current_time)
 
 # --- GESTIÓN DE USUARIOS ---
 
@@ -137,7 +179,7 @@ def usuarios():
     
     try:
         # Obtener lista de usuarios desde el backend
-        response = requests.get(f'{API_URL}/api/v1/usuarios/', params=params, timeout=5)
+        response = api_request('GET', '/api/v1/usuarios/', params=params, timeout=5)
         
         if response.status_code == 200:
             data = response.json()
@@ -147,7 +189,7 @@ def usuarios():
             total_pages = math.ceil(total / limit)
             
         # Obtener estadísticas de usuarios
-        stats_response = requests.get(f'{API_URL}/api/v1/usuarios/stats', timeout=3)
+        stats_response = api_request('GET', '/api/v1/usuarios/stats', timeout=3)
         if stats_response.status_code == 200:
             stats = stats_response.json()
             
@@ -172,7 +214,7 @@ def create_usuario():
     
     try:
         # Petición POST al backend para crear el usuario
-        response = requests.post(f'{API_URL}/api/v1/usuarios/', json=datos, timeout=5)
+        response = api_request('POST', '/api/v1/usuarios/', json=datos, timeout=5)
         if response.status_code == 200:
             flash('Usuario creado correctamente', 'success')
         else:
@@ -197,7 +239,7 @@ def update_usuario():
     
     try:
         # Petición PUT al backend para actualizar el usuario
-        response = requests.put(f'{API_URL}/api/v1/usuarios/{id_usuario}', json=datos, timeout=5)
+        response = api_request('PUT', f'/api/v1/usuarios/{id_usuario}', json=datos, timeout=5)
         if response.status_code == 200:
             flash('Usuario actualizado correctamente', 'success')
         else:
@@ -213,7 +255,7 @@ def delete_usuario():
     """Elimina un usuario del sistema."""
     id_usuario = request.form.get('id_usuario')
     try:
-        response = requests.delete(f'{API_URL}/api/v1/usuarios/{id_usuario}', timeout=5)
+        response = api_request('DELETE', f'/api/v1/usuarios/{id_usuario}', timeout=5)
         if response.status_code == 200:
             flash('Usuario eliminado correctamente', 'success')
         else:
@@ -241,7 +283,7 @@ def contribuciones():
     stats = {"total": 0, "pendientes": 0, "aprobadas": 0}
         
     try:
-        response = requests.get(f'{API_URL}/api/v1/contribuciones/', params=params, timeout=5)
+        response = api_request('GET', '/api/v1/contribuciones/', params=params, timeout=5)
         if response.status_code == 200:
             data = response.json()
             contribuciones = data.get('data', [])
@@ -253,7 +295,7 @@ def contribuciones():
             total_pages = 1
             
         # Fetch Stats
-        stats_response = requests.get(f'{API_URL}/api/v1/contribuciones/stats', timeout=3)
+        stats_response = api_request('GET', '/api/v1/contribuciones/stats', timeout=3)
         if stats_response.status_code == 200:
             stats = stats_response.json()
             
@@ -276,8 +318,9 @@ def update_contribucion():
         if observaciones:
             params['observaciones'] = observaciones
             
-        response = requests.put(
-            f'{API_URL}/api/v1/contribuciones/{id_contribucion}/estado',
+        response = api_request(
+            'PUT',
+            f'/api/v1/contribuciones/{id_contribucion}/estado',
             params=params,
             timeout=5
         )
@@ -312,7 +355,7 @@ def reportes():
     stats = {"total": 0, "pendientes": 0, "resueltos": 0, "urgentes": 0}
 
     try:
-        response = requests.get(f'{API_URL}/api/v1/reportes/', params=params, timeout=5)
+        response = api_request('GET', '/api/v1/reportes/', params=params, timeout=5)
         if response.status_code == 200:
             data = response.json()
             reports = data.get('data', [])
@@ -324,7 +367,7 @@ def reportes():
             total_pages = 1
             
         # Fetch Stats
-        stats_response = requests.get(f'{API_URL}/api/v1/reportes/stats', timeout=3)
+        stats_response = api_request('GET', '/api/v1/reportes/stats', timeout=3)
         if stats_response.status_code == 200:
             stats = stats_response.json()
             
@@ -347,8 +390,9 @@ def update_reporte():
     if nueva_prioridad: params['prioridad'] = nueva_prioridad
     
     try:
-        response = requests.put(
-            f'{API_URL}/api/v1/reportes/{id_reporte}/gestion',
+        response = api_request(
+            'PUT',
+            f'/api/v1/reportes/{id_reporte}/gestion',
             params=params,
             timeout=5
         )
@@ -365,12 +409,9 @@ def update_reporte():
 @login_required
 def perfil():
     """Muestra el perfil del usuario actual, refrescando datos desde el backend."""
-    user = session.get('user')
-    id_usuario = user.get('id_usuario')
-    
     try:
-        # Refrescar datos desde la DB para sincronizar dispositivos (Ej: Móvil -> PC)
-        response = requests.get(f'{API_URL}/api/v1/usuarios/{id_usuario}', timeout=5)
+        # Obtener datos actualizados del usuario desde el endpoint /me
+        response = api_request('GET', '/api/v1/usuarios/me', timeout=5)
         if response.status_code == 200:
             user_data = response.json()
             session['user'] = user_data
@@ -394,11 +435,10 @@ def update_perfil():
     
     try:
         # Petición PUT al backend (FastAPI)
-        response = requests.put(f'{API_URL}/api/v1/usuarios/{id_usuario}', json=datos, timeout=5)
+        response = api_request('PUT', f'/api/v1/usuarios/{id_usuario}', json=datos, timeout=5)
         
         if response.status_code == 200:
             # Sincronizar sesión con el objeto completo devuelto
-            # Esto evita tener que cerrar sesión para ver los cambios
             user_data = response.json()
             session['user'] = user_data
             session.modified = True
@@ -445,12 +485,21 @@ def update_avatar():
         file_path = os.path.join(upload_dir, filename)
         
         try:
+            # Eliminar imagen anterior si existe
+            old_image = user.get('imagen_perfil')
+            if old_image and old_image != 'user.svg':  # No eliminar el default
+                old_path = os.path.join(upload_dir, old_image)
+                if os.path.exists(old_path):
+                    os.remove(old_path)
+                    print(f"Imagen anterior eliminada: {old_path}")
+            
             # Guardar archivo físicamente con su formato original
             file.save(file_path)
             
             # Notificar al backend sobre el nuevo nombre exacto
-            response = requests.put(
-                f'{API_URL}/api/v1/usuarios/{id_usuario}', 
+            response = api_request(
+                'PUT',
+                f'/api/v1/usuarios/{id_usuario}', 
                 json={"imagen_perfil": filename},
                 timeout=5
             )
@@ -492,8 +541,9 @@ def update_password():
             return redirect(url_for('perfil'))
             
         # 2. Si es correcta, actualizar a la nueva
-        update_response = requests.put(
-            f'{API_URL}/api/v1/usuarios/{id_usuario}',
+        update_response = api_request(
+            'PUT',
+            f'/api/v1/usuarios/{id_usuario}',
             json={'contrasena': new_password},
             timeout=5
         )

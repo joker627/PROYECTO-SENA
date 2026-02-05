@@ -13,34 +13,34 @@
         <p>Administra los usuarios del sistema</p>
     </div>
     <button class="btn-primary" onclick="openCreateModal()">
-        <span class="material-icons">person_add</span>Nuevo Usuario
+        <img src="{{ url_for('static', filename='img/icons/person-add.svg') }}" alt="" width="20" height="20" class="icon">Nuevo Usuario
     </button>
 </div>
 
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="stat-icon blue"><span class="material-icons">groups</span></div>
+        <div class="stat-icon blue"><img src="{{ url_for('static', filename='img/icons/groups.svg') }}" alt="" width="24" height="24"></div>
         <div class="stat-info">
             <p>Total Usuarios</p>
             <div class="stat-value">{{ stats.total }}</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon purple"><span class="material-icons">admin_panel_settings</span></div>
+        <div class="stat-icon purple"><img src="{{ url_for('static', filename='img/icons/admin-panel.svg') }}" alt="" width="24" height="24"></div>
         <div class="stat-info">
             <p>Administradores</p>
             <div class="stat-value">{{ stats.administradores }}</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon teal"><span class="material-icons">group</span></div>
+        <div class="stat-icon teal"><img src="{{ url_for('static', filename='img/icons/group.svg') }}" alt="" width="24" height="24"></div>
         <div class="stat-info">
             <p>Colaboradores</p>
             <div class="stat-value">{{ stats.colaboradores }}</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon green"><span class="material-icons">check_circle</span></div>
+        <div class="stat-icon green"><img src="{{ url_for('static', filename='img/icons/check-circle-filled.svg') }}" alt="" width="24" height="24"></div>
         <div class="stat-info">
             <p>Activos</p>
             <div class="stat-value">{{ stats.activos }}</div>
@@ -94,11 +94,8 @@
                 <tr>
                     <td data-label="Usuario">
                         <div class="user-cell">
-                            <div class="avatar">{{ user.nombre_completo.split()[0][0] if
-                                user.nombre_completo else 'U' }}</div>
                             <div class="name">
                                 <div>{{ user.nombre_completo }}</div>
-                                <small style="color:#666; font-size:0.8em">{{ user.correo }}</small>
                             </div>
                         </div>
                     </td>
@@ -121,19 +118,19 @@
                                 data-rol="{{ 'Administrador' if user.id_rol == 1 else 'Colaborador' }}"
                                 data-estado="{{ user.estado }}" data-fecha="{{ user.fecha_registro[:10] }}"
                                 onclick="openViewModal(this)">
-                                <span class="material-icons">visibility</span>
+                                <img src="{{ url_for('static', filename='img/icons/visibility.svg') }}" alt="" width="18" height="18">
                             </button>
                             <button class="btn-icon edit" title="Editar usuario" data-id="{{ user.id_usuario }}"
                                 data-nombre="{{ user.nombre_completo }}" data-correo="{{ user.correo }}"
                                 data-rol="{{ user.id_rol }}" data-estado="{{ user.estado }}"
                                 onclick="openEditModal(this)">
-                                <span class="material-icons">edit</span>
+                                <img src="{{ url_for('static', filename='img/icons/edit.svg') }}" alt="" width="18" height="18">
                             </button>
                             <form action="{{ url_for('delete_usuario') }}" method="POST" style="display:inline;"
                                 onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
                                 <input type="hidden" name="id_usuario" value="{{ user.id_usuario }}">
                                 <button type="submit" class="btn-icon delete" title="Eliminar usuario">
-                                    <span class="material-icons">delete</span>
+                                    <img src="{{ url_for('static', filename='img/icons/delete.svg') }}" alt="" width="18" height="18">
                                 </button>
                             </form>
                         </div>
@@ -154,7 +151,7 @@
         {% if page > 1 %}
         <a href="{{ url_for('usuarios', page=page-1, query=filter_query, rol=filter_rol, estado=filter_estado) }}"
             class="btn-secondary">
-            <span class="material-icons" style="font-size: 18px;">chevron_left</span>
+            <img src="{{ url_for('static', filename='img/icons/chevron-left.svg') }}" alt="" width="18" height="18">
         </a>
         {% endif %}
 
@@ -170,7 +167,7 @@
         {% if page < total_pages %} <a
             href="{{ url_for('usuarios', page=page+1, query=filter_query, rol=filter_rol, estado=filter_estado) }}"
             class="btn-secondary">
-            <span class="material-icons" style="font-size: 18px;">chevron_right</span>
+            <img src="{{ url_for('static', filename='img/icons/chevron-right.svg') }}" alt="" width="18" height="18">
             </a>
             {% endif %}
     </div>
@@ -182,7 +179,7 @@
         <div class="modal-header">
             <h2>Nuevo Usuario</h2>
             <button type="button" class="btn-close" onclick="closeCreateModal()">
-                <span class="material-icons">close</span>
+                <img src="{{ url_for('static', filename='img/icons/close.svg') }}" alt="" width="24" height="24">
             </button>
         </div>
         <form action="{{ url_for('create_usuario') }}" method="POST">
@@ -233,7 +230,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeCreateModal()">Cancelar</button>
                 <button type="submit" class="btn btn-primary">
-                    <span class="material-icons">person_add</span>
+                    <img src="{{ url_for('static', filename='img/icons/person-add.svg') }}" alt="" width="18" height="18" class="icon">
                     Crear Usuario
                 </button>
             </div>
@@ -247,7 +244,7 @@
         <div class="modal-header">
             <h2>Detalles del Usuario</h2>
             <button type="button" class="btn-close" onclick="closeViewModal()">
-                <span class="material-icons">close</span>
+                <img src="{{ url_for('static', filename='img/icons/close.svg') }}" alt="" width="24" height="24">
             </button>
         </div>
         <div class="modal-body">
@@ -261,29 +258,29 @@
 
             <div class="form-grid">
                 <div class="view-item">
-                    <label><span class="material-icons">badge</span> Nombre Completo</label>
+                    <label><img src="{{ url_for('static', filename='img/icons/badge.svg') }}" alt="" width="16" height="16" style="vertical-align: middle;"> Nombre Completo</label>
                     <p id="view_nombre" class="view-value">-</p>
                 </div>
                 <div class="view-item">
-                    <label><span class="material-icons">email</span> Correo Electrónico</label>
+                    <label><img src="{{ url_for('static', filename='img/icons/email.svg') }}" alt="" width="16" height="16" style="vertical-align: middle;"> Correo Electrónico</label>
                     <p id="view_correo" class="view-value">-</p>
                 </div>
                 <div class="view-item">
-                    <label><span class="material-icons">fingerprint</span> Documento</label>
+                    <label><img src="{{ url_for('static', filename='img/icons/fingerprint.svg') }}" alt="" width="16" height="16" style="vertical-align: middle;"> Documento</label>
                     <p id="view_documento" class="view-value">-</p>
                 </div>
                 <div class="view-item">
-                    <label><span class="material-icons">settings_accessibility</span> Rol</label>
+                    <label><img src="{{ url_for('static', filename='img/icons/accessibility.svg') }}" alt="" width="16" height="16" style="vertical-align: middle;"> Rol</label>
                     <p id="view_rol" class="view-value">-</p>
                 </div>
                 <div class="view-item">
-                    <label><span class="material-icons">info</span> Estado</label>
+                    <label><img src="{{ url_for('static', filename='img/icons/info-filled.svg') }}" alt="" width="16" height="16" style="vertical-align: middle;"> Estado</label>
                     <div id="view_estado_container">
                         <!-- Badge se insertará aquí via JS -->
                     </div>
                 </div>
                 <div class="view-item">
-                    <label><span class="material-icons">calendar_today</span> Fecha de Registro</label>
+                    <label><img src="{{ url_for('static', filename='img/icons/calendar.svg') }}" alt="" width="16" height="16" style="vertical-align: middle;"> Fecha de Registro</label>
                     <p id="view_fecha" class="view-value">-</p>
                 </div>
             </div>
@@ -300,7 +297,7 @@
         <div class="modal-header">
             <h2>Editar Usuario</h2>
             <button type="button" class="btn-close" onclick="closeEditModal()">
-                <span class="material-icons">close</span>
+                <img src="{{ url_for('static', filename='img/icons/close.svg') }}" alt="" width="24" height="24">
             </button>
         </div>
         <form action="{{ url_for('update_usuario') }}" method="POST">
@@ -338,15 +335,11 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancelar</button>
                 <button type="submit" class="btn btn-primary">
-                    <span class="material-icons">save</span>
+                    <img src="{{ url_for('static', filename='img/icons/save.svg') }}" alt="" width="18" height="18" class="icon">
                     Guardar Cambios
                 </button>
             </div>
         </form>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/usuarios.js') }}"></script>
 {% endblock %}

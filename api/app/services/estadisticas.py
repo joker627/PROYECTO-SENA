@@ -1,4 +1,5 @@
 from app.core.database import get_connection
+from app.core.logger import logger
 
 
 def obtener_estadisticas():
@@ -8,6 +9,11 @@ def obtener_estadisticas():
         with conn.cursor() as cursor:
             cursor.execute("SELECT * FROM vista_estadisticas")
             result = cursor.fetchone()
+            
+            if result:
+                logger.info("Estadísticas obtenidas exitosamente desde la BD")
+            else:
+                logger.warning("No se encontraron estadísticas en la vista, devolviendo valores por defecto")
             
             # Si no hay resultado, devolver valores por defecto
             if not result:
@@ -34,7 +40,7 @@ def obtener_estadisticas():
                 "fecha_actualizacion": result.get("fecha_actualizacion")
             }
     except Exception as e:
-        print(f"Error al obtener estadísticas: {e}")
+        logger.error(f"Error al obtener estadísticas: {e}")
         from datetime import datetime
         return {
             "total_traducciones": 0,

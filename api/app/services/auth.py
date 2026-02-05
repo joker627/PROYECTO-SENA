@@ -1,5 +1,6 @@
 from app.core.database import get_connection
 from app.core.security import verify_password, create_access_token
+from app.core.logger import logger
 
 
 def authenticate_user(correo: str, contrasena: str):
@@ -17,9 +18,11 @@ def authenticate_user(correo: str, contrasena: str):
             user = cursor.fetchone()
 
         if not user:
+            logger.warning(f"Intento de login fallido: usuario '{correo}' no encontrado")
             return None
 
         if not verify_password(contrasena, user["contrasena"]):
+            logger.warning(f"Intento de login fallido: contraseña incorrecta para '{correo}'")
             return None
 
         # Token solo con información mínima necesaria
@@ -27,10 +30,10 @@ def authenticate_user(correo: str, contrasena: str):
             "sub": user["correo"],
             "user_id": user["id_usuario"]
         })
-
+        logger.info(f"Login exitoso para usuario '{correo}' (ID: {user['id_usuario']})")
         return token
     except Exception as e:
-        print("Error autenticando usuario:", e)
+        logger.error(f"Error autenticando usuario '{correo}': {e}")
         return None
     finally:
         conn.close()

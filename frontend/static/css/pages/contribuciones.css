@@ -1,16 +1,16 @@
 /* --- VARIABLES Y TOKENS --- */
 :root {
-    --primary: #0f766e;
-    --primary-hover: #115e59;
-    --secondary: #64748b;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --background: #f1f5f9;
+    --primary: var(--teal-700);
+    --primary-hover: var(--teal-800);
+    --secondary: var(--slate-500);
+    --success: var(--emerald-500);
+    --warning: var(--amber-500);
+    --danger: var(--red-500);
+    --background: var(--slate-100);
     --card-bg: transparent;
-    --text-main: #1e293b;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
+    --text-main: var(--slate-800);
+    --text-muted: var(--slate-500);
+    --border: var(--slate-200);
 }
 
 /* --- CABECERA --- */
@@ -65,15 +65,15 @@
 }
 
 .stat-icon.purple {
-    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
 }
 
 .stat-icon.yellow {
-    background: linear-gradient(135deg, #d97706, #f59e0b);
+    background: linear-gradient(135deg, var(--yellow-600), var(--yellow-500));
 }
 
 .stat-icon.green {
-    background: linear-gradient(135deg, #059669, #10b981);
+    background: linear-gradient(135deg, var(--green-600), var(--green-500));
 }
 
 .stat-info p {
@@ -113,7 +113,7 @@
 .form-group label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #475569;
+    color: var(--slate-600);
 }
 
 .form-group input,
@@ -126,7 +126,7 @@
     font-family: inherit;
     font-size: 0.875rem;
     transition: all 0.2s;
-    background: #f8fafc;
+    background: var(--slate-50);
 }
 
 .form-group input:focus,
@@ -165,7 +165,7 @@ tbody td {
     padding: 1rem 0;
     border-bottom: 1px solid var(--border);
     font-size: 0.875rem;
-    color: #334155;
+    color: var(--slate-700);
     background: transparent;
 }
 
@@ -180,21 +180,9 @@ tbody tr:hover {
     gap: 1rem;
 }
 
-.avatar {
-    width: 40px;
-    height: 40px;
-    background: var(--primary);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-}
-
 .name div:first-child {
     font-weight: 600;
-    color: #0f172a;
+    color: var(--slate-900);
 }
 
 /* --- ESTADOS (BADGES) --- */
@@ -207,18 +195,18 @@ tbody tr:hover {
 }
 
 .badge.pendiente {
-    background: #fef3c7;
-    color: #b45309;
+    background: var(--amber-100);
+    color: var(--amber-700);
 }
 
 .badge.aprobada {
-    background: #dcfce7;
-    color: #16a34a;
+    background: var(--green-100);
+    color: var(--green-600);
 }
 
 .badge.rechazada {
-    background: #fee2e2;
-    color: #dc2626;
+    background: var(--red-100);
+    color: var(--red-600);
 }
 
 /* --- ACCIONES --- */
@@ -241,7 +229,7 @@ tbody tr:hover {
 }
 
 .btn-icon:hover {
-    background: #f1f5f9;
+    background: var(--slate-100);
 }
 
 .btn-icon.check .material-icons {
@@ -300,7 +288,7 @@ tbody tr:hover {
 
 .modal-header {
     padding: 1.25rem 2rem;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--slate-100);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -327,7 +315,7 @@ tbody tr:hover {
 
 /* Columna Izquierda: Video */
 .view-video-section {
-    background: #0f172a;
+    background: var(--slate-900);
     padding: 2.5rem 2rem;
     display: flex;
     flex-direction: column;
@@ -350,7 +338,7 @@ tbody tr:hover {
 .video-container-premium {
     width: 100%;
     aspect-ratio: 16/9;
-    background: #000;
+    background: var(--black);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
@@ -381,7 +369,7 @@ tbody tr:hover {
 .view-avatar {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, var(--primary) 0%, #14b8a6 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--teal-500) 100%);
     color: white;
     border-radius: 14px;
     display: flex;
@@ -436,14 +424,14 @@ tbody tr:hover {
 .view-value {
     font-size: 1rem;
     font-weight: 500;
-    color: #334155;
+    color: var(--slate-700);
     line-height: 1.6;
 }
 
 .modal-footer {
     padding: 1.25rem 2rem;
-    background: #f8fafc;
-    border-top: 1px solid #f1f5f9;
+    background: var(--slate-50);
+    border-top: 1px solid var(--slate-100);
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
@@ -552,7 +540,7 @@ tbody tr:hover {
     .actions-cell {
         justify-content: flex-end;
         padding-top: 0.5rem;
-        border-top: 1px solid #f1f5f9;
+        border-top: 1px solid var(--slate-100);
         margin-top: 0.5rem;
     }
 
@@ -587,7 +575,7 @@ tbody tr:hover {
 .video-preview {
     width: 100%;
     aspect-ratio: 16/9;
-    background: #000;
+    background: var(--black);
     border-radius: 12px;
     margin-top: 0.5rem;
     overflow: hidden;
@@ -628,7 +616,7 @@ tbody tr:hover {
 }
 
 .page-link:hover {
-    background: #e2e8f0;
+    background: var(--slate-200);
     color: var(--text-main);
 }
 
@@ -665,7 +653,7 @@ tbody tr:hover {
     background: white;
     border: 1px solid var(--border);
     border-radius: 10px;
-    color: #475569;
+    color: var(--slate-600);
     font-weight: 600;
     cursor: pointer;
     font-size: 0.875rem;
@@ -678,7 +666,7 @@ tbody tr:hover {
 }
 
 .btn-secondary:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
+    background: var(--slate-50);
+    border-color: var(--slate-300);
     color: var(--text-main);
 }

@@ -3,63 +3,51 @@
         <img src="{{ url_for('static', filename='img/general/logo.webp') }}" alt="Logo" class="sidebar-logo">
         <span class="sidebar-title">Sign Tech</span>
         <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Colapsar menú">
-            <span class="material-icons">chevron_left</span>
+            <img src="{{ url_for('static', filename='img/icons/chevron-left.svg') }}" alt="" width="24" height="24" class="icon">
         </button>
     </div>
 
     <nav class="sidebar-nav">
         <div class="nav-item">
             <a href="{{ url_for('inicio') }}" class="nav-link">
-                <span class="material-icons">home</span>
+                <img src="{{ url_for('static', filename='img/icons/home.svg') }}" alt="" width="24" height="24" class="icon">
                 <span class="nav-text">Inicio</span>
             </a>
         </div>
         <div class="nav-item">
             <a href="{{ url_for('dashboard') }}"
                 class="nav-link {{ 'active' if request.endpoint == 'dashboard' else '' }}">
-                <span class="material-icons">dashboard</span>
+                <img src="{{ url_for('static', filename='img/icons/dashboard.svg') }}" alt="" width="24" height="24" class="icon">
                 <span class="nav-text">Dashboard</span>
             </a>
         </div>
         <div class="nav-item">
             <a href="{{ url_for('usuarios') }}"
                 class="nav-link {{ 'active' if request.endpoint == 'usuarios' else '' }}">
-                <span class="material-icons">group</span>
+                <img src="{{ url_for('static', filename='img/icons/group.svg') }}" alt="" width="24" height="24" class="icon">
                 <span class="nav-text">Usuarios</span>
             </a>
         </div>
         <div class="nav-item">
             <a href="{{ url_for('contribuciones') }}"
                 class="nav-link {{ 'active' if request.endpoint == 'contribuciones' else '' }}">
-                <span class="material-icons">video_library</span>
+                <img src="{{ url_for('static', filename='img/icons/video-library.svg') }}" alt="" width="24" height="24" class="icon">
                 <span class="nav-text">Contribuciones</span>
             </a>
         </div>
         <div class="nav-item">
             <a href="{{ url_for('reportes') }}"
                 class="nav-link {{ 'active' if request.endpoint == 'reportes' else '' }}">
-                <span class="material-icons">bug_report</span>
+                <img src="{{ url_for('static', filename='img/icons/bug-report.svg') }}" alt="" width="24" height="24" class="icon">
                 <span class="nav-text">Reportes</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <span class="material-icons">analytics</span>
-                <span class="nav-text">Estadísticas</span>
             </a>
         </div>
 
         <div class="nav-divider"></div>
 
         <div class="nav-item">
-            <a href="{{ url_for('perfil') }}" class="nav-link {{ 'active' if request.endpoint == 'perfil' else '' }}">
-                <span class="material-icons">account_circle</span>
-                <span class="nav-text">Mi Perfil</span>
-            </a>
-        </div>
-        <div class="nav-item">
             <a href="http://localhost:8000/docs" target="_blank" class="nav-link">
-                <span class="material-icons">api</span>
+                <img src="{{ url_for('static', filename='img/icons/code.svg') }}" alt="" width="24" height="24" class="icon">
                 <span class="nav-text">API Docs</span>
             </a>
         </div>
@@ -67,21 +55,31 @@
 
     <div class="sidebar-footer">
         {% if session.get('user') %}
-        <div class="user-card">
-            <div class="user-avatar">
-                <img src="{{ url_for('static', filename='img/profiles/' + (session.user.imagen_perfil or 'user.svg')) }}?t={{ range(1000, 99999)|random }}"
-                    alt="{{ session.user.nombre_completo }}"
-                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-            </div>
-            <div class="user-info">
-                <span class="user-name">{{ session.user.nombre_completo }}</span>
-                <span class="user-role">{{ session.user.nombre_rol or 'Usuario' }}</span>
+        <div class="user-menu">
+            <button class="user-card-btn">
+                <div class="user-card">
+                    <div class="user-avatar">
+                        <img src="{{ url_for('static', filename='img/profiles/' + (session.user.imagen_perfil or 'user.svg')) }}?t={{ range(1000, 99999)|random }}"
+                            alt="{{ session.user.nombre_completo }}"
+                            style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">{{ session.user.nombre_completo }}</span>
+                        <span class="user-role">{{ session.user.nombre_rol or 'Usuario' }}</span>
+                    </div>
+                </div>
+            </button>
+            <div class="user-dropdown" id="userDropdown">
+                <a href="{{ url_for('perfil') }}" class="dropdown-item">
+                    <img src="{{ url_for('static', filename='img/icons/person.svg') }}" alt="" width="20" height="20" class="icon">
+                    Ir a Perfil
+                </a>
+                <a href="{{ url_for('logout') }}" class="dropdown-item" onclick="return confirm('¿Cerrar sesión?')">
+                    <img src="{{ url_for('static', filename='img/icons/logout.svg') }}" alt="" width="20" height="20" class="icon">
+                    Cerrar Sesión
+                </a>
             </div>
         </div>
         {% endif %}
-        <a href="{{ url_for('logout') }}" class="logout-btn" onclick="return confirm('¿Cerrar sesión?')">
-            <span class="material-icons">logout</span>
-            <span class="nav-text">Cerrar Sesión</span>
-        </a>
     </div>
 </aside>

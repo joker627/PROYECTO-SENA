@@ -35,7 +35,8 @@
     }
 }
 
-.flash-alert svg {
+.flash-alert .flash-icon,
+.flash-alert img {
     flex-shrink: 0;
 }
 
@@ -57,44 +58,48 @@
     opacity: 1;
 }
 
+.flash-close .material-symbols-outlined {
+    font-size: 18px;
+}
+
 .flash-alert-success {
-    background: #d1fae5;
-    color: #065f46;
-    border-left: 4px solid #10b981;
+    background: var(--green-100);
+    color: var(--green-800);
+    border-left: 4px solid var(--emerald-500);
 }
 
 .flash-alert-success svg {
-    color: #10b981;
+    color: var(--emerald-500);
 }
 
 .flash-alert-error {
-    background: #fee2e2;
-    color: #991b1b;
-    border-left: 4px solid #ef4444;
+    background: var(--red-100);
+    color: var(--red-800);
+    border-left: 4px solid var(--red-500);
 }
 
 .flash-alert-error svg {
-    color: #ef4444;
+    color: var(--red-500);
 }
 
 .flash-alert-warning {
-    background: #fef3c7;
-    color: #92400e;
-    border-left: 4px solid #f59e0b;
+    background: var(--amber-100);
+    color: var(--amber-800);
+    border-left: 4px solid var(--amber-500);
 }
 
 .flash-alert-warning svg {
-    color: #f59e0b;
+    color: var(--amber-500);
 }
 
 .flash-alert-info {
-    background: #dbeafe;
-    color: #1e40af;
-    border-left: 4px solid #3b82f6;
+    background: var(--blue-100);
+    color: var(--blue-800);
+    border-left: 4px solid var(--blue-500);
 }
 
 .flash-alert-info svg {
-    color: #3b82f6;
+    color: var(--blue-500);
 }
 
 @media (max-width: 768px) {

@@ -1,8 +1,4 @@
-/* ===== BASE STYLES ===== */
-@import url('colors.css');
-@import url('components/flash.css');
-
-/* Reset y configuración base */
+/* ===== RESET & BASE CONFIGURATION ===== */
 *,
 *::before,
 *::after {
@@ -26,39 +22,9 @@ body {
     overflow-x: hidden;
 }
 
-/* Variables globales adicionales */
-:root {
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-
-    /* Transiciones */
-    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-
-    /* Radius */
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
-    --radius-full: 9999px;
-
-    /* Spacing */
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 3rem;
-}
-
-/* Material Icons */
-.material-icons {
-    font-family: 'Material Icons Round';
+/* ===== MATERIAL SYMBOLS OUTLINED ===== */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
     font-weight: normal;
     font-style: normal;
     font-size: 24px;
@@ -73,7 +39,231 @@ body {
     vertical-align: middle;
 }
 
-/* Utilidades */
+/* ===== CSS CUSTOM PROPERTIES (VARIABLES) ===== */
+:root {
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    /* Spacing Scale */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+
+    /* ===== COLOR SYSTEM ===== */
+
+    /* Green Colors */
+    --green-25: #f4faf4;
+    --green-50: #e8f5e9;
+    --green-100: #c8e6c9;
+    --green-200: #a5d6a7;
+    --green-300: #81c784;
+    --green-400: #66bb6a;
+    --green-500: #4caf50;
+    --green-600: #43a047;
+    --green-700: #388e3c;
+    --green-800: #2e7d32;
+    --green-900: #1b5e20;
+    --green-950: #0f4716;
+
+    /* Accent Colors */
+    --accent-light: #7ae8d6;
+    --accent: #04d2b2;
+    --accent-100: #a8f0e4;
+    --accent-200: #7ae8d6;
+    --accent-300: #4ce0c8;
+    --accent-400: #28d9bd;
+    --accent-500: #04d2b2;
+    --accent-600: #03c5a5;
+    --accent-700: #03b593;
+    --accent-800: #02a581;
+    --accent-900: #028561;
+    --accent-950: #01634f;
+
+    /* Yellow Colors */
+    --yellow-50: #fffde7;
+    --yellow-100: #fff9c4;
+    --yellow-200: #fff59d;
+    --yellow-300: #fff176;
+    --yellow-400: #ffee58;
+    --yellow-500: #ffeb3b;
+    --yellow-600: #fdd835;
+    --yellow-700: #fbc02d;
+    --yellow-800: #f9a825;
+    --yellow-900: #f57f17;
+
+    /* Blue Colors */
+    --blue-25: #f0f7ff;
+    --blue-50: #e3f2fd;
+    --blue-100: #bbdefb;
+    --blue-200: #90caf9;
+    --blue-300: #64b5f6;
+    --blue-400: #42a5f5;
+    --blue-500: #2196f3;
+    --blue-600: #1e88e5;
+    --blue-700: #1976d2;
+    --blue-800: #1565c0;
+    --blue-900: #0d47a1;
+    --blue-950: #083582;
+
+    /* Purple Colors */
+    --purple-25: #faf5fb;
+    --purple-50: #f3e5f5;
+    --purple-100: #e1bee7;
+    --purple-200: #ce93d8;
+    --purple-300: #ba68c8;
+    --purple-400: #ab47bc;
+    --purple-500: #9c27b0;
+    --purple-600: #8e24aa;
+    --purple-700: #7b1fa2;
+    --purple-800: #6a1b9a;
+    --purple-900: #4a148c;
+    --purple-950: #3a0c6e;
+
+    /* Orange Colors */
+    --orange-25: #fffbf0;
+    --orange-50: #fff8e1;
+    --orange-100: #ffecb3;
+    --orange-200: #ffe082;
+    --orange-300: #ffd54f;
+    --orange-400: #ffca28;
+    --orange-500: #ffc107;
+    --orange-600: #ffb300;
+    --orange-700: #ffa000;
+    --orange-800: #ff8f00;
+    --orange-900: #ff6f00;
+    --orange-950: #e65100;
+
+    /* Red Colors */
+    --red-25: #fff5f5;
+    --red-50: #ffebee;
+    --red-100: #ffcdd2;
+    --red-200: #ef9a9a;
+    --red-300: #e57373;
+    --red-400: #ef5350;
+    --red-500: #f44336;
+    --red-600: #e53935;
+    --red-700: #d32f2f;
+    --red-800: #c62828;
+    --red-900: #b71c1c;
+    --red-950: #8b0000;
+
+    /* Cyan Colors */
+    --cyan-50: #e0f7fa;
+    --cyan-100: #b2ebf2;
+    --cyan-200: #80deea;
+    --cyan-300: #4dd0e1;
+    --cyan-400: #26c6da;
+    --cyan-500: #00bcd4;
+    --cyan-600: #00acc1;
+    --cyan-700: #0097a7;
+    --cyan-800: #00838f;
+    --cyan-900: #006064;
+
+    /* Teal Colors */
+    --teal-25: #f0f9f7;
+    --teal-50: #e0f2f1;
+    --teal-100: #b2dfdb;
+    --teal-200: #80cbc4;
+    --teal-300: #4db6ac;
+    --teal-400: #26a69a;
+    --teal-500: #009688;
+    --teal-600: #00897b;
+    --teal-700: #00796b;
+    --teal-800: #00695c;
+    --teal-900: #004d40;
+    --teal-950: #00332e;
+
+    /* Pink Colors */
+    --pink-50: #fce4ec;
+    --pink-100: #f8bbd9;
+    --pink-200: #f48fb1;
+    --pink-300: #f06292;
+    --pink-400: #ec407a;
+    --pink-500: #e91e63;
+    --pink-600: #d81b60;
+    --pink-700: #c2185b;
+    --pink-800: #ad1457;
+    --pink-900: #880e4f;
+
+    /* Indigo Colors */
+    --indigo-50: #e8eaf6;
+    --indigo-100: #c5cae9;
+    --indigo-200: #9fa8da;
+    --indigo-300: #7986cb;
+    --indigo-400: #5c6bc0;
+    --indigo-500: #3f51b5;
+    --indigo-600: #3949ab;
+    --indigo-700: #303f9f;
+    --indigo-800: #283593;
+    --indigo-900: #1a237e;
+
+    /* Neutral Colors */
+    --gray-25: #fcfcfc;
+    --gray-50: #fafafa;
+    --gray-100: #f5f5f5;
+    --gray-200: #eeeeee;
+    --gray-300: #e0e0e0;
+    --gray-400: #bdbdbd;
+    --gray-500: #9e9e9e;
+    --gray-600: #757575;
+    --gray-700: #616161;
+    --gray-800: #424242;
+    --gray-900: #212121;
+    --gray-950: #111111;
+    --white: #ffffff;
+    --black: #000000;
+
+    /* Alias variables for compatibility */
+    --slate-25: var(--gray-25);
+    --slate-50: var(--gray-50);
+    --slate-100: var(--gray-100);
+    --slate-200: var(--gray-200);
+    --slate-300: var(--gray-300);
+    --slate-400: var(--gray-400);
+    --slate-500: var(--gray-500);
+    --slate-600: var(--gray-600);
+    --slate-700: var(--gray-700);
+    --slate-800: var(--gray-800);
+    --slate-900: var(--gray-900);
+    --emerald-500: var(--green-500);
+    --emerald-600: var(--green-600);
+    --amber-500: var(--yellow-500);
+    --amber-600: var(--yellow-600);
+
+    /* Semantic color variables */
+    --primary: var(--teal-700);
+    --primary-hover: var(--teal-800);
+    --secondary: var(--slate-500);
+    --success: var(--emerald-500);
+    --warning: var(--amber-500);
+    --danger: var(--red-500);
+    --background: var(--slate-100);
+    --card-bg: transparent;
+    --text-main: var(--slate-800);
+    --text-muted: var(--slate-500);
+    --border: var(--slate-200);
+}
+
+/* ===== UTILITY CLASSES ===== */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -86,19 +276,6 @@ body {
     border-width: 0;
 }
 
-/* Main content area */
-main {
-    min-height: calc(100vh - 140px);
-    padding-top: 70px;
-}
-
-@media (max-width: 768px) {
-    main {
-        padding-top: 65px;
-    }
-}
-
-/* Utility classes */
 .container {
     width: 100%;
     max-width: 1200px;
@@ -109,5 +286,188 @@ main {
 @media (min-width: 768px) {
     .container {
         padding: 0 1.5rem;
+    }
+}
+
+/* ===== COMMON COMPONENTS ===== */
+
+/* Button Base Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-lg);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0f766e, #14b8a6);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #115e59, #0d9488);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--gray-50);
+    border-color: var(--gray-400);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--teal-600);
+    border: 2px solid var(--teal-600);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background: var(--teal-600);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: var(--radius-md);
+    border: none;
+    background: transparent;
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-icon:hover {
+    background: var(--gray-100);
+    color: var(--gray-900);
+    transform: scale(1.05);
+}
+
+.btn-icon.view {
+    color: var(--blue-600);
+}
+
+.btn-icon.view:hover {
+    background: rgba(37, 99, 235, 0.1);
+}
+
+.btn-icon.edit {
+    color: var(--teal-600);
+}
+
+.btn-icon.edit:hover {
+    background: rgba(13, 148, 136, 0.1);
+}
+
+.btn-icon.delete {
+    color: var(--red-600);
+}
+
+.btn-icon.delete:hover {
+    background: rgba(220, 38, 38, 0.1);
+}
+
+.btn-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: var(--radius-md);
+    border: none;
+    background: transparent;
+    color: var(--gray-500);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-close:hover {
+    background: var(--gray-100);
+    color: var(--gray-700);
+}
+
+/* Form Base Styles */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-700);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    outline: none;
+    font-family: inherit;
+    font-size: 0.875rem;
+    transition: all var(--transition-fast);
+    background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--teal-500);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+.form-group input:disabled,
+.form-group select:disabled,
+.form-group textarea:disabled {
+    background: var(--gray-50);
+    color: var(--gray-500);
+    cursor: not-allowed;
+}
+
+/* Form Layouts */
+.form-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .form-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 }

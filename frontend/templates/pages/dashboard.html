@@ -14,24 +14,24 @@
     </div>
     <div class="page-header-right">
         <div class="datetime-badge">
-            <span class="material-icons">schedule</span>
-            <span id="currentDateTime">--</span>
+            <img src="{{ url_for('static', filename='img/icons/schedule.svg') }}" alt="" width="20" height="20" class="icon">
+            <span id="currentDateTime">{{ current_time.strftime('%a %d %b %H:%M') }}</span>
         </div>
-        <button class="refresh-btn" id="refreshBtn" title="Actualizar datos">
-            <span class="material-icons">refresh</span>
-        </button>
+        <a href="{{ url_for('dashboard') }}" class="refresh-btn" title="Actualizar datos">
+            <img src="{{ url_for('static', filename='img/icons/refresh.svg') }}" alt="" width="20" height="20">
+        </a>
     </div>
 </div>
 
 <!-- Error Message -->
 <div class="error-message" id="errorMessage">
-    <span class="material-icons">error</span>
+    <img src="{{ url_for('static', filename='img/icons/error-filled.svg') }}" alt="" width="20" height="20" class="icon">
     <span id="errorText">No se pudieron cargar las estadísticas</span>
 </div>
 
 <!-- Sección: Estadísticas -->
 <div class="section-title">
-    <span class="material-icons">insights</span>
+    <img src="{{ url_for('static', filename='img/icons/insights.svg') }}" alt="" width="24" height="24" class="icon">
     Estadísticas del Sistema
 </div>
 
@@ -39,7 +39,7 @@
 <div class="stats-grid" id="statsGrid">
     <div class="stat-card">
         <div class="stat-icon teal">
-            <span class="material-icons">translate</span>
+            <img src="{{ url_for('static', filename='img/icons/translate.svg') }}" alt="" width="24" height="24">
         </div>
         <div class="stat-info">
             <h3>Traducciones</h3>
@@ -48,7 +48,7 @@
     </div>
     <div class="stat-card">
         <div class="stat-icon purple">
-            <span class="material-icons">volunteer_activism</span>
+            <img src="{{ url_for('static', filename='img/icons/volunteer.svg') }}" alt="" width="24" height="24">
         </div>
         <div class="stat-info">
             <h3>Contribuciones</h3>
@@ -57,7 +57,7 @@
     </div>
     <div class="stat-card">
         <div class="stat-icon yellow">
-            <span class="material-icons">pending</span>
+            <img src="{{ url_for('static', filename='img/icons/schedule.svg') }}" alt="" width="24" height="24">
         </div>
         <div class="stat-info">
             <h3>Pendientes</h3>
@@ -66,7 +66,7 @@
     </div>
     <div class="stat-card">
         <div class="stat-icon green">
-            <span class="material-icons">check_circle</span>
+            <img src="{{ url_for('static', filename='img/icons/check-circle-filled.svg') }}" alt="" width="24" height="24">
         </div>
         <div class="stat-info">
             <h3>Aprobadas</h3>
@@ -75,7 +75,7 @@
     </div>
     <div class="stat-card">
         <div class="stat-icon blue">
-            <span class="material-icons">sign_language</span>
+            <img src="{{ url_for('static', filename='img/icons/sign-language.svg') }}" alt="" width="24" height="24">
         </div>
         <div class="stat-info">
             <h3>Señas Oficiales</h3>
@@ -84,7 +84,7 @@
     </div>
     <div class="stat-card">
         <div class="stat-icon red">
-            <span class="material-icons">report</span>
+            <img src="{{ url_for('static', filename='img/icons/flag.svg') }}" alt="" width="24" height="24">
         </div>
         <div class="stat-info">
             <h3>Reportes Activos</h3>
@@ -95,7 +95,7 @@
 
 <!-- Sección: Información -->
 <div class="section-title">
-    <span class="material-icons">info</span>
+    <img src="{{ url_for('static', filename='img/icons/info-filled.svg') }}" alt="" width="24" height="24" class="icon">
     Información General
 </div>
 
@@ -104,7 +104,7 @@
     <div class="info-card">
         <div class="info-card-header">
             <div class="info-card-icon teal">
-                <span class="material-icons">person</span>
+                <img src="{{ url_for('static', filename='img/icons/person.svg') }}" alt="" width="24" height="24">
             </div>
             <div class="info-card-title">
                 <h3>Información del Usuario</h3>
@@ -131,7 +131,7 @@
     <div class="info-card">
         <div class="info-card-header">
             <div class="info-card-icon purple">
-                <span class="material-icons">smart_toy</span>
+                <img src="{{ url_for('static', filename='img/icons/smart-toy.svg') }}" alt="" width="24" height="24">
             </div>
             <div class="info-card-title">
                 <h3>Modelo IA</h3>
@@ -142,8 +142,7 @@
             <label>Precisión</label>
             {% set precision = stats.precision_modelo|float if stats and stats.precision_modelo else 0 %}
             <span class="precision-badge {{ 'danger' if precision < 50 else 'warning' if precision < 75 else '' }}">
-                <span class="material-icons" style="font-size: 14px;">{{ 'trending_up' if precision >= 75
-                    else 'trending_down' }}</span>
+                <img src="{{ url_for('static', filename='img/icons/' + ('trending-up.svg' if precision >= 75 else 'trending-down.svg')) }}" alt="" width="14" height="14" style="vertical-align: middle;">
                 {{ precision }}%
             </span>
         </div>
@@ -157,27 +156,23 @@
 
 <!-- Sección: Acciones -->
 <div class="section-title">
-    <span class="material-icons">bolt</span>
+    <img src="{{ url_for('static', filename='img/icons/bolt.svg') }}" alt="" width="24" height="24" class="icon">
     Acciones Rápidas
 </div>
 
 <!-- Acciones Rápidas -->
 <div class="quick-actions">
     <a href="{{ url_for('inicio') }}" class="action-btn primary">
-        <span class="material-icons">home</span>
+        <img src="{{ url_for('static', filename='img/icons/home.svg') }}" alt="" width="20" height="20" class="icon">
         Ir al Inicio
     </a>
     <a href="http://localhost:8000/docs" target="_blank" class="action-btn secondary">
-        <span class="material-icons">api</span>
+        <img src="{{ url_for('static', filename='img/icons/code.svg') }}" alt="" width="20" height="20" class="icon">
         Ver API
     </a>
     <a href="{{ url_for('contribuciones') }}" class="action-btn secondary">
-        <span class="material-icons">add_circle</span>
+        <img src="{{ url_for('static', filename='img/icons/add-circle.svg') }}" alt="" width="20" height="20" class="icon">
         Revisar Contribuciones
     </a>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}

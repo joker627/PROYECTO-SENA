@@ -15,12 +15,12 @@
     border-radius: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 0.875rem;
-    color: #64748b;
+    color: var(--gray-500);
 }
 
 .datetime-badge .material-icons {
     font-size: 18px;
-    color: #0f766e;
+    color: var(--teal-700);
 }
 
 .refresh-btn {
@@ -38,12 +38,12 @@
 }
 
 .refresh-btn:hover {
-    background: #f0fdfa;
+    background: var(--teal-50);
 }
 
 .refresh-btn .material-icons {
     font-size: 20px;
-    color: #0f766e;
+    color: var(--teal-700);
 }
 
 .refresh-btn.loading .material-icons {
@@ -59,7 +59,7 @@
 /* Cuadrícula de Tarjetas (Dashboard Widgets) */
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -88,36 +88,36 @@
 }
 
 .info-card-icon.teal {
-    background: #ccfbf1;
-    color: #0f766e;
+    background: var(--teal-100);
+    color: var(--teal-700);
 }
 
 .info-card-icon.purple {
-    background: #ede9fe;
-    color: #7c3aed;
+    background: var(--purple-100);
+    color: var(--purple-600);
 }
 
 .info-card-icon.blue {
-    background: #dbeafe;
-    color: #2563eb;
+    background: var(--blue-100);
+    color: var(--blue-600);
 }
 
 .info-card-title h3 {
     font-size: 1rem;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--gray-800);
 }
 
 .info-card-title p {
     font-size: 0.8125rem;
-    color: #94a3b8;
+    color: var(--gray-400);
 }
 
 .info-item {
     display: flex;
     justify-content: space-between;
     padding: 0.875rem 0;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid var(--gray-100);
 }
 
 .info-item:last-child {
@@ -126,13 +126,14 @@
 
 .info-item label {
     font-size: 0.875rem;
-    color: #64748b;
+    color: var(--slate-500);
 }
 
 .info-item span {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--slate-800);
+    word-break: break-word;
 }
 
 /* Acciones Rápidas */
@@ -157,22 +158,22 @@
 }
 
 .action-btn.primary {
-    background: #0f766e;
+    background: var(--teal-700);
     color: white;
 }
 
 .action-btn.primary:hover {
-    background: #115e59;
+    background: var(--teal-800);
 }
 
 .action-btn.secondary {
     background: white;
-    color: #0f766e;
-    border: 2px solid #0f766e;
+    color: var(--teal-700);
+    border: 2px solid var(--teal-700);
 }
 
 .action-btn.secondary:hover {
-    background: #f0fdfa;
+    background: var(--teal-50);
 }
 
 /* Insignia de Precisión */
@@ -181,21 +182,21 @@
     align-items: center;
     gap: 0.375rem;
     padding: 0.25rem 0.625rem;
-    background: #dcfce7;
-    color: #16a34a;
+    background: var(--green-100);
+    color: var(--green-600);
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 600;
 }
 
 .precision-badge.warning {
-    background: #fef3c7;
-    color: #d97706;
+    background: var(--amber-100);
+    color: var(--amber-600);
 }
 
 .precision-badge.danger {
-    background: #fee2e2;
-    color: #dc2626;
+    background: var(--red-100);
+    color: var(--red-600);
 }
 
 /* Indicador de Estado */
@@ -211,12 +212,12 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #22c55e;
+    background: var(--green-500);
     animation: pulse 2s infinite;
 }
 
 .status-dot.offline {
-    background: #ef4444;
+    background: var(--red-500);
     animation: none;
 }
 
@@ -236,7 +237,7 @@
 .section-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #475569;
+    color: var(--slate-600);
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -245,7 +246,7 @@
 
 .section-title .material-icons {
     font-size: 20px;
-    color: #0f766e;
+    color: var(--teal-700);
 }
 
 /* Cargando */
@@ -259,17 +260,17 @@
 .spinner {
     width: 40px;
     height: 40px;
-    border: 3px solid #e5e7eb;
-    border-top-color: #0f766e;
+    border: 3px solid var(--gray-200);
+    border-top-color: var(--teal-700);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
 
 /* Estado de Error */
 .error-message {
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    color: #dc2626;
+    background: var(--red-50);
+    border: 1px solid var(--red-200);
+    color: var(--red-600);
     padding: 1rem 1.5rem;
     border-radius: 10px;
     margin-bottom: 1.5rem;
@@ -294,7 +295,7 @@
     }
     
     .cards-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
 }
 
@@ -313,7 +314,12 @@
     }
     
     .info-card {
-        padding: 1.25rem;
+        padding: 1rem;
+    }
+    
+    .info-item label,
+    .info-item span {
+        font-size: 0.8125rem;
     }
     
     .datetime-badge {

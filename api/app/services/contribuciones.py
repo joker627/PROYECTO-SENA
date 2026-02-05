@@ -1,4 +1,5 @@
 from app.core.database import get_connection
+from app.core.logger import logger
 
 def obtener_contribuciones(estado: str = None, query: str = None, skip: int = 0, limit: int = 100):
     conn = get_connection()
@@ -36,7 +37,11 @@ def obtener_contribuciones(estado: str = None, query: str = None, skip: int = 0,
             
             cursor.execute(sql, tuple(data_params))
             data = cursor.fetchall()
+            logger.info(f"Contribuciones obtenidas: {len(data)} resultados, filtros aplicados")
             return {"total": total, "data": data}
+    except Exception as e:
+        logger.error(f"Error obteniendo contribuciones: {e}")
+        raise
     finally:
         conn.close()
 
@@ -47,7 +52,15 @@ def actualizar_estado_contribucion(id_contribucion: int, estado: str, observacio
             sql = "UPDATE contribuciones_senas SET estado=%s, observaciones_gestion=%s, fecha_gestion=NOW() WHERE id_contribucion=%s"
             cursor.execute(sql, (estado, observaciones, id_contribucion))
             conn.commit()
-            return cursor.rowcount > 0
+            updated = cursor.rowcount > 0
+            if updated:
+                logger.info(f"Estado de contribución actualizado: ID {id_contribucion} -> {estado}")
+            else:
+                logger.warning(f"No se encontró contribución para actualizar: ID {id_contribucion}")
+            return updated
+    except Exception as e:
+        logger.error(f"Error actualizando estado de contribución {id_contribucion}: {e}")
+        raise
     finally:
         conn.close()
 

@@ -11,19 +11,15 @@
 
     <!-- Profile Card -->
     <div class="profile-card">
-        <form action="{{ url_for('update_avatar') }}" method="POST" enctype="multipart/form-data" id="avatarForm">
-            <label class="profile-avatar-wrapper" for="avatarInput" title="Haga clic para cambiar foto"
-                style="cursor: pointer;">
-                <div class="profile-avatar">
-                    <img src="{{ url_for('static', filename='img/profiles/' + (session.user.imagen_perfil if session.user and session.user.imagen_perfil else 'user.svg')) }}?t={{ range(1000, 99999)|random }}"
-                        alt="Avatar">
-                </div>
-                <div class="avatar-edit">
-                    <span class="material-icons">camera_alt</span>
-                </div>
-                <input type="file" id="avatarInput" name="avatar" accept="image/*" hidden onchange="this.form.submit()">
-            </label>
-        </form>
+        <div class="profile-avatar-wrapper">
+            <div class="profile-avatar">
+                <img src="{{ url_for('static', filename='img/profiles/' + (session.user.imagen_perfil if session.user and session.user.imagen_perfil else 'user.svg')) }}?t={{ range(1000, 99999)|random }}"
+                    alt="Avatar">
+            </div>
+            <div class="avatar-edit">
+                <img src="{{ url_for('static', filename='img/icons/camera-alt.svg') }}" alt="" width="20" height="20">
+            </div>
+        </div>
 
         <h2 class="profile-name">
             {% if session.user %}{{ session.user.nombre_completo }}{% else %}Usuario{% endif %}
@@ -54,7 +50,7 @@
         <!-- Personal Info -->
         <div class="info-card">
             <div class="info-header">
-                <div class="info-icon blue"><span class="material-icons">person</span></div>
+                <div class="info-icon blue"><img src="{{ url_for('static', filename='img/icons/person.svg') }}" alt="" width="24" height="24"></div>
                 <div class="info-title">
                     <h3>Datos Personales</h3>
                     <p>Información básica de tu cuenta</p>
@@ -83,7 +79,7 @@
                 <div class="form-actions">
                     <a href="{{ url_for('perfil') }}" class="btn btn-secondary">Cancelar</a>
                     <button type="submit" class="btn btn-primary">
-                        <span class="material-icons" style="font-size: 18px;">save</span>
+                        <img src="{{ url_for('static', filename='img/icons/save.svg') }}" alt="" width="18" height="18" class="icon">
                         Guardar Cambios
                     </button>
                 </div>
@@ -93,7 +89,7 @@
         <!-- Contact Info -->
         <div class="info-card">
             <div class="info-header">
-                <div class="info-icon purple"><span class="material-icons">mail</span></div>
+                <div class="info-icon purple"><img src="{{ url_for('static', filename='img/icons/email.svg') }}" alt="" width="24" height="24"></div>
                 <div class="info-title">
                     <h3>Información de Contacto</h3>
                     <p>Correo y datos de acceso</p>
@@ -115,7 +111,7 @@
         <!-- Security -->
         <div class="info-card">
             <div class="info-header">
-                <div class="info-icon teal"><span class="material-icons">lock</span></div>
+                <div class="info-icon teal"><img src="{{ url_for('static', filename='img/icons/lock.svg') }}" alt="" width="24" height="24"></div>
                 <div class="info-title">
                     <h3>Seguridad</h3>
                     <p>Gestión de contraseña</p>
@@ -126,19 +122,29 @@
                 <div class="info-grid">
                     <div class="form-group">
                         <label for="currentPassword">Contraseña Actual</label>
-                        <input type="password" id="currentPassword" name="current_password" placeholder="••••••••"
-                            required>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="currentPassword" name="current_password" placeholder="••••••••"
+                                required>
+                            <button type="button" class="password-toggle" data-target="currentPassword">
+                                <img src="{{ url_for('static', filename='img/icons/visibility.svg') }}" alt="" width="20" height="20">
+                            </button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="newPassword">Nueva Contraseña</label>
-                        <input type="password" id="newPassword" name="new_password" placeholder="••••••••" required
-                            minlength="6">
+                        <div class="password-input-wrapper">
+                            <input type="password" id="newPassword" name="new_password" placeholder="••••••••" required
+                                minlength="6">
+                            <button type="button" class="password-toggle" data-target="newPassword">
+                                <img src="{{ url_for('static', filename='img/icons/visibility.svg') }}" alt="" width="20" height="20">
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">
-                        <span class="material-icons" style="font-size: 18px;">key</span>
+                        <img src="{{ url_for('static', filename='img/icons/key.svg') }}" alt="" width="18" height="18" class="icon">
                         Cambiar Contraseña
                     </button>
                 </div>

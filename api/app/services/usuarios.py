@@ -1,6 +1,7 @@
 from app.core.database import get_connection
 from app.schemas.usuarios import UsuarioCreate, UsuarioUpdate
 from app.core.security import hash_password
+from app.core.logger import logger
 
 def obtener_usuarios(skip: int = 0, limit: int = 100, rol: int = None, estado: str = None, query: str = None):
     conn = get_connection()
@@ -41,7 +42,16 @@ def obtener_usuarios(skip: int = 0, limit: int = 100, rol: int = None, estado: s
             cursor.execute(sql, tuple(data_params))
             data = cursor.fetchall()
             
+            # Set default avatar for users without one
+            for user in data:
+                if not user.get('imagen_perfil'):
+                    user['imagen_perfil'] = 'user.svg'
+            
+            logger.info(f"Consulta de usuarios ejecutada: {len(data)} resultados, filtros aplicados")
             return {"total": total, "data": data}
+    except Exception as e:
+        logger.error(f"Error obteniendo usuarios: {e}")
+        raise
     finally:
         conn.close()
 
@@ -51,7 +61,18 @@ def obtener_usuario_por_id(id_usuario: int):
         with conn.cursor() as cursor:
             sql = "SELECT u.*, r.nombre_rol FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol WHERE u.id_usuario = %s"
             cursor.execute(sql, (id_usuario,))
-            return cursor.fetchone()
+            user = cursor.fetchone()
+            if user:
+                # Set default avatar if none
+                if not user.get('imagen_perfil'):
+                    user['imagen_perfil'] = 'user.svg'
+                logger.info(f"Usuario obtenido: ID {id_usuario}")
+            else:
+                logger.warning(f"Usuario no encontrado: ID {id_usuario}")
+            return user
+    except Exception as e:
+        logger.error(f"Error obteniendo usuario por ID {id_usuario}: {e}")
+        raise
     finally:
         conn.close()
 
@@ -69,7 +90,12 @@ def crear_usuario(usuario: UsuarioCreate):
                 usuario.tipo_documento, usuario.numero_documento, usuario.id_rol, usuario.estado
             ))
             conn.commit()
-            return cursor.lastrowid
+            user_id = cursor.lastrowid
+            logger.info(f"Usuario creado exitosamente: {usuario.correo} (ID: {user_id})")
+            return user_id
+    except Exception as e:
+        logger.error(f"Error creando usuario '{usuario.correo}': {e}")
+        raise
     finally:
         conn.close()
 
