@@ -1,6 +1,6 @@
 # Definición del Router Principal de la API v1
 from fastapi import APIRouter
-from app.api.v1.endpoints import usuarios, contribuciones, reportes, estadisticas, auth
+from app.api.v1.endpoints import usuarios, contribuciones, reportes, estadisticas, auth, ia
 
 router = APIRouter()
 
@@ -32,4 +32,9 @@ router.include_router(contribuciones.router,
 router.include_router(reportes.router, 
     prefix="/reportes", 
     tags=["Reportes"]
+)
+
+router.include_router(ia.router, 
+    prefix="/ia", 
+    tags=["Inteligencia Artificial"]
 )
