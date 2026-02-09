@@ -28,8 +28,22 @@ def health_check():
         "docs": "/docs",
         "redoc": "/redoc"
     }
-    
-# Incluir el router v1 bajo el prefijo estándar '/api/v1'
+
+@app.get("/", tags=["Root"])
+def root():
+    return {
+        "message": "Bienvenido a la API de SIGNTECHNOLOGY",
+        "version": "1.0.0",
+        "description": default_description,
+        "endpoints": {
+            "health": "/health",
+            "api_v1": "/api/v1",
+            "docs": "/docs",
+            "redoc": "/redoc"
+        }
+    }
+
+# Router v1
 app.include_router(v1_router, prefix="/api/v1")
 
 #uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

@@ -7,6 +7,8 @@
 [![Flask](https://img.shields.io/badge/Flask-3.0+-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 [![License](https://img.shields.io/badge/License-ISC-blue?style=for-the-badge)](LICENSE)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.20+-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](https://tensorflow.org)
+[![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10+-00897B?style=for-the-badge&logo=google&logoColor=white)](https://mediapipe.dev)
 
 Plataforma integral para la traducción bidireccional de Lenguaje de Señas Colombiano utilizando inteligencia artificial
 
@@ -168,7 +170,24 @@ pip install -r requirements.txt
 python run.py
 ```
 
-### 5️⃣ Acceder a la Aplicación
+### 5️⃣ Configurar Módulo de IA
+
+```bash
+# Instalar dependencias de IA
+pip install tensorflow scikit-learn opencv-python mediapipe
+
+# Capturar datos de entrenamiento con la webcam
+cd IA
+python capturar_datos.py bien    # ESPACIO = guardar, Q = salir
+python capturar_datos.py mal     # Repetir para cada seña
+
+# Entrenar el modelo
+python entrenar_modelo.py
+```
+
+> 💡 Se recomienda capturar mínimo **200 muestras por seña** para un buen entrenamiento.
+
+### 6️⃣ Acceder a la Aplicación
 
 | Servicio | URL | Descripción |
 | -------- | --- | ----------- |
@@ -246,6 +265,23 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 | `POST` | `/contribuciones` | Crear contribución |
 | `PUT` | `/contribuciones/{id}` | Gestionar contribución |
 
+### 🧠 Inteligencia Artificial
+
+| Método | Endpoint | Descripción |
+| ------ | ----------------------- | ---------------------------------------- |
+| `POST` | `/ia/traducir-video` | Traducir seña desde video (bien/mal) |
+
+**Ejemplo de uso:**
+```bash
+curl -X POST http://localhost:8000/api/v1/ia/traducir-video \
+  -F "file=@video_sena.mp4"
+```
+
+**Respuesta:**
+```json
+{"palabra": "bien"}
+```
+
 ### 📝 Reportes
 
 | Método | Endpoint | Descripción |
@@ -320,6 +356,16 @@ CORS_ORIGINS=http://localhost:5000,http://localhost:3000
 | ![PyMySQL](https://img.shields.io/badge/PyMySQL-4479A1?style=flat&logo=mysql&logoColor=white) | 1.1.0 | Conector MySQL |
 | ![JWT](https://img.shields.io/badge/JWT-000000?style=flat&logo=jsonwebtokens&logoColor=white) | - | Autenticación |
 | ![bcrypt](https://img.shields.io/badge/bcrypt-003B57?style=flat&logoColor=white) | 4.0.1 | Hash de contraseñas |
+
+### Inteligencia Artificial
+
+| Tecnología | Versión | Propósito |
+| ---------- | ------- | --------------------------------- |
+| ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat&logo=tensorflow&logoColor=white) | 2.20.0 | Entrenamiento y predicción |
+| ![Keras](https://img.shields.io/badge/Keras-D00000?style=flat&logo=keras&logoColor=white) | 3.12.1 | API de alto nivel para redes neuronales |
+| ![MediaPipe](https://img.shields.io/badge/MediaPipe-00897B?style=flat&logo=google&logoColor=white) | 0.10.9 | Detección de landmarks de manos |
+| ![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=flat&logo=opencv&logoColor=white) | 4.9.0 | Procesamiento de video |
+| ![scikit--learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat&logo=scikit-learn&logoColor=white) | 1.4.0 | División de datos y utilidades ML |
 
 ### Frontend
 

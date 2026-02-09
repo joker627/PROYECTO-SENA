@@ -8,3 +8,8 @@ passlib[bcrypt]==1.7.4
 python-multipart==0.0.6
 PyJWT==2.8.0
 bcrypt==4.0.1
+opencv-python==4.9.0.80
+mediapipe==0.10.9
+numpy==1.26.4
+tensorflow==2.20.0
+scikit-learn==1.7.1
